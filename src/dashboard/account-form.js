@@ -5,14 +5,15 @@ import jQuery from "jquery";
 class AccountForm {
   constructor(auth, elements) {
     this.auth = auth;
-    this.buttonAuth = jQuery(elements.buttonAuth);
-    this.buttonAuth.on("show.bs.modal", this.accountChange);
-    this.buttonSignOut = jQuery(elements.buttonSignOut);
-    this.buttonSignOut.click(this.signOut);
-    this.inputAuth = jQuery(elements.inputAuth);
-    this.inputEmail = jQuery(elements.inputEmail);
-    this.inputPassword = jQuery(elements.inputPassword);
-    this.modal = jQuery(elements.modal);
+    this.buttonAuth = document.getElementById(elements.buttonAuth);
+    this.buttonAuth.addEventListener("click", this.reauthenticate);
+    this.buttonSignOut = document.getElementById(elements.buttonSignOut);
+    this.buttonSignOut.addEventListener("click", this.signOut);
+    this.inputAuth = document.getElementById(elements.inputAuth);
+    this.inputEmail = document.getElementById(elements.inputEmail);
+    this.inputPassword = document.getElementById(elements.inputPassword);
+    this.modal = document.getElementById(elements.modal);
+    jQuery(this.modal).on("show.bs.modal", this.accountChange);
   }
 
   signOut = () => {
@@ -20,31 +21,29 @@ class AccountForm {
   };
 
   accountChange = (event) => {
-    const operation = jQuery(event.relatedTarget).data("operation");
-    const callback = operation === "email" ? this.changeEmail
+    const { operation } = event.relatedTarget.dataset;
+
+    this.callback = operation === "email" ? this.changeEmail
       : operation === "password" ? this.changePassword
         : operation === "delete" ? this.deleteAccount : null;
-
-    this.buttonAuth.click({ callback }, this.reauthenticate);
   };
 
-  reauthenticate = async (event) => {
+  reauthenticate = async () => {
     const provider = firebase.auth.EmailAuthProvider;
 
     await this.user.reauthenticateWithCredential(provider.credential(
       this.user.email,
-      this.inputAuth.val()
+      this.inputAuth.value
     ));
-    event.data.callback();
-    this.buttonAuth.off("click");
+    this.callback();
   };
 
   changeEmail = () => {
-    this.user.updateEmail(this.inputEmail.val());
+    this.user.updateEmail(this.inputEmail.value);
   };
 
   changePassword = () => {
-    this.user.updatePassword(this.inputPassword.val());
+    this.user.updatePassword(this.inputPassword.value);
   };
 
   deleteAccount = () => {

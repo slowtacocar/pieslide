@@ -24,12 +24,12 @@ class Dashboard {
     firebase.initializeApp(config);
     this.auth = firebase.auth();
     this.accountForm = new AccountForm(this.auth, {
-      "buttonAuth": "#buttonAuth",
-      "buttonSignOut": "#signout",
-      "inputAuth": "#inputAuth",
-      "inputEmail": "#inputEmail",
-      "inputPassword": "#inputPassword",
-      "modal": "#authModal"
+      "buttonAuth": "buttonAuth",
+      "buttonSignOut": "signout",
+      "inputAuth": "inputAuth",
+      "inputEmail": "inputEmail",
+      "inputPassword": "inputPassword",
+      "modal": "authModal"
     });
     this.firestore = firebase.firestore();
     this.storageRef = firebase.storage().ref();
