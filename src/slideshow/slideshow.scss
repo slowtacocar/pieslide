@@ -1,0 +1,42 @@
+@import 'bootstrap/scss/bootstrap';
+
+body {
+  overflow-x: hidden;
+  margin: 0;
+  background: $black;
+}
+
+#cardNews {
+  position: fixed;
+  bottom: 0;
+  will-change: transform;
+}
+
+.slide {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: calc(100vh - 4rem - 2px);
+  will-change: opacity;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+#news {
+  font-weight: $font-weight-bolder;
+  white-space: nowrap;
+}
+
+#logo {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+#cardTime {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
