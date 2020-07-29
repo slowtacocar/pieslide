@@ -8,7 +8,6 @@ import Slides from "./slides.js";
 import Time from "./time.js";
 import config from "../config.js";
 import firebase from "firebase/app";
-import jQuery from "jquery";
 
 class Slideshow {
   constructor() {
@@ -74,4 +73,4 @@ class Slideshow {
     location.reload();
   };
 }
-jQuery(Slideshow.get);
+Slideshow.get();
