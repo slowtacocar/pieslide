@@ -89,4 +89,4 @@ class Dashboard {
     return false;
   };
 }
-jQuery(new Dashboard().render());
+jQuery(new Dashboard());
