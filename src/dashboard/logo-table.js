@@ -4,11 +4,11 @@ class LogoTable extends Table {
   constructor() {
     super({
       "defaultData": { "name": null },
-      "inputGroup": "#inputGroupLogo",
-      "inputGroupAddon": "#inputGroupLogoAddon",
-      "inputGroupLabel": "#inputGroupLogoLabel",
-      "modal": "#logoProgressModal",
-      "progressBar": "#logoProgressBar"
+      "inputGroup": "inputGroupLogo",
+      "inputGroupAddon": "inputGroupLogoAddon",
+      "inputGroupLabel": "inputGroupLogoLabel",
+      "modal": "logoProgressModal",
+      "progressBar": "logoProgressBar"
     });
   }
 

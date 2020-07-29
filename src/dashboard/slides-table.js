@@ -21,11 +21,11 @@ class SlidesTable extends Table {
   constructor() {
     super({
       "defaultData": { "slides": [] },
-      "inputGroup": "#inputGroupSlide",
-      "inputGroupAddon": "#inputGroupSlideAddon",
-      "inputGroupLabel": "#inputGroupSlideLabel",
-      "modal": "#slideProgressModal",
-      "progressBar": "#slideProgressBar"
+      "inputGroup": "inputGroupSlide",
+      "inputGroupAddon": "inputGroupSlideAddon",
+      "inputGroupLabel": "inputGroupSlideLabel",
+      "modal": "slideProgressModal",
+      "progressBar": "slideProgressBar"
     });
     this.tableBody = document.getElementById("tbodySlides");
     this.alertSave = document.getElementById("alertSave");

@@ -34,9 +34,10 @@ class Dashboard {
     this.storageRef = firebase.storage().ref();
     this.auth.onAuthStateChanged(this.changeUser);
     Table.addPreviewListeners({
-      "modalBodyVideo": "#modalBodyVideo",
-      "modalImage": "#previewModalImage",
-      "modalVideo": "#previewModalVideo"
+      "modalBodyVideo": "modalBodyVideo",
+      "modalImage": "previewModalImage",
+      "modalVideo": "previewModalVideo",
+      "previewImg": "previewImg"
     });
     this.buttonError.addEventListener("click", this.hideError);
     window.onerror = this.onError;
