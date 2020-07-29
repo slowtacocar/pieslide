@@ -17,7 +17,6 @@ import SlidesTable from "./slides-table.js";
 import Table from "./table.js";
 import config from "../config.js";
 import firebase from "firebase/app";
-import jQuery from "jquery";
 
 class Dashboard {
   constructor() {
@@ -39,17 +38,21 @@ class Dashboard {
       "modalImage": "#previewModalImage",
       "modalVideo": "#previewModalVideo"
     });
-    this.buttonError.click(this.hideError);
+    this.buttonError.addEventListener("click", this.hideError);
     window.onerror = this.onError;
   }
 
-  alertError = jQuery("#alertError");
+  static get() {
+    return new Dashboard();
+  }
 
-  buttonError = jQuery("#buttonError");
+  alertError = document.getElementById("alertError");
+
+  buttonError = document.getElementById("buttonError");
 
   logoTable = new LogoTable();
 
-  parError = jQuery("#parError");
+  parError = document.getElementById("parError");
 
   settingsForm = new SettingsForm();
 
@@ -79,14 +82,14 @@ class Dashboard {
   };
 
   hideError = () => {
-    this.alertError.attr("hidden", true);
+    this.alertError.hidden = true;
   };
 
   onError = (msg) => {
-    this.parError.text(msg);
-    this.alertError.attr("hidden", false);
+    this.parError.textContent = msg;
+    this.alertError.hidden = false;
 
     return false;
   };
 }
-jQuery(new Dashboard());
+Dashboard.get();
