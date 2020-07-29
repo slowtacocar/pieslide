@@ -1,17 +1,19 @@
-import jQuery from "jquery";
-
 const LOAD_TIME = 1000;
 
 class Slides {
   constructor() {
     this.isRunning = false;
+    this.slideElements = document.getElementsByClassName("slide");
   }
 
   loop = () => {
     if (this.slides[ this.index ]) {
       this.isRunning = true;
-      jQuery(".slide").toggleClass("hidden")
-        .toggleClass("shown");
+
+      for (const slideElement of this.slideElements) {
+        slideElement.classList.toggle("hidden");
+        slideElement.classList.toggle("shown");
+      }
 
       const duration = this.slides[ this.index ].duration * 1000;
 
@@ -24,10 +26,8 @@ class Slides {
   };
 
   preload = () => {
-    jQuery(".hidden.slide").css(
-      "background",
-      `black url(${this.urls[ this.index ]}) center/contain no-repeat`
-    );
+    document.getElementsByClassName("hidden slide")[ 0 ].style.background =
+      `black url(${this.urls[ this.index ]}) center/contain no-repeat`;
   };
 
   setData = (data, ref) => {
@@ -51,7 +51,9 @@ class Slides {
   };
 
   setTransition = (time) => {
-    jQuery(".slide").css("transition", `opacity ${time}s`);
+    for (const slideElement of this.slideElements) {
+      slideElement.style.transition = `opacity ${time}s`;
+    }
   };
 }
 
