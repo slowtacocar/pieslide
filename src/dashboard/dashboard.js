@@ -79,12 +79,12 @@ class Dashboard {
   };
 
   hideError = () => {
-    this.alertError.hide();
+    this.alertError.attr("hidden", true);
   };
 
   onError = (msg) => {
     this.parError.text(msg);
-    this.alertError.show();
+    this.alertError.attr("hidden", false);
 
     return false;
   };
