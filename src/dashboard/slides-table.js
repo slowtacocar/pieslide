@@ -16,107 +16,121 @@ const VIDEO_TYPES = [
   "m4v",
   "avi"
 ];
-const BUTTON_DELETE = "buttonDelete";
 
 class SlidesTable extends Table {
   constructor() {
     super({
       "defaultData": { "slides": [] },
-      "inputGroup": "#inputGroupSlide",
-      "inputGroupAddon": "#inputGroupSlideAddon",
-      "inputGroupLabel": "#inputGroupSlideLabel",
-      "modal": "#slideProgressModal",
-      "progressBar": "#slideProgressBar"
+      "inputGroup": "inputGroupSlide",
+      "inputGroupAddon": "inputGroupSlideAddon",
+      "inputGroupLabel": "inputGroupSlideLabel",
+      "modal": "slideProgressModal",
+      "progressBar": "slideProgressBar"
     });
-    this.tableBody = jQuery("#tbodySlides");
-    this.alertSave = jQuery("#alertSave");
-    jQuery("#tbodySlides").sortable();
-    jQuery("#tbodySlides").on("sortstop", this.sort);
-    jQuery("#buttonSaveSlides").click(this.save);
-    jQuery("#buttonDiscard").click(this.stopSort);
+    this.tableBody = document.getElementById("tbodySlides");
+    this.alertSave = document.getElementById("alertSave");
+    this.buttonSaveSlides = document.getElementById("buttonSaveSlides");
+    this.buttonDiscard = document.getElementById("buttonDiscard");
+    jQuery(this.tableBody).sortable()
+      .on("sortstop", this.sort);
+    this.buttonSaveSlides.addEventListener("click", this.save);
+    this.buttonDiscard.addEventListener("click", this.stopSort);
   }
 
   updateTable = (data) => {
-    this.tableBody.empty();
+    while (this.tableBody.firstChild) {
+      this.tableBody.removeChild(this.tableBody.firstChild);
+    }
+
+    this.slides = data.slides;
     data.slides.forEach(this.addTableRow);
     data.slides.forEach(this.getURLs);
   };
 
   addTableRow = (file, index) => {
-    this.tableBody.append(jQuery("<tr></tr>", { "id": `tr${index}` }));
+    const row = document.createElement("tr");
+
+    row.id = `tr${index}`;
+    this.tableBody.appendChild(row);
   };
 
-  getURLs = (file, index, slides) => {
+  getURLs = (file, index) => {
     const ref = this.folderRef.child(file.name);
 
-    ref.getDownloadURL().then(this.addTableData.bind(this, {
+    ref.getDownloadURL().then(this.addTableData.bind(
+      this,
       file,
-      index,
-      slides
-    }));
+      index
+    ));
   };
 
-  addTableData = (slide, url) => {
-    const { file, index, slides } = slide;
+  addTableData = (file, index, url) => {
     const type = file.name.split(".").slice(-1)[ 0 ].toLowerCase();
+    const head = document.createElement("th");
+    const previewButton = document.createElement("button");
+    const preview = document.createElement("td");
+    const durationInput = document.createElement("input");
+    const duration = document.createElement("td");
+    const delButton = document.createElement("button");
+    const del = document.createElement("td");
+    const row = document.getElementById(`tr${index}`);
 
-    jQuery(`#tr${index}`).append(jQuery("<th></th>", {
-      "html": file.name,
-      "scope": "row"
-    }))
-      .append(jQuery("<td></td>").append(jQuery("<button></button>", {
-        "class": "btn btn-primary",
-        "data-link": url,
-        "data-toggle": "modal",
-        "data-type": type,
-        "html": "View Preview",
-        "id": `buttonPreview${index}`,
-        "type": "button"
-      })))
-      .append(jQuery("<td></td>").append(jQuery("<input>", {
-        "class": "form-control",
-        "id": `inputDuration${index}`,
-        "min": "0",
-        "type": "number",
-        "value": file.duration
-      })))
-      .append(jQuery("<td></td>").append(jQuery("<button></button>", {
-        "class": "btn btn-danger delete",
-        "html": "Delete",
-        "id": `buttonDelete${index}`,
-        "type": "button"
-      })));
+    head.setAttribute("scope", "row");
+    head.textContent = file.name;
+    head.className = "title";
+    previewButton.className = "btn btn-primary";
+    previewButton.dataset.link = url;
+    previewButton.dataset.toggle = "modal";
+    previewButton.type = "button";
+    previewButton.textContent = "View Preview";
+    previewButton.dataset.type = type;
+    preview.appendChild(previewButton);
+    durationInput.className = "form-control duration";
+    durationInput.min = "0";
+    durationInput.type = "number";
+    durationInput.value = file.duration;
+    duration.appendChild(durationInput);
+    delButton.className = "btn btn-danger disable";
+    delButton.type = "button";
+    delButton.textContent = "Delete";
+    delButton.dataset.index = index;
+    delButton.addEventListener("click", this.deleteItem);
+    del.appendChild(delButton);
+    row.appendChild(head);
+    row.appendChild(preview);
+    row.appendChild(duration);
+    row.appendChild(del);
 
     if (VIDEO_TYPES.includes(type)) {
-      jQuery(`#inputDuration${index}`).hide();
-      jQuery(`#buttonPreview${index}`)
-        .attr("data-target", "#previewModalVideo");
+      durationInput.hidden = true;
+      previewButton.dataset.target = "#previewModalVideo";
     } else {
-      jQuery(`#inputDuration${index}`).change(this.sort);
-      jQuery(`#buttonPreview${index}`)
-        .attr("data-target", "#previewModalImage");
+      durationInput.addEventListener("change", this.sort);
+      previewButton.dataset.target = "#previewModalImage";
     }
 
-    jQuery(`#buttonDelete${index}`).click({ slides }, this.deleteItem);
+    delButton.addEventListener("click", this.deleteItem);
   };
 
   deleteItem = (event) => {
-    const indexId = jQuery(event.target).attr("id")
-      .slice(BUTTON_DELETE.length);
-    const slide = event.data.slides[ indexId ];
+    const indexId = event.target.dataset.index;
+    const slide = this.slides[ indexId ];
 
     this.folderRef.child(slide.name).delete()
-      .then(this.deleteEntry.bind(this, indexId, event.data.slides));
+      .then(this.deleteEntry.bind(this, indexId));
   };
 
-  deleteEntry = (indexId, slides) => {
-    slides.splice(indexId, 1);
-    this.docRef.update({ slides });
+  deleteEntry = (indexId) => {
+    this.slides.splice(indexId, 1);
+    this.docRef.update({ "slides": this.slides });
   };
 
-  docData = (name) => ({ "slides": firebase.firestore.FieldValue.arrayUnion({
-    "duration": this.defaultDuration, name
-  }) });
+  docData = (name) => ({
+    "slides": firebase.firestore.FieldValue.arrayUnion({
+      "duration": this.defaultDuration,
+      name
+    })
+  });
 
   changeUser = (docRef, folderRef, settingsRef) => {
     super.changeUser(docRef, folderRef);
@@ -128,27 +142,30 @@ class SlidesTable extends Table {
   };
 
   sort = () => {
-    jQuery(".delete").prop("disabled", true);
-    jQuery("[id^=inputGroupSlide]").prop("disabled", true);
-    this.alertSave.prop("hidden", false);
+    for (const elem of document.getElementsByClassName("disable")) {
+      elem.disabled = true;
+    }
+
+    this.alertSave.hidden = false;
   };
 
   stopSort = () => {
-    this.alertSave.prop("hidden", true);
-    jQuery(".delete").prop("disabled", false);
-    jQuery("[id^=inputGroupSlide]").prop("disabled", false);
+    this.alertSave.hidden = true;
+
+    for (const elem of document.getElementsByClassName("disable")) {
+      elem.disabled = false;
+    }
   };
 
   save = () => {
-    const rows = jQuery("#tbodySlides > tr");
-    const slides = rows.map(this.slideObject).get();
+    const slides = Array.from(this.tableBody.children).map(this.slideObject);
 
     this.docRef.update({ slides }).then(this.stopSort);
   };
 
-  slideObject = (index, row) => ({
-    "duration": jQuery("[id^=inputDuration]", row).val(),
-    "name": jQuery("th", row).text()
+  slideObject = (row) => ({
+    "duration": row.getElementsByClassName("duration")[ 0 ].value,
+    "name": row.getElementsByClassName("title")[ 0 ].textContent
   });
 }
 

@@ -17,39 +17,43 @@ import SlidesTable from "./slides-table.js";
 import Table from "./table.js";
 import config from "../config.js";
 import firebase from "firebase/app";
-import jQuery from "jquery";
 
 class Dashboard {
   constructor() {
     firebase.initializeApp(config);
     this.auth = firebase.auth();
     this.accountForm = new AccountForm(this.auth, {
-      "buttonAuth": "#buttonAuth",
-      "buttonSignOut": "#signout",
-      "inputAuth": "#inputAuth",
-      "inputEmail": "#inputEmail",
-      "inputPassword": "#inputPassword",
-      "modal": "#authModal"
+      "buttonAuth": "buttonAuth",
+      "buttonSignOut": "signout",
+      "inputAuth": "inputAuth",
+      "inputEmail": "inputEmail",
+      "inputPassword": "inputPassword",
+      "modal": "authModal"
     });
     this.firestore = firebase.firestore();
     this.storageRef = firebase.storage().ref();
     this.auth.onAuthStateChanged(this.changeUser);
     Table.addPreviewListeners({
-      "modalBodyVideo": "#modalBodyVideo",
-      "modalImage": "#previewModalImage",
-      "modalVideo": "#previewModalVideo"
+      "modalBodyVideo": "modalBodyVideo",
+      "modalImage": "previewModalImage",
+      "modalVideo": "previewModalVideo",
+      "previewImg": "previewImg"
     });
-    this.buttonError.click(this.hideError);
+    this.buttonError.addEventListener("click", this.hideError);
     window.onerror = this.onError;
   }
 
-  alertError = jQuery("#alertError");
+  static get() {
+    return new Dashboard();
+  }
 
-  buttonError = jQuery("#buttonError");
+  alertError = document.getElementById("alertError");
+
+  buttonError = document.getElementById("buttonError");
 
   logoTable = new LogoTable();
 
-  parError = jQuery("#parError");
+  parError = document.getElementById("parError");
 
   settingsForm = new SettingsForm();
 
@@ -79,14 +83,14 @@ class Dashboard {
   };
 
   hideError = () => {
-    this.alertError.hide();
+    this.alertError.hidden = true;
   };
 
   onError = (msg) => {
-    this.parError.text(msg);
-    this.alertError.show();
+    this.parError.textContent = msg;
+    this.alertError.hidden = false;
 
     return false;
   };
 }
-jQuery(new Dashboard().render());
+Dashboard.get();

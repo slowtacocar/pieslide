@@ -1,19 +1,18 @@
 import Table from "./table.js";
-import jQuery from "jquery";
 
 class LogoTable extends Table {
   constructor() {
     super({
       "defaultData": { "name": null },
-      "inputGroup": "#inputGroupLogo",
-      "inputGroupAddon": "#inputGroupLogoAddon",
-      "inputGroupLabel": "#inputGroupLogoLabel",
-      "modal": "#logoProgressModal",
-      "progressBar": "#logoProgressBar"
+      "inputGroup": "inputGroupLogo",
+      "inputGroupAddon": "inputGroupLogoAddon",
+      "inputGroupLabel": "inputGroupLogoLabel",
+      "modal": "logoProgressModal",
+      "progressBar": "logoProgressBar"
     });
   }
 
-  tableBody = jQuery("#tbodyLogo");
+  tableBody = document.getElementById("tbodyLogo");
 
   changeUser = (docRef, folderRef) => {
     super.changeUser(docRef, folderRef);
@@ -27,30 +26,41 @@ class LogoTable extends Table {
 
       ref.getDownloadURL().then(this.addTableData);
     } else {
-      this.tableBody.empty();
+      this.tableBody.removeChild(this.tableBody.firstChild);
     }
   };
 
   addTableData = (url) => {
-    this.tableBody.html(jQuery("<tr></tr>").append(jQuery("<th></th>", {
-      "html": this.name,
-      "scope": "row"
-    }))
-      .append(jQuery("<td></td>").append(jQuery("<button></button>", {
-        "class": "btn btn-primary",
-        "data-link": url,
-        "data-target": "#previewModalImage",
-        "data-toggle": "modal",
-        "html": "View Preview",
-        "type": "button"
-      })))
-      .append(jQuery("<td></td>").append(jQuery("<button></button>", {
-        "class": "btn btn-danger delete",
-        "html": "Delete",
-        "id": "buttonDeleteLogo",
-        "type": "button"
-      }))));
-    jQuery("#buttonDeleteLogo").click(this.deleteItem);
+    const head = document.createElement("th");
+    const previewButton = document.createElement("button");
+    const preview = document.createElement("td");
+    const delButton = document.createElement("button");
+    const del = document.createElement("td");
+    const row = document.createElement("tr");
+
+    head.setAttribute("scope", "row");
+    head.textContent = this.name;
+    previewButton.className = "btn btn-primary";
+    previewButton.dataset.link = url;
+    previewButton.dataset.target = "#previewModalImage";
+    previewButton.dataset.toggle = "modal";
+    previewButton.type = "button";
+    previewButton.textContent = "View Preview";
+    preview.appendChild(previewButton);
+    delButton.className = "btn btn-danger delete";
+    delButton.type = "button";
+    delButton.textContent = "Delete";
+    delButton.addEventListener("click", this.deleteItem);
+    del.appendChild(delButton);
+    row.appendChild(head);
+    row.appendChild(preview);
+    row.appendChild(del);
+
+    if (this.tableBody.firstChild) {
+      this.tableBody.removeChild(this.tableBody.firstChild);
+    }
+
+    this.tableBody.appendChild(row);
   };
 
   deleteItem = () => {

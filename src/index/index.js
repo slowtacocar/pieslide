@@ -3,7 +3,6 @@ import "firebase/auth";
 import * as firebaseui from "firebaseui";
 import config from "../config.js";
 import firebase from "firebase/app";
-import jQuery from "jquery";
 
 class Index {
   constructor() {
@@ -38,4 +37,4 @@ class Index {
     }
   };
 }
-jQuery(Index.get);
+Index.get();

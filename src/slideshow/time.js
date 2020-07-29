@@ -1,20 +1,16 @@
-import jQuery from "jquery";
-
 class Time {
   constructor() {
     window.setInterval(this.loop, 1000);
+    this.time = document.getElementById("time");
+    this.card = document.getElementById("cardTime");
   }
 
   loop = () => {
-    jQuery("#time").text(new Date().toLocaleTimeString());
+    this.time.textContent = new Date().toLocaleTimeString();
   };
 
   setVisibility = (visible) => {
-    if (visible) {
-      jQuery("#cardTime").show();
-    } else {
-      jQuery("#cardTime").hide();
-    }
+    this.card.hidden = !visible;
   };
 }
 
