@@ -1,12 +1,11 @@
-import jQuery from "jquery";
-
 class Logo {
   constructor() {
-    this.logo = jQuery("#logo");
+    this.logo = document.getElementById("logo");
   }
 
   setSize = (size) => {
-    this.logo.width(`${size}vw`).height(`${size}vh`);
+    this.logo.style.width = `${size}vw`;
+    this.logo.style.height = `${size}vh`;
   };
 
   setImage = (name, ref) => {
@@ -14,12 +13,12 @@ class Logo {
       ref.child(name).getDownloadURL()
         .then(this.displayImage);
     } else {
-      this.logo.css("background", "none");
+      this.logo.style.background = "none";
     }
   };
 
   displayImage = (url) => {
-    this.logo.css("background", `url(${url}) top left/contain no-repeat`);
+    this.logo.style.background = `url(${url}) top left/contain no-repeat`;
   };
 }
 
