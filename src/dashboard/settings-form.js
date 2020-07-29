@@ -1,23 +1,23 @@
-import jQuery from "jquery";
-
 class SettingsForm {
   constructor() {
-    this.inputGroupDuration = jQuery("#inputGroupDuration");
-    this.inputGroupNews = jQuery("#inputGroupNews");
-    this.inputGroupSize = jQuery("#inputGroupSize");
-    this.inputGroupTime = jQuery("#inputGroupTime");
-    this.inputGroupTransition = jQuery("#inputGroupTransition");
-    jQuery("#buttonSaveSettings").click(this.save);
-    jQuery("#buttonRefresh").click(this.reload);
+    this.inputGroupDuration = document.getElementById("inputGroupDuration");
+    this.inputGroupNews = document.getElementById("inputGroupNews");
+    this.inputGroupSize = document.getElementById("inputGroupSize");
+    this.inputGroupTime = document.getElementById("inputGroupTime");
+    this.inputGroupTransition = document.getElementById("inputGroupTransition");
+    this.buttonSaveSettings = document.getElementById("buttonSaveSettings");
+    this.buttonSaveSettings.addEventListener("click", this.save);
+    this.buttonRefresh = document.getElementById("buttonRefresh");
+    this.buttonRefresh.addEventListener("click", this.reload);
   }
 
   save = () => {
     this.docRef.update({
-      "duration": this.inputGroupDuration.val(),
-      "news": this.inputGroupNews.val().split(","),
-      "size": this.inputGroupSize.val(),
-      "time": this.inputGroupTime.val() === "show",
-      "transition": this.inputGroupTransition.val()
+      "duration": this.inputGroupDuration.value,
+      "news": this.inputGroupNews.value.split(","),
+      "size": this.inputGroupSize.value,
+      "time": this.inputGroupTime.value === "show",
+      "transition": this.inputGroupTransition.value
     });
   };
 
@@ -35,15 +35,15 @@ class SettingsForm {
       const data = doc.data();
 
       if (data.time) {
-        this.inputGroupTime.val("show");
+        this.inputGroupTime.value = "show";
       } else {
-        this.inputGroupTime.val("hide");
+        this.inputGroupTime.value = "hide";
       }
 
-      this.inputGroupDuration.val(data.duration);
-      this.inputGroupTransition.val(data.transition);
-      this.inputGroupSize.val(data.size);
-      this.inputGroupNews.val(data.news.join(","));
+      this.inputGroupDuration.value = data.duration;
+      this.inputGroupTransition.value = data.transition;
+      this.inputGroupSize.value = data.size;
+      this.inputGroupNews.value = data.news.join(",");
     } else {
       this.docRef.set({
         "duration": 5,
