@@ -10,27 +10,27 @@ class News {
     this.cardNews.addEventListener("transitionend", this.loop);
   }
 
-  loop = () => {
+  loop = async () => {
     this.isRunning = true;
     this.cardNews.style.transform = "translate(100vw)";
     this.cardNews.style.transition = "none";
     this.news = document.getElementById("news");
-    Promise.all(this.links.map(this.getSource)).then(this.setText);
+
+    const texts = await Promise.all(this.links.map(this.getSource));
+
+    this.news.textContent = texts.join("");
     window.setTimeout(this.setTransition, TRANSITION_DELAY);
     window.setTimeout(this.setTransform, NEWS_DELAY);
   };
 
-  getSource = (link) => fetch(RSS_API_URL + link).then(this.getJSON);
+  getSource = async (link) => {
+    const response = await fetch(RSS_API_URL + link);
+    const data = await response.json();
 
-  getJSON = (response) => response.json().then(this.getItems);
-
-  getItems = (data) => data.items.map(this.getTitle).join(" \u25cf ");
+    return data.items.map(this.getTitle).join(" \u25cf ");
+  };
 
   getTitle = (item) => item.title;
-
-  setText = (texts) => {
-    this.news.textContent = texts.join("");
-  };
 
   setTransition = () => {
     const width = getComputedStyle(this.cardNews).width.replace("px", "") +

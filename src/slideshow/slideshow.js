@@ -63,14 +63,11 @@ class Slideshow {
     this.handleMessage(doc.get("message"), doc.ref);
   };
 
-  handleMessage = (message, ref) => {
+  handleMessage = async (message, ref) => {
     if (message === "reload") {
-      ref.update({ "message": "" }).then(this.reload);
+      await ref.update({ "message": "" });
+      location.reload();
     }
-  };
-
-  reload = () => {
-    location.reload();
   };
 }
 Slideshow.get();

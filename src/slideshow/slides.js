@@ -30,13 +30,13 @@ class Slides {
       `black url(${this.urls[ this.index ]}) center/contain no-repeat`;
   };
 
-  setData = (data, ref) => {
+  setData = async (data, ref) => {
     this.ref = ref;
     this.slides = data;
 
-    const promise = Promise.all(data.map(this.getUrl));
+    const url = await Promise.all(data.map(this.getUrl));
 
-    promise.then(this.setVars);
+    this.setVars(url);
   };
 
   getUrl = (slide) => this.ref.child(slide.name).getDownloadURL();
