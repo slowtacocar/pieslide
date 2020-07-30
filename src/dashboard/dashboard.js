@@ -20,6 +20,15 @@ import firebase from "firebase/app";
 
 class Dashboard {
   constructor() {
+    this.changeUser = this.changeUser.bind(this);
+    this.hideError = this.hideError.bind(this);
+    this.onError = this.onError.bind(this);
+    this.alertError = document.getElementById("alertError");
+    this.buttonError = document.getElementById("buttonError");
+    this.logoTable = new LogoTable();
+    this.parError = document.getElementById("parError");
+    this.settingsForm = new SettingsForm();
+    this.slidesTable = new SlidesTable();
     firebase.initializeApp(config);
     this.auth = firebase.auth();
     this.accountForm = new AccountForm(this.auth, {
@@ -47,19 +56,7 @@ class Dashboard {
     return new Dashboard();
   }
 
-  alertError = document.getElementById("alertError");
-
-  buttonError = document.getElementById("buttonError");
-
-  logoTable = new LogoTable();
-
-  parError = document.getElementById("parError");
-
-  settingsForm = new SettingsForm();
-
-  slidesTable = new SlidesTable();
-
-  changeUser = (user) => {
+  changeUser(user) {
     this.user = user;
 
     if (this.user) {
@@ -80,17 +77,17 @@ class Dashboard {
     } else {
       window.location.replace("login.html");
     }
-  };
+  }
 
-  hideError = () => {
+  hideError() {
     this.alertError.hidden = true;
-  };
+  }
 
-  onError = (msg) => {
+  onError(msg) {
     this.parError.textContent = msg;
     this.alertError.hidden = false;
 
     return false;
-  };
+  }
 }
 Dashboard.get();

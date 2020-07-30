@@ -1,5 +1,9 @@
 class SettingsForm {
   constructor() {
+    this.save = this.save.bind(this);
+    this.reload = this.reload.bind(this);
+    this.changeUser = this.changeUser.bind(this);
+    this.changeData = this.changeData.bind(this);
     this.inputGroupDuration = document.getElementById("inputGroupDuration");
     this.inputGroupNews = document.getElementById("inputGroupNews");
     this.inputGroupSize = document.getElementById("inputGroupSize");
@@ -11,7 +15,7 @@ class SettingsForm {
     this.buttonRefresh.addEventListener("click", this.reload);
   }
 
-  save = () => {
+  save() {
     this.docRef.update({
       "duration": this.inputGroupDuration.value,
       "news": this.inputGroupNews.value.split(","),
@@ -19,18 +23,18 @@ class SettingsForm {
       "time": this.inputGroupTime.value === "show",
       "transition": this.inputGroupTransition.value
     });
-  };
+  }
 
-  reload = () => {
+  reload() {
     this.docRef.update({ "message": "reload" });
-  };
+  }
 
-  changeUser = (docRef) => {
+  changeUser(docRef) {
     this.docRef = docRef;
     this.docRef.onSnapshot(this.changeData);
-  };
+  }
 
-  changeData = (doc) => {
+  changeData(doc) {
     if (doc.exists) {
       const data = doc.data();
 
@@ -54,7 +58,7 @@ class SettingsForm {
         "transition": 0.25
       });
     }
-  };
+  }
 }
 
 export default SettingsForm;

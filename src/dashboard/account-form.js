@@ -4,6 +4,13 @@ import jQuery from "jquery";
 
 class AccountForm {
   constructor(auth, elements) {
+    this.signOut = this.signOut.bind(this);
+    this.accountChange = this.accountChange.bind(this);
+    this.reauthenticate = this.reauthenticate.bind(this);
+    this.changeEmail = this.changeEmail.bind(this);
+    this.changePassword = this.changePassword.bind(this);
+    this.deleteAccount = this.deleteAccount.bind(this);
+    this.changeUser = this.changeUser.bind(this);
     this.auth = auth;
     this.buttonAuth = document.getElementById(elements.buttonAuth);
     this.buttonAuth.addEventListener("click", this.reauthenticate);
@@ -16,19 +23,19 @@ class AccountForm {
     jQuery(this.modal).on("show.bs.modal", this.accountChange);
   }
 
-  signOut = () => {
+  signOut() {
     this.auth.signOut();
-  };
+  }
 
-  accountChange = (event) => {
+  accountChange(event) {
     const { operation } = event.relatedTarget.dataset;
 
     this.callback = operation === "email" ? this.changeEmail
       : operation === "password" ? this.changePassword
         : operation === "delete" ? this.deleteAccount : null;
-  };
+  }
 
-  reauthenticate = async () => {
+  async reauthenticate() {
     const provider = firebase.auth.EmailAuthProvider;
 
     await this.user.reauthenticateWithCredential(provider.credential(
@@ -36,23 +43,23 @@ class AccountForm {
       this.inputAuth.value
     ));
     this.callback();
-  };
+  }
 
-  changeEmail = () => {
+  changeEmail() {
     this.user.updateEmail(this.inputEmail.value);
-  };
+  }
 
-  changePassword = () => {
+  changePassword() {
     this.user.updatePassword(this.inputPassword.value);
-  };
+  }
 
-  deleteAccount = () => {
+  deleteAccount() {
     this.user.delete();
-  };
+  }
 
-  changeUser = (user) => {
+  changeUser(user) {
     this.user = user;
-  };
+  }
 }
 
 export default AccountForm;

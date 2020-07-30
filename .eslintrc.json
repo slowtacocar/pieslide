@@ -2,7 +2,7 @@
   "root": true,
   "parser": "babel-eslint",
   "env": {
-    "es2017": true,
+    "es6": true,
     "browser": true
   },
   "plugins": [
