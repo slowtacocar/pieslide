@@ -37,21 +37,16 @@ class SlidesTable extends Table {
     this.buttonDiscard.addEventListener("click", this.stopSort);
   }
 
-  updateTable = (data) => {
+  updateTable = async (data) => {
     while (this.tableBody.firstChild) {
       this.tableBody.removeChild(this.tableBody.firstChild);
     }
 
     this.slides = data.slides;
-    data.slides.forEach(this.addTableRow);
-    data.slides.forEach(this.getURLs);
-  };
 
-  addTableRow = (file, index) => {
-    const row = document.createElement("tr");
+    const elements = await Promise.all(this.slides.map(this.getURLs));
 
-    row.id = `tr${index}`;
-    this.tableBody.appendChild(row);
+    this.tableBody.append(...elements);
   };
 
   getURLs = async (file, index) => {
@@ -65,7 +60,7 @@ class SlidesTable extends Table {
     const duration = document.createElement("td");
     const delButton = document.createElement("button");
     const del = document.createElement("td");
-    const row = document.getElementById(`tr${index}`);
+    const row = document.createElement("tr");
 
     head.setAttribute("scope", "row");
     head.textContent = file.name;
@@ -76,22 +71,22 @@ class SlidesTable extends Table {
     previewButton.type = "button";
     previewButton.textContent = "View Preview";
     previewButton.dataset.type = type;
-    preview.appendChild(previewButton);
+    preview.append(previewButton);
     durationInput.className = "form-control duration";
     durationInput.min = "0";
     durationInput.type = "number";
     durationInput.value = file.duration;
-    duration.appendChild(durationInput);
+    duration.append(durationInput);
     delButton.className = "btn btn-danger disable";
     delButton.type = "button";
     delButton.textContent = "Delete";
     delButton.dataset.index = index;
     delButton.addEventListener("click", this.deleteItem);
-    del.appendChild(delButton);
-    row.appendChild(head);
-    row.appendChild(preview);
-    row.appendChild(duration);
-    row.appendChild(del);
+    del.append(delButton);
+    row.append(head);
+    row.append(preview);
+    row.append(duration);
+    row.append(del);
 
     if (VIDEO_TYPES.includes(type)) {
       durationInput.hidden = true;
@@ -101,7 +96,7 @@ class SlidesTable extends Table {
       previewButton.dataset.target = "#previewModalImage";
     }
 
-    delButton.addEventListener("click", this.deleteItem);
+    return row;
   };
 
   deleteItem = async (event) => {
