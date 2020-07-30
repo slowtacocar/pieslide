@@ -37,7 +37,7 @@ class Slideshow {
       dataRef.doc("logo").onSnapshot(this.logoChanged);
       ref.onSnapshot(this.docChanged);
     } else {
-      window.location.replace("index.html?redir=slideshow.html");
+      window.location.replace("login.html?signInSuccessUrl=slideshow.html");
     }
   };
 

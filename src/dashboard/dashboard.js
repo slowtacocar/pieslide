@@ -78,7 +78,7 @@ class Dashboard {
         docRef
       );
     } else {
-      window.location.replace("index.html");
+      window.location.replace("login.html");
     }
   };
 
