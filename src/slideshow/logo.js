@@ -8,10 +8,11 @@ class Logo {
     this.logo.style.height = `${size}vh`;
   };
 
-  setImage = (name, ref) => {
+  setImage = async (name, ref) => {
     if (name) {
-      ref.child(name).getDownloadURL()
-        .then(this.displayImage);
+      const url = await ref.child(name).getDownloadURL();
+
+      this.displayImage(url);
     } else {
       this.logo.style.background = "none";
     }
