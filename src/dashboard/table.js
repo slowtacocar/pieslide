@@ -85,8 +85,8 @@ class Table {
     video.autoplay = true;
     video.className = "embed-responsive";
     video.controls = true;
-    video.appendChild(source);
-    this.modalBodyVideo.appendChild(video);
+    video.append(source);
+    this.modalBodyVideo.append(video);
   };
 
   static setPreviewImage = (event) => {

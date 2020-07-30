@@ -39,21 +39,21 @@ class LogoTable extends Table {
       previewButton.dataset.toggle = "modal";
       previewButton.type = "button";
       previewButton.textContent = "View Preview";
-      preview.appendChild(previewButton);
+      preview.append(previewButton);
       delButton.className = "btn btn-danger delete";
       delButton.type = "button";
       delButton.textContent = "Delete";
       delButton.addEventListener("click", this.deleteItem);
-      del.appendChild(delButton);
-      row.appendChild(head);
-      row.appendChild(preview);
-      row.appendChild(del);
+      del.append(delButton);
+      row.append(head);
+      row.append(preview);
+      row.append(del);
 
       if (this.tableBody.firstChild) {
         this.tableBody.removeChild(this.tableBody.firstChild);
       }
 
-      this.tableBody.appendChild(row);
+      this.tableBody.append(row);
     } else {
       this.tableBody.removeChild(this.tableBody.firstChild);
     }
