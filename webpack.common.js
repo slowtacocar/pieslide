@@ -20,7 +20,7 @@ module.exports = {
     minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin()]
   },
   entry: {
-    index: './src/index/index.js',
+    login: './src/login/login.js',
     dashboard: './src/dashboard/dashboard.js',
     slideshow: './src/slideshow/slideshow.js'
   },
@@ -34,14 +34,14 @@ module.exports = {
       chunkFilename: '[id].[contenthash].css'
     }),
     new HtmlWebpackPlugin({
-      template: './src/index/index.html',
-      chunks: ['index'],
-      filename: 'index.html'
+      template: './src/login/login.html',
+      chunks: ['login'],
+      filename: 'login.html'
     }),
     new HtmlWebpackPlugin({
       template: './src/dashboard/dashboard.html',
       chunks: ['dashboard'],
-      filename: 'dashboard.html',
+      filename: 'index.html',
     }),
     new HtmlWebpackPlugin({
       template: './src/slideshow/slideshow.html',
