@@ -54,17 +54,9 @@ class SlidesTable extends Table {
     this.tableBody.appendChild(row);
   };
 
-  getURLs = (file, index) => {
+  getURLs = async (file, index) => {
     const ref = this.folderRef.child(file.name);
-
-    ref.getDownloadURL().then(this.addTableData.bind(
-      this,
-      file,
-      index
-    ));
-  };
-
-  addTableData = (file, index, url) => {
+    const url = await ref.getDownloadURL();
     const type = file.name.split(".").slice(-1)[ 0 ].toLowerCase();
     const head = document.createElement("th");
     const previewButton = document.createElement("button");
@@ -112,15 +104,11 @@ class SlidesTable extends Table {
     delButton.addEventListener("click", this.deleteItem);
   };
 
-  deleteItem = (event) => {
+  deleteItem = async (event) => {
     const indexId = event.target.dataset.index;
     const slide = this.slides[ indexId ];
 
-    this.folderRef.child(slide.name).delete()
-      .then(this.deleteEntry.bind(this, indexId));
-  };
-
-  deleteEntry = (indexId) => {
+    await this.folderRef.child(slide.name).delete();
     this.slides.splice(indexId, 1);
     this.docRef.update({ "slides": this.slides });
   };
@@ -160,7 +148,8 @@ class SlidesTable extends Table {
   save = () => {
     const slides = Array.from(this.tableBody.children).map(this.slideObject);
 
-    this.docRef.update({ slides }).then(this.stopSort);
+    this.docRef.update({ slides });
+    this.stopSort();
   };
 
   slideObject = (row) => ({
