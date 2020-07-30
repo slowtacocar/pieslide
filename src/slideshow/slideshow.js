@@ -11,6 +11,10 @@ import firebase from "firebase/app";
 
 class Slideshow {
   constructor() {
+    this.changeUser = this.changeUser.bind(this);
+    this.slidesChanged = this.slidesChanged.bind(this);
+    this.logoChanged = this.logoChanged.bind(this);
+    this.docChanged = this.docChanged.bind(this);
     firebase.initializeApp(config);
     this.firestore = firebase.firestore();
     this.firestore.enablePersistence();
@@ -26,7 +30,7 @@ class Slideshow {
     return new Slideshow();
   }
 
-  changeUser = (user) => {
+  changeUser(user) {
     this.user = user;
 
     if (this.user) {
@@ -39,35 +43,35 @@ class Slideshow {
     } else {
       window.location.replace("login.html?signInSuccessUrl=slideshow.html");
     }
-  };
+  }
 
-  slidesChanged = (doc) => {
+  slidesChanged(doc) {
     this.slides.setData(
       doc.get("slides"),
       this.storageRef.child(`user/${this.user.uid}/slides`)
     );
-  };
+  }
 
-  logoChanged = (doc) => {
+  logoChanged(doc) {
     this.logo.setImage(
       doc.get("name"),
       this.storageRef.child(`user/${this.user.uid}/logo`)
     );
-  };
+  }
 
-  docChanged = (doc) => {
+  docChanged(doc) {
     this.time.setVisibility(doc.get("time"));
     this.slides.setTransition(doc.get("transition"));
     this.logo.setSize(doc.get("size"));
     this.news.setLinks(doc.get("news"));
-    this.handleMessage(doc.get("message"), doc.ref);
-  };
+    this.constructor.handleMessage(doc.get("message"), doc.ref);
+  }
 
-  handleMessage = async (message, ref) => {
+  static async handleMessage(message, ref) {
     if (message === "reload") {
       await ref.update({ "message": "" });
       location.reload();
     }
-  };
+  }
 }
 Slideshow.get();

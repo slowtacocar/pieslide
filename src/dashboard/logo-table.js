@@ -10,15 +10,15 @@ class LogoTable extends Table {
       "modal": "logoProgressModal",
       "progressBar": "logoProgressBar"
     });
+    this.deleteItem = this.deleteItem.bind(this);
+    this.tableBody = document.getElementById("tbodyLogo");
   }
 
-  tableBody = document.getElementById("tbodyLogo");
-
-  changeUser = (docRef, folderRef) => {
+  changeUser(docRef, folderRef) {
     super.changeUser(docRef, folderRef);
-  };
+  }
 
-  updateTable = async (data) => {
+  async updateTable(data) {
     this.name = data.name;
 
     if (this.name) {
@@ -57,14 +57,16 @@ class LogoTable extends Table {
     } else {
       this.tableBody.removeChild(this.tableBody.firstChild);
     }
-  };
+  }
 
-  deleteItem = async () => {
+  async deleteItem() {
     await this.folderRef.child(this.name).delete();
     this.docRef.update({ "name": null });
-  };
+  }
 
-  docData = (name) => ({ name });
+  static docData(name) {
+    return { name };
+  }
 }
 
 export default LogoTable;

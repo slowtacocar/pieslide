@@ -27,6 +27,12 @@ class SlidesTable extends Table {
       "modal": "slideProgressModal",
       "progressBar": "slideProgressBar"
     });
+    this.getURLs = this.getURLs.bind(this);
+    this.deleteItem = this.deleteItem.bind(this);
+    this.changeSettings = this.changeSettings.bind(this);
+    this.sort = this.sort.bind(this);
+    this.stopSort = this.stopSort.bind(this);
+    this.save = this.save.bind(this);
     this.tableBody = document.getElementById("tbodySlides");
     this.alertSave = document.getElementById("alertSave");
     this.buttonSaveSlides = document.getElementById("buttonSaveSlides");
@@ -37,7 +43,7 @@ class SlidesTable extends Table {
     this.buttonDiscard.addEventListener("click", this.stopSort);
   }
 
-  updateTable = async (data) => {
+  async updateTable(data) {
     while (this.tableBody.firstChild) {
       this.tableBody.removeChild(this.tableBody.firstChild);
     }
@@ -47,9 +53,9 @@ class SlidesTable extends Table {
     const elements = await Promise.all(this.slides.map(this.getURLs));
 
     this.tableBody.append(...elements);
-  };
+  }
 
-  getURLs = async (file, index) => {
+  async getURLs(file, index) {
     const ref = this.folderRef.child(file.name);
     const url = await ref.getDownloadURL();
     const type = file.name.split(".").slice(-1)[ 0 ].toLowerCase();
@@ -97,60 +103,65 @@ class SlidesTable extends Table {
     }
 
     return row;
-  };
+  }
 
-  deleteItem = async (event) => {
+  async deleteItem(event) {
     const indexId = event.target.dataset.index;
     const slide = this.slides[ indexId ];
 
     await this.folderRef.child(slide.name).delete();
     this.slides.splice(indexId, 1);
     this.docRef.update({ "slides": this.slides });
-  };
+  }
 
-  docData = (name) => ({
-    "slides": firebase.firestore.FieldValue.arrayUnion({
-      "duration": this.defaultDuration,
-      name
-    })
-  });
+  static docData(name) {
+    return {
+      "slides": firebase.firestore.FieldValue.arrayUnion({
+        "duration": this.defaultDuration,
+        name
+      })
+    };
+  }
 
-  changeUser = (docRef, folderRef, settingsRef) => {
+  changeUser(docRef, folderRef, settingsRef) {
     super.changeUser(docRef, folderRef);
     settingsRef.onSnapshot(this.changeSettings);
-  };
+  }
 
-  changeSettings = (doc) => {
+  changeSettings(doc) {
     this.defaultDuration = doc.get("duration");
-  };
+  }
 
-  sort = () => {
+  sort() {
     for (const elem of document.getElementsByClassName("disable")) {
       elem.disabled = true;
     }
 
     this.alertSave.hidden = false;
-  };
+  }
 
-  stopSort = () => {
+  stopSort() {
     this.alertSave.hidden = true;
 
     for (const elem of document.getElementsByClassName("disable")) {
       elem.disabled = false;
     }
-  };
+  }
 
-  save = () => {
-    const slides = Array.from(this.tableBody.children).map(this.slideObject);
+  save() {
+    const slides = Array.from(this.tableBody.children)
+      .map(this.constructor.slideObject);
 
     this.docRef.update({ slides });
     this.stopSort();
-  };
+  }
 
-  slideObject = (row) => ({
-    "duration": row.getElementsByClassName("duration")[ 0 ].value,
-    "name": row.getElementsByClassName("title")[ 0 ].textContent
-  });
+  static slideObject(row) {
+    return {
+      "duration": row.getElementsByClassName("duration")[ 0 ].value,
+      "name": row.getElementsByClassName("title")[ 0 ].textContent
+    };
+  }
 }
 
 export default SlidesTable;

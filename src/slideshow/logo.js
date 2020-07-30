@@ -1,14 +1,17 @@
 class Logo {
   constructor() {
+    this.setSize = this.setSize.bind(this);
+    this.setImage = this.setImage.bind(this);
+    this.displayImage = this.displayImage.bind(this);
     this.logo = document.getElementById("logo");
   }
 
-  setSize = (size) => {
+  setSize(size) {
     this.logo.style.width = `${size}vw`;
     this.logo.style.height = `${size}vh`;
-  };
+  }
 
-  setImage = async (name, ref) => {
+  async setImage(name, ref) {
     if (name) {
       const url = await ref.child(name).getDownloadURL();
 
@@ -16,11 +19,11 @@ class Logo {
     } else {
       this.logo.style.background = "none";
     }
-  };
+  }
 
-  displayImage = (url) => {
+  displayImage(url) {
     this.logo.style.background = `url(${url}) top left/contain no-repeat`;
-  };
+  }
 }
 
 export default Logo;
