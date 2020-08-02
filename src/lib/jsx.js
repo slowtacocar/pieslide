@@ -37,10 +37,10 @@ function createElement(type, props, ...children) {
 class Component {
   constructor(props) {
     // Bind all class methods to `this`
-    let prototype = this.constructor.prototype;
+    let { prototype } = this.constructor;
 
     while (prototype !== Object.prototype) {
-      for (const method of Object.getOwnPropertyNames(obj)) {
+      for (const method of Object.getOwnPropertyNames(prototype)) {
         this[ method ] = this[ method ].bind(this);
       }
 

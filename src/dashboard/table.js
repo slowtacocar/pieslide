@@ -85,9 +85,9 @@ class Table extends jsx.Component {
   }
 
   updateFilename(event) {
-    const filename = event.target.files[ 0 ].name;
+    const [ { name } ] = event.target.files;
 
-    this.refs.inputGroupLabel.textContent = filename;
+    this.refs.inputGroupLabel.textContent = name;
   }
 
   openProgressModal() {

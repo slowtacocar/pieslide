@@ -77,8 +77,10 @@ class Preview extends jsx.Component {
         </div>
       </div>;
 
-    jQuery(this.refs.modalPreviewImage).on("show.bs.modal", this.setPreviewImage);
-    jQuery(this.refs.modalPreviewVideo).on("show.bs.modal", this.setPreviewVideo)
+    jQuery(this.refs.modalPreviewImage)
+      .on("show.bs.modal", this.setPreviewImage);
+    jQuery(this.refs.modalPreviewVideo)
+      .on("show.bs.modal", this.setPreviewVideo)
       .on("hide.bs.modal", this.stopPreviewVideo);
 
     return element;
