@@ -1,70 +1,75 @@
+/** @jsx this.createElement */
+
 import Table from "./table.js";
+import jsx from "../lib/jsx.js";
 
 class LogoTable extends Table {
-  constructor() {
-    super({
-      "defaultData": { "name": null },
-      "inputGroup": "inputGroupLogo",
-      "inputGroupAddon": "inputGroupLogoAddon",
-      "inputGroupLabel": "inputGroupLogoLabel",
-      "modal": "logoProgressModal",
-      "progressBar": "logoProgressBar"
-    });
-    this.deleteItem = this.deleteItem.bind(this);
-    this.tableBody = document.getElementById("tbodyLogo");
+  constructor(props) {
+    super({ ...props, "defaultData": { "name": null }, "name": "logo" });
   }
 
-  changeUser(docRef, folderRef) {
-    super.changeUser(docRef, folderRef);
+  render() {
+    return (
+      <div>
+        <div id="logo" class="spacer"></div>
+        <h1>Logo</h1>
+        <p class="lead">
+          Use the input to change the logo that appears in the corner
+          of your slideshow.
+        </p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Current Logo</th>
+              <th scope="col">Preview</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody ref="tableBody">
+          </tbody>
+        </table>
+        {super.render()}
+      </div>
+    );
   }
 
   async updateTable(data) {
-    this.name = data.name;
+    if (data.name) {
+      const url = await this.folderRef.child(data.name).getDownloadURL();
+      const row =
+        <tr>
+          <th scope="row">{this.name}</th>
+          <td>
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-link={url}
+              data-target="#previewModalImage"
+              data-toggle="modal"
+            >View Preview</button>
+          </td>
+          <td>
+            <button
+              type="button"
+              class="btn btn-danger delete"
+              onclick={this.deleteItem}
+              data-name={data.name}
+            >Delete</button>
+          </td>
+        </tr>;
 
-    if (this.name) {
-      const ref = this.folderRef.child(this.name);
-      const url = await ref.getDownloadURL();
-      const head = document.createElement("th");
-      const previewButton = document.createElement("button");
-      const preview = document.createElement("td");
-      const delButton = document.createElement("button");
-      const del = document.createElement("td");
-      const row = document.createElement("tr");
-
-      head.setAttribute("scope", "row");
-      head.textContent = this.name;
-      previewButton.className = "btn btn-primary";
-      previewButton.dataset.link = url;
-      previewButton.dataset.target = "#previewModalImage";
-      previewButton.dataset.toggle = "modal";
-      previewButton.type = "button";
-      previewButton.textContent = "View Preview";
-      preview.append(previewButton);
-      delButton.className = "btn btn-danger delete";
-      delButton.type = "button";
-      delButton.textContent = "Delete";
-      delButton.addEventListener("click", this.deleteItem);
-      del.append(delButton);
-      row.append(head);
-      row.append(preview);
-      row.append(del);
-
-      if (this.tableBody.firstChild) {
-        this.tableBody.removeChild(this.tableBody.firstChild);
-      }
-
-      this.tableBody.append(row);
+      jsx.render(this.refs.tableBody, row);
     } else {
-      this.tableBody.removeChild(this.tableBody.firstChild);
+      jsx.render(this.refs.tableBody);
     }
   }
 
-  async deleteItem() {
-    await this.folderRef.child(this.name).delete();
+  async deleteItem(event) {
+    await this.folderRef.child(event.target.dataset.name).delete();
     this.docRef.update({ "name": null });
   }
 
-  static docData(name) {
+  docData(name) {
     return { name };
   }
 }

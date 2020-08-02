@@ -1,7 +1,15 @@
+/** @jsx this.createElement */
+
 import "firebase/firestore";
+import "jquery-ui/ui/data";
+import "jquery-ui/ui/scroll-parent";
+import "jquery-ui/ui/widget";
+import "jquery-ui/ui/widgets/mouse";
+import "jquery-ui/ui/widgets/sortable";
 import Table from "./table.js";
 import firebase from "firebase/app";
 import jQuery from "jquery";
+import jsx from "../lib/jsx.js";
 
 const VIDEO_TYPES = [
   "ogm",
@@ -18,89 +26,105 @@ const VIDEO_TYPES = [
 ];
 
 class SlidesTable extends Table {
-  constructor() {
+  constructor(props) {
     super({
+      ...props,
       "defaultData": { "slides": [] },
-      "inputGroup": "inputGroupSlide",
-      "inputGroupAddon": "inputGroupSlideAddon",
-      "inputGroupLabel": "inputGroupSlideLabel",
-      "modal": "slideProgressModal",
-      "progressBar": "slideProgressBar"
+      "name": "slide",
+      "sticky": true
     });
-    this.getURLs = this.getURLs.bind(this);
-    this.deleteItem = this.deleteItem.bind(this);
-    this.changeSettings = this.changeSettings.bind(this);
-    this.sort = this.sort.bind(this);
-    this.stopSort = this.stopSort.bind(this);
-    this.save = this.save.bind(this);
-    this.tableBody = document.getElementById("tbodySlides");
-    this.alertSave = document.getElementById("alertSave");
-    this.buttonSaveSlides = document.getElementById("buttonSaveSlides");
-    this.buttonDiscard = document.getElementById("buttonDiscard");
-    jQuery(this.tableBody).sortable()
-      .on("sortstop", this.sort);
-    this.buttonSaveSlides.addEventListener("click", this.save);
-    this.buttonDiscard.addEventListener("click", this.stopSort);
+  }
+
+  render() {
+    const obj =
+      <div>
+        <div id="slides" class="spacer"></div>
+        <h1>Slides</h1>
+        <p class="lead">
+          Use the input at the bottom of the screen to upload images for your
+          slideshow, and drag the table rows to change the order of the slides.
+        </p>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">File Name</th>
+              <th scope="col">Preview</th>
+              <th scope="col">Duration</th>
+              <th scope="col">Delete</th>
+            </tr>
+          </thead>
+          <tbody ref="tableBody">
+          </tbody>
+        </table>
+        {super.render()}
+        <div
+          class="alert alert-warning mb-0 fixed-bottom"
+          role="alert"
+          ref="alertSave"
+          hidden
+        >
+          <button class="btn btn-primary" onclick={this.save}>
+            Save Changes
+          </button>
+          <button class="btn btn-secondary" onclick={this.stopSort}>
+            Discard Changes
+          </button>
+        </div>
+      </div>;
+
+    jQuery(this.refs.tableBody).sortable({
+      "stop": this.startSort
+    });
+
+    return obj;
   }
 
   async updateTable(data) {
-    while (this.tableBody.firstChild) {
-      this.tableBody.removeChild(this.tableBody.firstChild);
-    }
-
     this.slides = data.slides;
-
-    const elements = await Promise.all(this.slides.map(this.getURLs));
-
-    this.tableBody.append(...elements);
+    this.rows = await Promise.all(this.slides.map(this.getURLs));
+    jsx.render(this.refs.tableBody, ...this.rows);
   }
 
   async getURLs(file, index) {
     const ref = this.folderRef.child(file.name);
     const url = await ref.getDownloadURL();
     const type = file.name.split(".").slice(-1)[ 0 ].toLowerCase();
-    const head = document.createElement("th");
-    const previewButton = document.createElement("button");
-    const preview = document.createElement("td");
-    const durationInput = document.createElement("input");
-    const duration = document.createElement("td");
-    const delButton = document.createElement("button");
-    const del = document.createElement("td");
-    const row = document.createElement("tr");
-
-    head.setAttribute("scope", "row");
-    head.textContent = file.name;
-    head.className = "title";
-    previewButton.className = "btn btn-primary";
-    previewButton.dataset.link = url;
-    previewButton.dataset.toggle = "modal";
-    previewButton.type = "button";
-    previewButton.textContent = "View Preview";
-    previewButton.dataset.type = type;
-    preview.append(previewButton);
-    durationInput.className = "form-control duration";
-    durationInput.min = "0";
-    durationInput.type = "number";
-    durationInput.value = file.duration;
-    duration.append(durationInput);
-    delButton.className = "btn btn-danger disable";
-    delButton.type = "button";
-    delButton.textContent = "Delete";
-    delButton.dataset.index = index;
-    delButton.addEventListener("click", this.deleteItem);
-    del.append(delButton);
-    row.append(head);
-    row.append(preview);
-    row.append(duration);
-    row.append(del);
-
-    if (VIDEO_TYPES.includes(type)) {
-      durationInput.hidden = true;
-      previewButton.dataset.target = "#previewModalVideo";
-    } else {
-      durationInput.addEventListener("change", this.sort);
-      previewButton.dataset.target = "#previewModalImage";
-    }
+    const row =
+      <tr>
+        <th class="title" scope="row">{file.name}</th>
+        <td>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-link={url}
+            data-toggle="modal"
+            data-type={type}
+            data-target={
+              VIDEO_TYPES.includes(type)
+                ? "#previewModalVideo"
+                : "#previewModalImage"
+            }
+          >View Preview</button>
+        </td>
+        <td>
+          <input
+            class="form-control duration"
+            min="0"
+            type="number"
+            value={file.duration}
+            hidden={VIDEO_TYPES.includes(type)}
+            onchange={this.startSort}
+          ></input>
+        </td>
+        <td>
+          <button
+            class="btn btn-danger delete"
+            type="button"
+            data-index={index}
+            onclick={this.deleteItem}
+          >Delete</button>
+        </td>
+      </tr>;
 
     return row;
   }
@@ -114,7 +138,7 @@ class SlidesTable extends Table {
     this.docRef.update({ "slides": this.slides });
   }
 
-  static docData(name) {
+  docData(name) {
     return {
       "slides": firebase.firestore.FieldValue.arrayUnion({
         "duration": this.defaultDuration,
@@ -132,34 +156,34 @@ class SlidesTable extends Table {
     this.defaultDuration = doc.get("duration");
   }
 
-  sort() {
-    for (const elem of document.getElementsByClassName("disable")) {
-      elem.disabled = true;
+  sort(hide) {
+    for (const btn of this.refs.tableBody.querySelectorAll(".delete")) {
+      btn.disabled = !hide;
     }
 
-    this.alertSave.hidden = false;
+    this.refs.alertSave.hidden = hide;
+  }
+
+  startSort() {
+    this.sort(false);
   }
 
   stopSort() {
-    this.alertSave.hidden = true;
-
-    for (const elem of document.getElementsByClassName("disable")) {
-      elem.disabled = false;
-    }
+    this.sort(true);
   }
 
   save() {
-    const slides = Array.from(this.tableBody.children)
-      .map(this.constructor.slideObject);
+    const slides = Array.from(this.refs.tableBody.children)
+      .map(this.slideObject);
 
     this.docRef.update({ slides });
     this.stopSort();
   }
 
-  static slideObject(row) {
+  slideObject(row) {
     return {
-      "duration": row.getElementsByClassName("duration")[ 0 ].value,
-      "name": row.getElementsByClassName("title")[ 0 ].textContent
+      "duration": row.querySelector(".duration").value,
+      "name": row.querySelector(".title").textContent
     };
   }
 }
