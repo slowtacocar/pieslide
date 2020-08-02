@@ -57,23 +57,10 @@ class SlidesTable extends Table {
           </tbody>
         </table>
         {super.render()}
-        <div
-          class="alert alert-warning mb-0 fixed-bottom"
-          role="alert"
-          ref="alertSave"
-          hidden
-        >
-          <button class="btn btn-primary" onclick={this.save}>
-            Save Changes
-          </button>
-          <button class="btn btn-secondary" onclick={this.stopSort}>
-            Discard Changes
-          </button>
-        </div>
       </div>;
 
     jQuery(this.refs.tableBody).sortable({
-      "stop": this.startSort
+      "stop": this.updateSort
     });
 
     return element;
@@ -115,13 +102,14 @@ class SlidesTable extends Table {
             min="0"
             type="number"
             value={file.duration}
+            data-index={index}
             hidden={VIDEO_TYPES.includes(type)}
-            onchange={this.startSort}
+            onchange={this.updateDuration}
           ></input>
         </td>
         <td>
           <button
-            class="btn btn-danger delete"
+            class="btn btn-danger"
             type="button"
             data-index={index}
             onclick={this.deleteItem}
@@ -158,28 +146,19 @@ class SlidesTable extends Table {
     this.defaultDuration = doc.get("duration");
   }
 
-  updateSortStatus(done) {
-    for (const element of this.refs.tableBody.querySelectorAll(".delete")) {
-      element.disabled = !done;
-    }
-
-    this.refs.alertSave.hidden = done;
-  }
-
-  startSort() {
-    this.updateSortStatus(false);
-  }
-
-  stopSort() {
-    this.updateSortStatus(true);
-  }
-
-  save() {
+  updateSort() {
     const slides = Array.from(this.refs.tableBody.children)
       .map(this.getObject);
 
     this.docRef.update({ slides });
-    this.stopSort();
+  }
+
+  updateDuration(event) {
+    const { index } = event.target.dataset;
+    const slide = this.slides[ index ];
+
+    slide.duration = event.target.value;
+    this.docRef.update({ "slides": this.slides });
   }
 
   getObject(row) {
