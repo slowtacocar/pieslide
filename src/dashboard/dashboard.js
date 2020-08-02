@@ -15,7 +15,7 @@ import LogoTable from "./logo-table.js";
 import SettingsForm from "./settings-form.js";
 import SlidesTable from "./slides-table.js";
 import Table from "./table.js";
-import config from "../config.js";
+import config from "../lib/config.js";
 import firebase from "firebase/app";
 
 class Dashboard {

@@ -1,7 +1,7 @@
 import "./login.scss";
 import "firebase/auth";
 import * as firebaseui from "firebaseui";
-import config from "../config.js";
+import config from "../lib/config.js";
 import firebase from "firebase/app";
 
 class Index {
