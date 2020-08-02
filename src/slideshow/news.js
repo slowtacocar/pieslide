@@ -27,10 +27,9 @@ class News extends jsx.Component {
   }
 
   async loop() {
-    this.isRunning = true;
-
     const texts = await Promise.all(this.links.map(this.getSource));
 
+    this.isRunning = true;
     this.refs.news.textContent = texts.join("");
 
     const width =

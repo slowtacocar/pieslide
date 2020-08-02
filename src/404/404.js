@@ -17,4 +17,5 @@ class Error404 extends jsx.Component {
     );
   }
 }
+
 jsx.render(document.body, jsx.createElement(Error404, null));

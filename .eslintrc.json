@@ -197,6 +197,8 @@
       { "blankLine": "never", "prev": "*", "next": "*" },
       { "blankLine": "always", "prev": "*", "next": "block-like" },
       { "blankLine": "always", "prev": "block-like", "next": "*" },
+      { "blankLine": "always", "prev": "*", "next": "class" },
+      { "blankLine": "always", "prev": "class", "next": "*" },
       { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*" },
       { "blankLine": "always", "prev": "*", "next": ["const", "let", "var"] },
       { "blankLine": "never", "prev": ["const", "let", "var"], "next": ["const", "let", "var"] },

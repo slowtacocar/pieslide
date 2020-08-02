@@ -21,4 +21,5 @@ class Login extends jsx.Component {
     });
   }
 }
+
 jsx.render(document.body, jsx.createElement(Login, null));

@@ -157,4 +157,5 @@ class Dashboard extends jsx.Component {
     return false;
   }
 }
+
 jsx.render(document.body, jsx.createElement(Dashboard, null));
