@@ -5,21 +5,21 @@ import jsx from "../lib/jsx.js";
 
 class Preview extends jsx.Component {
   render() {
-    const obj =
+    const element =
       <div>
         <div
           class="modal fade"
-          id="previewModalImage"
-          ref="modalImage"
+          id="modalImagePreview"
+          ref="modalImagePreview"
           tabindex="-1"
           role="dialog"
-          aria-labelledby="previewModalImageLabel"
+          aria-labelledby="modalImagePreviewLabel"
           aria-hidden="true"
         >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="previewModalImageLabel">Preview</h5>
+                <h5 class="modal-title" id="modalImagePreviewLabel">Preview</h5>
                 <button
                   type="button"
                   class="close"
@@ -30,7 +30,7 @@ class Preview extends jsx.Component {
                 </button>
               </div>
               <div class="modal-body">
-                <img ref="previewImg" class="img-fluid"></img>
+                <img ref="imagePreview" class="img-fluid"></img>
               </div>
               <div class="modal-footer">
                 <button
@@ -44,17 +44,17 @@ class Preview extends jsx.Component {
         </div>
         <div
           class="modal fade"
-          id="previewModalVideo"
-          ref="modalVideo"
+          id="modalPreviewVideo"
+          ref="modalPreviewVideo"
           tabindex="-1"
           role="dialog"
-          aria-labelledby="previewModalVideoLabel"
+          aria-labelledby="modalVideoPreviewLabel"
           aria-hidden="true"
         >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="previewModalVideoLabel">Preview</h5>
+                <h5 class="modal-title" id="modalVideoPreviewLabel">Preview</h5>
                 <button
                   type="button"
                   class="close"
@@ -64,7 +64,7 @@ class Preview extends jsx.Component {
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <div class="modal-body" ref="modalBodyVideo"></div>
+              <div class="modal-body" ref="modalBodyPreviewVideo"></div>
               <div class="modal-footer">
                 <button
                   type="button"
@@ -77,15 +77,17 @@ class Preview extends jsx.Component {
         </div>
       </div>;
 
-    jQuery(this.refs.modalImage).on("show.bs.modal", this.setPreviewImage);
-    jQuery(this.refs.modalVideo).on("show.bs.modal", this.setPreviewVideo)
+    jQuery(this.refs.modalPreviewImage)
+      .on("show.bs.modal", this.setPreviewImage);
+    jQuery(this.refs.modalPreviewVideo)
+      .on("show.bs.modal", this.setPreviewVideo)
       .on("hide.bs.modal", this.stopPreviewVideo);
 
-    return obj;
+    return element;
   }
 
   setPreviewVideo(event) {
-    const obj =
+    const element =
       <video autoplay controls class="embed-responsive">
         <source
           src={event.relatedTarget.dataset.link}
@@ -93,15 +95,15 @@ class Preview extends jsx.Component {
         ></source>
       </video>;
 
-    jsx.render(this.refs.modalBodyVideo, obj);
+    jsx.render(this.refs.modalBodyPreviewVideo, element);
   }
 
   setPreviewImage(event) {
-    this.refs.previewImg.src = event.relatedTarget.dataset.link;
+    this.refs.imagePreview.src = event.relatedTarget.dataset.link;
   }
 
   stopPreviewVideo() {
-    jsx.render(this.refs.modalBodyVideo);
+    jsx.render(this.refs.modalBodyPreviewVideo);
   }
 }
 

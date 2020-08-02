@@ -4,7 +4,7 @@ import jsx from "../lib/jsx.js";
 
 class Time extends jsx.Component {
   render() {
-    const obj =
+    const element =
       <div class="card fixed-top-right" ref="card">
         <div class="card-header">
           <span class="h2" ref="time"></span>
@@ -13,7 +13,7 @@ class Time extends jsx.Component {
 
     window.setInterval(this.loop, 1000);
 
-    return obj;
+    return element;
   }
 
   loop() {

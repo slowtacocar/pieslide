@@ -36,7 +36,7 @@ class SlidesTable extends Table {
   }
 
   render() {
-    const obj =
+    const element =
       <div>
         <div id="slides" class="spacer"></div>
         <h1>Slides</h1>
@@ -76,16 +76,19 @@ class SlidesTable extends Table {
       "stop": this.startSort
     });
 
-    return obj;
+    return element;
   }
 
   async updateTable(data) {
     this.slides = data.slides;
-    this.rows = await Promise.all(this.slides.map(this.getURLs));
-    jsx.render(this.refs.tableBody, ...this.rows);
+
+    const rowElements =
+      await Promise.all(this.slides.map(this.createRowElement));
+
+    jsx.render(this.refs.tableBody, ...rowElements);
   }
 
-  async getURLs(file, index) {
+  async createRowElement(file, index) {
     const ref = this.folderRef.child(file.name);
     const url = await ref.getDownloadURL();
     const type = file.name.split(".").slice(-1)[ 0 ].toLowerCase();
@@ -101,8 +104,8 @@ class SlidesTable extends Table {
             data-type={type}
             data-target={
               VIDEO_TYPES.includes(type)
-                ? "#previewModalVideo"
-                : "#previewModalImage"
+                ? "#modalPreviewVideo"
+                : "#modalPreviewImage"
             }
           >View Preview</button>
         </td>
@@ -130,15 +133,14 @@ class SlidesTable extends Table {
   }
 
   async deleteItem(event) {
-    const indexId = event.target.dataset.index;
-    const slide = this.slides[ indexId ];
+    const { index } = event.target.dataset;
+    const [ slide ] = this.slides.splice(index, 1);
 
     await this.folderRef.child(slide.name).delete();
-    this.slides.splice(indexId, 1);
     this.docRef.update({ "slides": this.slides });
   }
 
-  docData(name) {
+  toObject(name) {
     return {
       "slides": firebase.firestore.FieldValue.arrayUnion({
         "duration": this.defaultDuration,
@@ -156,31 +158,31 @@ class SlidesTable extends Table {
     this.defaultDuration = doc.get("duration");
   }
 
-  sort(hide) {
-    for (const btn of this.refs.tableBody.querySelectorAll(".delete")) {
-      btn.disabled = !hide;
+  updateSortStatus(done) {
+    for (const element of this.refs.tableBody.querySelectorAll(".delete")) {
+      element.disabled = !done;
     }
 
-    this.refs.alertSave.hidden = hide;
+    this.refs.alertSave.hidden = done;
   }
 
   startSort() {
-    this.sort(false);
+    this.updateSortStatus(false);
   }
 
   stopSort() {
-    this.sort(true);
+    this.updateSortStatus(true);
   }
 
   save() {
     const slides = Array.from(this.refs.tableBody.children)
-      .map(this.slideObject);
+      .map(this.getObject);
 
     this.docRef.update({ slides });
     this.stopSort();
   }
 
-  slideObject(row) {
+  getObject(row) {
     return {
       "duration": row.querySelector(".duration").value,
       "name": row.querySelector(".title").textContent

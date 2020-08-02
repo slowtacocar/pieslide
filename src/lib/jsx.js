@@ -37,15 +37,15 @@ function createElement(type, props, ...children) {
 class Component {
   constructor(props) {
     // Bind all class methods to `this`
-    let obj = this.constructor.prototype;
+    let { prototype } = this.constructor;
 
-    while (obj !== Object.prototype) {
-      for (const prop of Object.getOwnPropertyNames(obj)) {
-        this[ prop ] = this[ prop ].bind(this);
+    while (prototype !== Object.prototype) {
+      for (const method of Object.getOwnPropertyNames(prototype)) {
+        this[ method ] = this[ method ].bind(this);
       }
 
       // Get the next object in the prototype chain
-      obj = Object.getPrototypeOf(obj);
+      prototype = Object.getPrototypeOf(prototype);
     }
 
     // Start with an empty refs object
@@ -57,14 +57,14 @@ class Component {
   }
 }
 
-function render(container, ...element) {
+function render(container, ...elements) {
   // Empty the container, then add all elements to it
   while (container.firstChild) {
     container.removeChild(container.firstChild);
   }
 
-  if (element) {
-    container.append(...element);
+  if (elements) {
+    container.append(...elements);
   }
 }
 

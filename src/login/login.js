@@ -11,8 +11,10 @@ class Login extends jsx.Component {
   constructor(props) {
     super(props);
     firebase.initializeApp(config);
-    this.ui = new firebaseui.auth.AuthUI(firebase.auth());
-    this.ui.start("body", {
+
+    const authUI = new firebaseui.auth.AuthUI(firebase.auth());
+
+    authUI.start("body", {
       "signInOptions": [
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID
