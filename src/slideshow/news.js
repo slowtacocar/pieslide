@@ -2,24 +2,19 @@
 
 import jsx from "../lib/jsx.js";
 
-const NEWS_DELAY = 1000;
-const NEWS_SPEED = 100;
-const TRANSITION_DELAY = 500;
+const NEWS_SPEED = 0.25;
 const RSS_API_URL = "https://api.rss2json.com/v1/api.json?rss_url=";
 
 class News extends jsx.Component {
   constructor(props) {
     super(props);
+    this.ii = -1;
     this.isRunning = false;
   }
 
   render() {
     return (
-      <div
-        class="card loose-fixed-bottom"
-        ref="cardNews"
-        ontransitionend={this.loop}
-      >
+      <div class="card loose-fixed-bottom" ref="cardNews">
         <div class="card-body">
           <p class="card-text no-wrap bold" ref="news"></p>
         </div>
@@ -33,14 +28,20 @@ class News extends jsx.Component {
 
   async loop() {
     this.isRunning = true;
-    this.refs.cardNews.style.transform = "translate(100vw)";
-    this.refs.cardNews.style.transition = "none";
 
     const texts = await Promise.all(this.links.map(this.getSource));
 
     this.refs.news.textContent = texts.join("");
-    window.setTimeout(this.setTransition, TRANSITION_DELAY);
-    window.setTimeout(this.setTransform, NEWS_DELAY);
+
+    const width =
+      parseInt(getComputedStyle(this.refs.cardNews).width.replace("px", "")) +
+      window.innerWidth;
+
+    this.animation.effect.updateTiming({
+      "duration": width / NEWS_SPEED,
+      "endDelay": 1000
+    });
+    this.animation.play();
   }
 
   async getSource(link) {
@@ -54,22 +55,15 @@ class News extends jsx.Component {
     return item.title;
   }
 
-  setTransition() {
-    const width = getComputedStyle(this.refs.cardNews).width.replace("px", "") +
-      window.innerWidth;
-
-    this.refs.cardNews.style.transition =
-      `transform ${width / NEWS_SPEED}s linear`;
-  }
-
-  setTransform() {
-    this.refs.cardNews.style.transform = "translate(-100%)";
-  }
-
   changeData(doc) {
     this.links = doc.get("news");
 
     if (!this.isRunning) {
+      this.animation = this.refs.cardNews.animate([
+        { "transform": "translate(100vw)" },
+        { "transform": "translate(-100%)" }
+      ]);
+      this.animation.onfinish = this.loop;
       this.loop();
     }
   }
