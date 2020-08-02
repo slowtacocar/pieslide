@@ -64,4 +64,5 @@ class Slideshow extends jsx.Component {
     }
   }
 }
+
 jsx.render(document.body, jsx.createElement(Slideshow, null));

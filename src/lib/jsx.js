@@ -22,8 +22,8 @@ function createElement(type, props, ...children) {
 
     return element;
   }
-  // `type` is a component, so render it
 
+  // `type` is a component, so render it
   const component = new type(props); // eslint-disable-line babel/new-cap
 
   if (props && this.refs) {

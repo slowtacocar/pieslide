@@ -27,15 +27,14 @@ class Slides extends jsx.Component {
 
   loop() {
     if (this.slides[ this.index ]) {
-      this.isRunning = true;
+      const duration = this.slides[ this.index ].duration * 1000;
 
       for (const slideElement of this.slideElements) {
         slideElement.classList.toggle("hidden");
         slideElement.classList.toggle("shown");
       }
 
-      const duration = this.slides[ this.index ].duration * 1000;
-
+      this.isRunning = true;
       window.setTimeout(this.loop, duration);
       this.index = this.slides[ this.index + 1 ] ? this.index + 1 : 0;
       window.setTimeout(this.preload, duration - LOAD_TIME);
