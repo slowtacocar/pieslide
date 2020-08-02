@@ -9,6 +9,7 @@ body {
 .loose-fixed-bottom {
   position: fixed;
   bottom: 0;
+  transform: translate(100vw);
 }
 
 .slide {
