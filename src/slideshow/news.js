@@ -26,7 +26,7 @@ class News extends jsx.Component {
     const texts = await Promise.all(this.links.map(this.getSource));
 
     this.isRunning = true;
-    this.refs.news.textContent = texts.join("");
+    this.refs.news.textContent = texts.join(" \u2022 ");
 
     const width =
       parseInt(getComputedStyle(this.refs.news).width.replace("px", "")) +
@@ -43,7 +43,7 @@ class News extends jsx.Component {
     const response = await fetch(RSS_API_URL + link);
     const data = await response.json();
 
-    return data.items.map(this.getTitle).join(" \u25cf ");
+    return data.items.map(this.getTitle).join(" \u2022 ");
   }
 
   getTitle(item) {
