@@ -1,16 +1,18 @@
+/** @jsx this.createElement */
+
 import "./login.scss";
 import "firebase/auth";
 import * as firebaseui from "firebaseui";
 import config from "../lib/config.js";
 import firebase from "firebase/app";
+import jsx from "../lib/jsx.js";
 
-class Index {
-  constructor() {
+class Login extends jsx.Component {
+  constructor(props) {
+    super(props);
     firebase.initializeApp(config);
-
-    const ui = new firebaseui.auth.AuthUI(firebase.auth());
-
-    ui.start("#firebaseui", {
+    this.ui = new firebaseui.auth.AuthUI(firebase.auth());
+    this.ui.start("body", {
       "signInOptions": [
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID
@@ -18,9 +20,5 @@ class Index {
       "signInSuccessUrl": "index.html"
     });
   }
-
-  static get() {
-    return new Index();
-  }
 }
-Index.get();
+jsx.render(document.body, jsx.createElement(Login, null));

@@ -35,9 +35,12 @@ module.exports = {
       chunkFilename: '[id].[contenthash].css'
     }),
     new HtmlWebpackPlugin({
-      template: './src/login/login.html',
-      chunks: ['login'],
-      filename: 'login.html'
+      title: 'PieSlide - Login',
+      filename: 'login.html',
+      meta: {
+        viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
+      },
+      chunks: ['login']
     }),
     new HtmlWebpackPlugin({
       template: './src/dashboard/dashboard.html',
