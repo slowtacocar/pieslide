@@ -22,7 +22,8 @@ module.exports = {
   entry: {
     login: './src/login/login.js',
     dashboard: './src/dashboard/dashboard.js',
-    slideshow: './src/slideshow/slideshow.js'
+    slideshow: './src/slideshow/slideshow.js',
+    '404': './src/404/404.js'
   },
   plugins: [
     new CleanWebpackPlugin({
@@ -49,9 +50,12 @@ module.exports = {
       filename: 'slideshow.html'
     }),
     new HtmlWebpackPlugin({
-      template: './src/404.html',
-      chunks: [],
-      filename: '404.html'
+      title: 'Page Not Found',
+      filename: '404.html',
+      meta: {
+        viewport: 'width=device-width, initial-scale=1'
+      },
+      chunks: ['404']
     }),
   ],
   output: {
