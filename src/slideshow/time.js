@@ -5,11 +5,7 @@ import jsx from "../lib/jsx.js";
 class Time extends jsx.Component {
   render() {
     const element =
-      <div class="card fixed-top-right" ref="card">
-        <div class="card-header">
-          <span class="h2" ref="time"></span>
-        </div>
-      </div>;
+      <p id="time" ref="time"></p>;
 
     window.setInterval(this.loop, 1000);
 
@@ -25,7 +21,7 @@ class Time extends jsx.Component {
   }
 
   changeData(doc) {
-    this.refs.card.hidden = !doc.get("time");
+    this.refs.time.hidden = !doc.get("time");
   }
 }
 

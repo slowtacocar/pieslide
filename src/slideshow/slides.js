@@ -12,9 +12,9 @@ class Slides extends jsx.Component {
 
   render() {
     const element =
-      <div>
-        <div class="shown slide" ref="slide1"></div>
-        <div class="hidden slide" ref="slide2"></div>
+      <div id="slides">
+        <div ref="slide1"></div>
+        <div class="hidden" ref="slide2"></div>
       </div>;
 
     this.slideElements = [
@@ -31,7 +31,6 @@ class Slides extends jsx.Component {
 
       for (const slideElement of this.slideElements) {
         slideElement.classList.toggle("hidden");
-        slideElement.classList.toggle("shown");
       }
 
       this.isRunning = true;

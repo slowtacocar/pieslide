@@ -2,7 +2,7 @@
 
 import jsx from "../lib/jsx.js";
 
-const NEWS_SPEED = 0.25;
+const NEWS_SPEED = 0.15;
 const RSS_API_URL = "https://api.rss2json.com/v1/api.json?rss_url=";
 
 class News extends jsx.Component {
@@ -14,11 +14,7 @@ class News extends jsx.Component {
 
   render() {
     return (
-      <div class="card loose-fixed-bottom" ref="cardNews">
-        <div class="card-body">
-          <p class="card-text no-wrap bold" ref="news"></p>
-        </div>
-      </div>
+      <p ref="news" id="news"></p>
     );
   }
 
@@ -33,7 +29,7 @@ class News extends jsx.Component {
     this.refs.news.textContent = texts.join("");
 
     const width =
-      parseInt(getComputedStyle(this.refs.cardNews).width.replace("px", "")) +
+      parseInt(getComputedStyle(this.refs.news).width.replace("px", "")) +
       window.innerWidth;
 
     this.animation.effect.updateTiming({
@@ -58,7 +54,7 @@ class News extends jsx.Component {
     this.links = doc.get("news");
 
     if (!this.isRunning) {
-      this.animation = this.refs.cardNews.animate([
+      this.animation = this.refs.news.animate([
         { "transform": "translate(100vw)" },
         { "transform": "translate(-100%)" }
       ]);
