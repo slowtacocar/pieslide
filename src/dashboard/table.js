@@ -1,26 +1,81 @@
-import jQuery from "jquery";
+/** @jsx this.createElement */
 
-class Table {
-  constructor(elements) {
-    this.changeUser = this.changeUser.bind(this);
-    this.updateTable = this.updateTable.bind(this);
-    this.updateFilename = this.updateFilename.bind(this);
-    this.upload = this.upload.bind(this);
-    this.update = this.update.bind(this);
-    this.updateProgress = this.updateProgress.bind(this);
-    this.updateError = this.updateError.bind(this);
-    this.updateSuccess = this.updateSuccess.bind(this);
-    this.changeData = this.changeData.bind(this);
-    this.defaultData = elements.defaultData;
-    this.inputGroup = document.getElementById(elements.inputGroup);
-    this.inputGroupAddon = document.getElementById(elements.inputGroupAddon);
-    this.inputGroupLabel = document.getElementById(elements.inputGroupLabel);
-    this.progressModal = document.getElementById(elements.modal);
-    this.progressBar = document.getElementById(elements.progressBar);
-    this.inputGroup.addEventListener("change", this.updateFilename);
-    this.inputGroupAddon.addEventListener("click", this.upload);
-    this.$progressModal = jQuery(this.progressModal)
+import jQuery from "jquery";
+import jsx from "../lib/jsx.js";
+
+class Table extends jsx.Component {
+  render() {
+    const obj =
+      <div>
+        <div class={`input-group${
+          this.props.sticky ? " position-sticky b-0 py-2 bg-white" : ""
+        }`}>
+          <div class="custom-file">
+            <input
+              type="file"
+              class="custom-file-input"
+              id={`inputGroup${this.props.name}`}
+              accept="image/*"
+              onchange={this.updateFilename}
+              ref="inputGroup"
+            ></input>
+            <label
+              class="custom-file-label mb-0"
+              for={`inputGroup${this.props.name}`}
+              aria-describedby={`inputGroup${this.props.name}Addon`}
+              ref="inputGroupLabel"
+            >Choose file</label>
+          </div>
+          <div class="input-group-append">
+            <button
+              type="button"
+              class="input-group-text"
+              id={`inputGroup${this.props.name}Addon`}
+              onclick={this.upload}
+            >Upload</button>
+          </div>
+        </div>
+        <div
+          class="modal fade"
+          ref="progressModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby={`${name}ProgressModalLabel`}
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id={`${name}ProgressModalLabel`}>
+                  Uploading {this.props.name}
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    ref="progressBar"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>;
+
+    this.$progressModal = jQuery(this.refs.progressModal)
       .on("shown.bs.modal", this.update);
+
+    return obj;
   }
 
   changeUser(docRef, folderRef) {
@@ -29,16 +84,16 @@ class Table {
     this.docRef.onSnapshot(this.changeData);
   }
 
-  updateFilename() {
-    const value = this.inputGroup.files[ 0 ].name;
+  updateFilename(event) {
+    const value = event.target.files[ 0 ].name;
 
-    this.inputGroupLabel.textContent = value;
+    this.refs.inputGroupLabel.textContent = value;
   }
 
   upload() {
-    [ this.file ] = this.inputGroup.files;
-    this.progressBar.classList.remove("bg-danger");
-    this.progressBar.style.width = "0";
+    [ this.file ] = this.refs.inputGroup.files;
+    this.refs.progressBar.classList.remove("bg-danger");
+    this.refs.progressBar.style.width = "0";
     this.$progressModal.modal();
   }
 
@@ -55,59 +110,23 @@ class Table {
   updateProgress(snapshot) {
     const progress = snapshot.bytesTransferred / snapshot.totalBytes * 100;
 
-    this.progressBar.style.width = `${progress}%`;
+    this.refs.progressBar.style.width = `${progress}%`;
   }
 
   updateError() {
-    this.progressBar.classList.add("bg-danger");
+    this.refs.progressBar.classList.add("bg-danger");
   }
 
   updateSuccess() {
     this.$progressModal.modal("hide");
-    this.docRef.update(this.constructor.docData(this.file.name));
+    this.docRef.update(this.docData(this.file.name));
   }
 
   changeData(doc) {
     if (doc.exists) {
       this.updateTable(doc.data());
     } else {
-      this.docRef.set(this.defaultData);
-    }
-  }
-
-  static addPreviewListeners(elements) {
-    const modalVideo = document.getElementById(elements.modalVideo);
-    const modalImage = document.getElementById(elements.modalImage);
-
-    jQuery(modalImage).on("show.bs.modal", this.setPreviewImage);
-    jQuery(modalVideo).on("show.bs.modal", this.setPreviewVideo)
-      .on("hide.bs.modal", this.stopPreviewVideo);
-  }
-
-  static setPreviewVideo(event) {
-    const source = document.createElement("source");
-    const video = document.createElement("video");
-
-    source.src = event.relatedTarget.dataset.link;
-    source.type = `video/${event.relatedTarget.dataset.type}`;
-    video.autoplay = true;
-    video.className = "embed-responsive";
-    video.controls = true;
-    video.append(source);
-    event.target.getElementsByClassName("modal-body")[ 0 ].append(video);
-  }
-
-  static setPreviewImage(event) {
-    event.target.getElementsByTagName("img")[ 0 ].src =
-      event.relatedTarget.dataset.link;
-  }
-
-  static stopPreviewVideo(event) {
-    const [ modalBodyVideo ] =
-      event.target.getElementsByClassName("modal-body");
-
-    if (modalBodyVideo.firstChild) {
-      modalBodyVideo.removeChild(modalBodyVideo.firstChild);
+      this.docRef.set(this.props.defaultData);
     }
   }
 }

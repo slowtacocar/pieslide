@@ -6,10 +6,9 @@ body {
   background: $black;
 }
 
-#cardNews {
+.loose-fixed-bottom {
   position: fixed;
   bottom: 0;
-  will-change: transform;
 }
 
 .slide {
@@ -17,25 +16,27 @@ body {
   left: 0;
   right: 0;
   height: calc(100vh - 4rem - 2px);
-  will-change: opacity;
 }
 
 .hidden {
   opacity: 0;
 }
 
-#news {
-  font-weight: $font-weight-bolder;
+.no-wrap {
   white-space: nowrap;
 }
 
-#logo {
+.bold {
+  font-weight: $font-weight-bolder;
+}
+
+.fixed-top-left {
   position: fixed;
   top: 0;
   left: 0;
 }
 
-#cardTime {
+.fixed-top-right {
   position: fixed;
   top: 0;
   right: 0;

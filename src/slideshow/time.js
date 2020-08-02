@@ -1,18 +1,31 @@
-class Time {
-  constructor() {
-    this.loop = this.loop.bind(this);
-    this.setVisibility = this.setVisibility.bind(this);
+/** @jsx this.createElement */
+
+import jsx from "../lib/jsx.js";
+
+class Time extends jsx.Component {
+  render() {
+    const obj =
+      <div class="card fixed-top-right" ref="card">
+        <div class="card-header">
+          <span class="h2" ref="time"></span>
+        </div>
+      </div>;
+
     window.setInterval(this.loop, 1000);
-    this.time = document.getElementById("time");
-    this.card = document.getElementById("cardTime");
+
+    return obj;
   }
 
   loop() {
-    this.time.textContent = new Date().toLocaleTimeString();
+    this.refs.time.textContent = new Date().toLocaleTimeString();
   }
 
-  setVisibility(visible) {
-    this.card.hidden = !visible;
+  changeUser(docRef) {
+    docRef.onSnapshot(this.changeData);
+  }
+
+  changeData(doc) {
+    this.refs.card.hidden = !doc.get("time");
   }
 }
 

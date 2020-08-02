@@ -1,12 +1,18 @@
 {
   "root": true,
   "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "env": {
     "es6": true,
     "browser": true
   },
   "plugins": [
-    "babel"
+    "babel",
+    "react"
   ],
   "rules": {
     "for-direction": "error",
@@ -158,7 +164,6 @@
     "max-depth": "error",
     "max-len": "error",
     "max-lines": "error",
-    "max-lines-per-function": "error",
     "max-nested-callbacks": ["error", 0],
     "max-params": "error",
     "max-statements-per-line": "error",
@@ -260,11 +265,11 @@
     "yield-star-spacing": "error",
     "babel/new-cap": "error",
     "babel/camelcase": "error",
-    "babel/no-invalid-this": "error",
     "babel/object-curly-spacing": ["error", "always"],
     "babel/quotes": "error",
     "babel/semi": "error",
     "babel/no-unused-expressions": "error",
-    "babel/valid-typeof": ["error", { "requireStringLiterals": true }]
+    "babel/valid-typeof": ["error", { "requireStringLiterals": true }],
+    "react/jsx-uses-vars": "error"
   }
 }

@@ -22,7 +22,8 @@ module.exports = {
   entry: {
     login: './src/login/login.js',
     dashboard: './src/dashboard/dashboard.js',
-    slideshow: './src/slideshow/slideshow.js'
+    slideshow: './src/slideshow/slideshow.js',
+    '404': './src/404/404.js'
   },
   plugins: [
     new CleanWebpackPlugin({
@@ -34,24 +35,36 @@ module.exports = {
       chunkFilename: '[id].[contenthash].css'
     }),
     new HtmlWebpackPlugin({
-      template: './src/login/login.html',
-      chunks: ['login'],
-      filename: 'login.html'
+      title: 'PieSlide - Login',
+      filename: 'login.html',
+      meta: {
+        viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
+      },
+      chunks: ['login']
     }),
     new HtmlWebpackPlugin({
-      template: './src/dashboard/dashboard.html',
-      chunks: ['dashboard'],
+      title: 'PieSlide - Dashboard',
       filename: 'index.html',
+      meta: {
+        viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
+      },
+      chunks: ['dashboard']
     }),
     new HtmlWebpackPlugin({
-      template: './src/slideshow/slideshow.html',
-      chunks: ['slideshow'],
-      filename: 'slideshow.html'
+      title: 'PieSlide - Slideshow',
+      filename: 'slideshow.html',
+      meta: {
+        viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
+      },
+      chunks: ['slideshow']
     }),
     new HtmlWebpackPlugin({
-      template: './src/404.html',
-      chunks: [],
-      filename: '404.html'
+      title: 'Page Not Found',
+      filename: '404.html',
+      meta: {
+        viewport: 'width=device-width, initial-scale=1'
+      },
+      chunks: ['404']
     }),
   ],
   output: {
