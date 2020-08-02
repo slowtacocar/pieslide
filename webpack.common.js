@@ -51,9 +51,12 @@ module.exports = {
       chunks: ['dashboard']
     }),
     new HtmlWebpackPlugin({
-      template: './src/slideshow/slideshow.html',
-      chunks: ['slideshow'],
-      filename: 'slideshow.html'
+      title: 'PieSlide - Slideshow',
+      filename: 'slideshow.html',
+      meta: {
+        viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no'
+      },
+      chunks: ['slideshow']
     }),
     new HtmlWebpackPlugin({
       title: 'Page Not Found',

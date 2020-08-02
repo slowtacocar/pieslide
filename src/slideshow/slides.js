@@ -1,15 +1,28 @@
+/** @jsx this.createElement */
+
+import jsx from "../lib/jsx.js";
+
 const LOAD_TIME = 1000;
 
-class Slides {
-  constructor() {
-    this.loop = this.loop.bind(this);
-    this.preload = this.preload.bind(this);
-    this.setData = this.setData.bind(this);
-    this.getUrl = this.getUrl.bind(this);
-    this.setTransition = this.setTransition.bind(this);
-    this.setVars = this.setVars.bind(this);
+class Slides extends jsx.Component {
+  constructor(props) {
+    super(props);
     this.isRunning = false;
-    this.slideElements = document.getElementsByClassName("slide");
+  }
+
+  render() {
+    const obj =
+      <div>
+        <div class="shown slide" ref="slide1"></div>
+        <div class="hidden slide" ref="slide2"></div>
+      </div>;
+
+    this.slideElements = [
+      this.refs.slide1,
+      this.refs.slide2
+    ];
+
+    return obj;
   }
 
   loop() {
@@ -32,8 +45,25 @@ class Slides {
   }
 
   preload() {
-    document.getElementsByClassName("hidden slide")[ 0 ].style.background =
-      `black url(${this.urls[ this.index ]}) center/contain no-repeat`;
+    for (const slideElement of this.slideElements) {
+      if (slideElement.classList.contains("hidden")) {
+        slideElement.style.background =
+          `black url(${this.urls[ this.index ]}) center/contain no-repeat`;
+      }
+    }
+  }
+
+  changeUser(docRef, folderRef, settingsRef) {
+    docRef.onSnapshot(this.changeData);
+    this.folderRef = folderRef;
+    settingsRef.onSnapshot(this.changeSettings);
+  }
+
+  changeData(doc) {
+    this.setData(
+      doc.get("slides"),
+      this.folderRef
+    );
   }
 
   async setData(data, ref) {
@@ -58,9 +88,9 @@ class Slides {
     }
   }
 
-  setTransition(time) {
+  changeSettings(doc) {
     for (const slideElement of this.slideElements) {
-      slideElement.style.transition = `opacity ${time}s`;
+      slideElement.style.transition = `opacity ${doc.get("transition")}s`;
     }
   }
 }

@@ -1,3 +1,5 @@
+/** @jsx this.createElement */
+
 import "./slideshow.scss";
 import "firebase/auth";
 import "firebase/firestore";
@@ -8,70 +10,58 @@ import Slides from "./slides.js";
 import Time from "./time.js";
 import config from "../lib/config.js";
 import firebase from "firebase/app";
+import jsx from "../lib/jsx.js";
 
-class Slideshow {
-  constructor() {
-    this.changeUser = this.changeUser.bind(this);
-    this.slidesChanged = this.slidesChanged.bind(this);
-    this.logoChanged = this.logoChanged.bind(this);
-    this.docChanged = this.docChanged.bind(this);
+class Slideshow extends jsx.Component {
+  constructor(props) {
+    super(props);
     firebase.initializeApp(config);
     this.firestore = firebase.firestore();
-    this.firestore.enablePersistence();
     this.storageRef = firebase.storage().ref();
-    this.logo = new Logo();
-    this.news = new News();
-    this.slides = new Slides();
-    this.time = new Time();
-    firebase.auth().onAuthStateChanged(this.changeUser);
   }
 
-  static get() {
-    return new Slideshow();
+  render() {
+    const obj =
+      <div>
+        <Slides ref="slides" />
+        <Logo ref="logo" />
+        <News ref="news" />
+        <Time ref="time" />
+      </div>;
+
+    firebase.auth().onAuthStateChanged(this.changeUser);
+
+    return obj;
   }
 
   changeUser(user) {
-    this.user = user;
+    if (user) {
+      const docRef = this.firestore.doc(`user/${user.uid}`);
+      const folderRef = this.storageRef.child(`user/${user.uid}`);
 
-    if (this.user) {
-      const ref = this.firestore.doc(`user/${this.user.uid}`);
-      const dataRef = ref.collection("data");
-
-      dataRef.doc("slides").onSnapshot(this.slidesChanged);
-      dataRef.doc("logo").onSnapshot(this.logoChanged);
-      ref.onSnapshot(this.docChanged);
+      this.refs.time.changeUser(docRef);
+      this.refs.news.changeUser(docRef);
+      this.refs.slides.changeUser(
+        docRef.collection("data").doc("slides"),
+        folderRef.child("slides"),
+        docRef
+      );
+      this.refs.logo.changeUser(
+        docRef.collection("data").doc("logo"),
+        folderRef.child("logo"),
+        docRef
+      );
+      docRef.onSnapshot(this.changeData);
     } else {
       window.location.replace("login.html?signInSuccessUrl=slideshow.html");
     }
   }
 
-  slidesChanged(doc) {
-    this.slides.setData(
-      doc.get("slides"),
-      this.storageRef.child(`user/${this.user.uid}/slides`)
-    );
-  }
-
-  logoChanged(doc) {
-    this.logo.setImage(
-      doc.get("name"),
-      this.storageRef.child(`user/${this.user.uid}/logo`)
-    );
-  }
-
-  docChanged(doc) {
-    this.time.setVisibility(doc.get("time"));
-    this.slides.setTransition(doc.get("transition"));
-    this.logo.setSize(doc.get("size"));
-    this.news.setLinks(doc.get("news"));
-    this.constructor.handleMessage(doc.get("message"), doc.ref);
-  }
-
-  static async handleMessage(message, ref) {
-    if (message === "reload") {
-      await ref.update({ "message": "" });
+  async changeData(doc) {
+    if (doc.get("message") === "reload") {
+      await doc.ref.update({ "message": "" });
       location.reload();
     }
   }
 }
-Slideshow.get();
+jsx.render(document.body, jsx.createElement(Slideshow, null));
