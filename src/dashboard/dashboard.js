@@ -23,11 +23,11 @@ class Dashboard extends jsx.Component {
     this.auth = firebase.auth();
     this.firestore = firebase.firestore();
     this.storageRef = firebase.storage().ref();
-    window.onerror = this.onError;
+    window.onerror = this.showAlertError;
   }
 
   render() {
-    const obj =
+    const element =
       <div>
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
           <a class="navbar-brand" href="#">PieSlide</a>
@@ -101,12 +101,12 @@ class Dashboard extends jsx.Component {
           ref="alertError"
           hidden
         >
-          <span ref="parError"></span>
+          <span ref="textError"></span>
           <button
             type="button"
             class="close"
             aria-label="Close"
-            onclick={this.hideError}
+            onclick={this.hideAlertError}
           >
             <span aria-hidden="true">&times;</span>
           </button>
@@ -116,7 +116,7 @@ class Dashboard extends jsx.Component {
 
     this.auth.onAuthStateChanged(this.changeUser);
 
-    return obj;
+    return element;
   }
 
   changeUser(user) {
@@ -146,12 +146,12 @@ class Dashboard extends jsx.Component {
     this.auth.signOut();
   }
 
-  hideError() {
+  hideAlertError() {
     this.refs.alertError.hidden = true;
   }
 
-  onError(msg) {
-    this.refs.parError.textContent = msg;
+  showAlertError(msg) {
+    this.refs.textError.textContent = msg;
     this.refs.alertError.hidden = false;
 
     return false;

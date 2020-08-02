@@ -18,7 +18,7 @@ class AccountForm extends jsx.Component {
           <div class="input-group col-md">
             <input
               type="email"
-              ref="email"
+              ref="inputNewEmail"
               class="form-control"
               placeholder="New Email"
               aria-label="New Email"
@@ -28,16 +28,16 @@ class AccountForm extends jsx.Component {
                 class="btn btn-outline-secondary"
                 type="button"
                 data-toggle="modal"
-                data-target="#authModal"
-                data-operation="changeEmail"
-                onclick={this.accountChange}
+                data-target="#modalAuth"
+                data-callback="changeEmail"
+                onclick={this.setCallback}
               >Update</button>
             </div>
           </div>
           <div class="input-group col-md">
             <input
               type="password"
-              ref="password"
+              ref="inputNewPassword"
               class="form-control"
               placeholder="New Password"
               aria-label="New Password"
@@ -47,9 +47,9 @@ class AccountForm extends jsx.Component {
                 class="btn btn-outline-secondary"
                 type="button"
                 data-toggle="modal"
-                data-target="#authModal"
-                data-operation="changePassword"
-                onclick={this.accountChange}
+                data-target="#modalAuth"
+                data-callback="changePassword"
+                onclick={this.setCallback}
               >Update</button>
             </div>
           </div>
@@ -58,23 +58,23 @@ class AccountForm extends jsx.Component {
           class="btn btn-outline-danger btn-block"
           type="button"
           data-toggle="modal"
-          data-target="#authModal"
-          data-operation="deleteAccount"
-          onclick={this.accountChange}
+          data-target="#modalAuth"
+          data-callback="deleteAccount"
+          onclick={this.setCallback}
         >Delete Account</button>
 
         <div
           class="modal fade"
-          id="authModal"
+          id="modalAuth"
           tabindex="-1"
           role="dialog"
-          aria-labelledby="authModalLabel"
+          aria-labelledby="modalLabelAuth"
           aria-hidden="true"
         >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="authModalLabel">
+                <h5 class="modal-title" id="modalLabelAuth">
                   Enter Current Password
                 </h5>
                 <button
@@ -93,13 +93,13 @@ class AccountForm extends jsx.Component {
                     class="form-control"
                     placeholder="Current Password"
                     aria-label="Current Password"
-                    ref="oldPassword"
+                    ref="inputCurrentPassword"
                   ></input>
                   <div class="input-group-append">
                     <button
                       class="btn btn-outline-primary"
                       type="button"
-                      ref="logIn"
+                      ref="buttonLogIn"
                       onclick={this.reauthenticate}
                       data-dismiss="modal"
                     >Log In</button>
@@ -113,8 +113,8 @@ class AccountForm extends jsx.Component {
     );
   }
 
-  accountChange(event) {
-    this.refs.logIn.dataset.callback = event.target.dataset.operation;
+  setCallback(event) {
+    this.refs.buttonLogIn.dataset.callback = event.target.dataset.callback;
   }
 
   async reauthenticate(event) {
@@ -122,17 +122,17 @@ class AccountForm extends jsx.Component {
 
     await this.user.reauthenticateWithCredential(provider.credential(
       this.user.email,
-      this.refs.oldPassword.value
+      this.refs.inputOldPassword.value
     ));
     this[ event.target.dataset.callback ]();
   }
 
   changeEmail() {
-    this.user.updateEmail(this.refs.email.value);
+    this.user.updateEmail(this.refs.inputNewEmail.value);
   }
 
   changePassword() {
-    this.user.updatePassword(this.refs.password.value);
+    this.user.updatePassword(this.refs.inputNewPassword.value);
   }
 
   deleteAccount() {

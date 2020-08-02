@@ -11,7 +11,7 @@ class Slides extends jsx.Component {
   }
 
   render() {
-    const obj =
+    const element =
       <div>
         <div class="shown slide" ref="slide1"></div>
         <div class="hidden slide" ref="slide2"></div>
@@ -22,7 +22,7 @@ class Slides extends jsx.Component {
       this.refs.slide2
     ];
 
-    return obj;
+    return element;
   }
 
   loop() {

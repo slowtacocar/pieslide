@@ -5,7 +5,7 @@ import jsx from "../lib/jsx.js";
 
 class Table extends jsx.Component {
   render() {
-    const obj =
+    const element =
       <div>
         <div class={`input-group${
           this.props.sticky ? " position-sticky b-0 py-2 bg-white" : ""
@@ -31,7 +31,7 @@ class Table extends jsx.Component {
               type="button"
               class="input-group-text"
               id={`inputGroup${this.props.name}Addon`}
-              onclick={this.upload}
+              onclick={this.openProgressModal}
             >Upload</button>
           </div>
         </div>
@@ -73,9 +73,9 @@ class Table extends jsx.Component {
       </div>;
 
     this.$progressModal = jQuery(this.refs.progressModal)
-      .on("shown.bs.modal", this.update);
+      .on("shown.bs.modal", this.upload);
 
-    return obj;
+    return element;
   }
 
   changeUser(docRef, folderRef) {
@@ -85,25 +85,25 @@ class Table extends jsx.Component {
   }
 
   updateFilename(event) {
-    const value = event.target.files[ 0 ].name;
+    const filename = event.target.files[ 0 ].name;
 
-    this.refs.inputGroupLabel.textContent = value;
+    this.refs.inputGroupLabel.textContent = filename;
   }
 
-  upload() {
-    [ this.file ] = this.refs.inputGroup.files;
+  openProgressModal() {
     this.refs.progressBar.classList.remove("bg-danger");
     this.refs.progressBar.style.width = "0";
     this.$progressModal.modal();
   }
 
-  update() {
+  upload() {
+    [ this.file ] = this.refs.inputGroup.files;
     this.folderRef.child(this.file.name).put(this.file)
       .on(
         "state_changed",
         this.updateProgress,
-        this.updateError,
-        this.updateSuccess
+        this.uploadError,
+        this.uploadSuccess
       );
   }
 
@@ -113,13 +113,13 @@ class Table extends jsx.Component {
     this.refs.progressBar.style.width = `${progress}%`;
   }
 
-  updateError() {
+  uploadError() {
     this.refs.progressBar.classList.add("bg-danger");
   }
 
-  updateSuccess() {
+  uploadSuccess() {
     this.$progressModal.modal("hide");
-    this.docRef.update(this.docData(this.file.name));
+    this.docRef.update(this.toObject(this.file.name));
   }
 
   changeData(doc) {

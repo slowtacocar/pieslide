@@ -36,7 +36,7 @@ class LogoTable extends Table {
   async updateTable(data) {
     if (data.name) {
       const url = await this.folderRef.child(data.name).getDownloadURL();
-      const row =
+      const element =
         <tr>
           <th scope="row">{this.name}</th>
           <td>
@@ -44,7 +44,7 @@ class LogoTable extends Table {
               type="button"
               class="btn btn-primary"
               data-link={url}
-              data-target="#previewModalImage"
+              data-target="#modalPreviewImage"
               data-toggle="modal"
             >View Preview</button>
           </td>
@@ -58,7 +58,7 @@ class LogoTable extends Table {
           </td>
         </tr>;
 
-      jsx.render(this.refs.tableBody, row);
+      jsx.render(this.refs.tableBody, element);
     } else {
       jsx.render(this.refs.tableBody);
     }
@@ -69,7 +69,7 @@ class LogoTable extends Table {
     this.docRef.update({ "name": null });
   }
 
-  docData(name) {
+  toObject(name) {
     return { name };
   }
 }

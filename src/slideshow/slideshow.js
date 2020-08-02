@@ -21,7 +21,7 @@ class Slideshow extends jsx.Component {
   }
 
   render() {
-    const obj =
+    const element =
       <div>
         <Slides ref="slides" />
         <Logo ref="logo" />
@@ -31,7 +31,7 @@ class Slideshow extends jsx.Component {
 
     firebase.auth().onAuthStateChanged(this.changeUser);
 
-    return obj;
+    return element;
   }
 
   changeUser(user) {

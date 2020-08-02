@@ -77,13 +77,13 @@ class SettingsForm extends jsx.Component {
               id="inputGroupSize"
               ref="inputGroupSize"
               onchange={this.sizeChanged}
-              aria-describedby="inputGroupSizePercent"
+              aria-describedby="inputGroupSizeAddon"
               min="0"
               max="100"
               step="any"
             ></input>
             <div class="input-group-append">
-              <span class="input-group-text" id="inputGroupSizePercent">%</span>
+              <span class="input-group-text" id="inputGroupSizeAddon">%</span>
             </div>
           </div>
         </div>
@@ -95,15 +95,15 @@ class SettingsForm extends jsx.Component {
         >Refresh Slideshow</button>
 
         <div class="card">
-          <div class="card-header p-0" id="advanced">
+          <div class="card-header p-0" id="advancedSettingsHeader">
             <h2 class="mb-0">
               <button
                 class="btn btn-link btn-block text-left"
                 type="button"
                 data-toggle="collapse"
-                data-target="#collapseAdvanced"
+                data-target="#advancedSettingsBody"
                 aria-expanded="true"
-                aria-controls="collapseAdvanced"
+                aria-controls="advancedSettingsBody"
               >
                 Advanced Settings
               </button>
@@ -111,9 +111,9 @@ class SettingsForm extends jsx.Component {
           </div>
 
           <div
-            id="collapseAdvanced"
+            id="advancedSettingsBody"
             class="collapse"
-            aria-labelledby="advanced"
+            aria-labelledby="advancedSettingsHeader"
           >
             <div class="card-body">
               <div class="input-group">
