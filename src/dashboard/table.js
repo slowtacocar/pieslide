@@ -1,4 +1,5 @@
 /** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
 
 import Preview from "./preview.js";
 import jsx from "../lib/jsx.js";
@@ -6,10 +7,8 @@ import jsx from "../lib/jsx.js";
 class Table extends jsx.Component {
   render() {
     const element =
-      <div class={
-        this.props.sticky ? "sticky" : ""
-      }>
-        <form class="file-form">
+      <>
+        <form class={`file-form${this.props.sticky ? " sticky" : ""}`}>
           <label>
             <span class="file-button">Browse</span>
             <span ref="inputGroupLabel">Choose file</span>
@@ -32,7 +31,7 @@ class Table extends jsx.Component {
           <progress max="1" ref="progressBar"></progress>
         </dialog>
         <Preview ref="preview" video={this.props.video} name={this.props.name}/>
-      </div>;
+      </>;
 
     return element;
   }

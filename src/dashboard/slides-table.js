@@ -1,4 +1,5 @@
 /** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
 
 import "firebase/firestore";
 import "jquery-ui/ui/data";

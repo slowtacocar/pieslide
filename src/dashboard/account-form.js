@@ -1,4 +1,5 @@
 /** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
 
 import "firebase/auth";
 import firebase from "firebase/app";
