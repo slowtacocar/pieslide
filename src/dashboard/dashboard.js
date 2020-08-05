@@ -1,15 +1,11 @@
 /** @jsx this.createElement */
 
-import "./dashboard.scss";
-import "bootstrap/js/dist/collapse";
-import "bootstrap/js/dist/modal";
-import "bootstrap/js/dist/scrollspy";
+import "./scss/dashboard.scss";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 import AccountForm from "./account-form.js";
 import LogoTable from "./logo-table.js";
-import Preview from "./preview.js";
 import SettingsForm from "./settings-form.js";
 import SlidesTable from "./slides-table.js";
 import config from "../lib/config.js";
@@ -28,90 +24,35 @@ class Dashboard extends jsx.Component {
 
   render() {
     const element =
-      <div>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
-          <a class="navbar-brand" href="#">PieSlide</a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#sidebar"
-            aria-controls="sidebar"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse">
-            <ul class="navbar-nav w-100">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">
-                  Dashboard <span class="sr-only">(current)</span>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="slideshow.html" target="_blank">
-                  Slideshow
-                </a>
-              </li>
-            </ul>
-          </div>
-          <button
-            type="button"
-            onclick={this.signOut}
-            class="btn btn-outline-light text-nowrap"
-          >Sign Out</button>
+      <div id="grid">
+        <nav id="navbar">
+          <span>PieSlide</span>
+          <a href="index.html" class="active-link">Dashboard</a>
+          <a href="slideshow.html" target="_blank">Slideshow</a>
+          <button type="button" onclick={this.signOut}>Sign Out</button>
         </nav>
 
-        <div class="row m-0">
-          <ul
-            id="sidebar"
-            class={
-              `nav mt-navbar z-1030 bg-light collapse flex-column nav-pills
-              col-sm-4 col-md-3 col-xl-2 py-2 px-3 pl-sm-0 position-fixed
-              d-sm-block h-sm-100`
-            }
-          >
-            <li class="nav-item">
-              <a class="nav-link active" href="#slides">Slides</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#logo">Logo</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#slideshowSettings">
-                Slideshow Settings
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#accountSettings">Account Settings</a>
-            </li>
-          </ul>
+        <nav id="sidebar">
+          <a href="#slides" class="active-link">Slides</a>
+          <a href="#logo">Logo</a>
+          <a href="#slideshowSettings">Slideshow Settings</a>
+          <a href="#accountSettings">Account Settings</a>
+        </nav>
 
-          <main class="col-sm-8 col-md-9 col-xl-10 ml-auto px-3 pb-3">
+        <main>
+          <div>
             <SlidesTable ref="slidesTable" />
             <LogoTable ref="logoTable" />
             <SettingsForm ref="settingsForm" />
             <AccountForm ref="accountForm" />
-          </main>
-        </div>
-        <div
-          class="alert alert-danger mb-0 fixed-bottom"
-          role="alert"
-          ref="alertError"
-          hidden
-        >
-          <span ref="textError"></span>
-          <button
-            type="button"
-            class="close"
-            aria-label="Close"
-            onclick={this.hideAlertError}
-          >
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <Preview />
+          </div>
+        </main>
+        <dialog role="alert" ref="alertError" id="alert">
+          <div>
+            <span ref="textError"></span>
+            <button type="button" onclick={this.hideAlertError}>&times;</button>
+          </div>
+        </dialog>
       </div>;
 
     this.auth.onAuthStateChanged(this.changeUser);
@@ -147,12 +88,12 @@ class Dashboard extends jsx.Component {
   }
 
   hideAlertError() {
-    this.refs.alertError.hidden = true;
+    this.refs.alertError.close();
   }
 
   showAlertError(msg) {
     this.refs.textError.textContent = msg;
-    this.refs.alertError.hidden = false;
+    this.refs.alertError.show();
 
     return false;
   }

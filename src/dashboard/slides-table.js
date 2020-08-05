@@ -31,33 +31,38 @@ class SlidesTable extends Table {
       ...props,
       "defaultData": { "slides": [] },
       "name": "slide",
-      "sticky": true
+      "sticky": true,
+      "video": true
     });
   }
 
   render() {
     const element =
-      <div>
-        <div id="slides" class="spacer"></div>
-        <h1>Slides</h1>
-        <p class="lead">
-          Use the input at the bottom of the screen to upload images for your
-          slideshow, and drag the table rows to change the order of the slides.
-        </p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">File Name</th>
-              <th scope="col">Preview</th>
-              <th scope="col">Duration</th>
-              <th scope="col">Delete</th>
-            </tr>
-          </thead>
-          <tbody ref="tableBody">
-          </tbody>
-        </table>
+      <section>
+        <header id="slides">
+          <h2>Slides</h2>
+          <p class="lead">
+            Use the input at the bottom of the screen to upload images for your
+            slideshow, and drag the table rows to change the order of the
+            slides.
+          </p>
+        </header>
+        <div class="table-scroller">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">File Name</th>
+                <th scope="col">Preview</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody ref="tableBody">
+            </tbody>
+          </table>
+        </div>
         {super.render()}
-      </div>;
+      </section>;
 
     jQuery(this.refs.tableBody).sortable({
       "stop": this.updateSort
@@ -85,20 +90,18 @@ class SlidesTable extends Table {
         <td>
           <button
             type="button"
-            class="btn btn-primary"
             data-link={url}
-            data-toggle="modal"
             data-type={type}
-            data-target={
+            onclick={
               VIDEO_TYPES.includes(type)
-                ? "#modalPreviewVideo"
-                : "#modalPreviewImage"
+                ? this.refs.preview.showVideo
+                : this.refs.preview.showImage
             }
           >View Preview</button>
         </td>
         <td>
           <input
-            class="form-control duration"
+            class="duration"
             min="0"
             type="number"
             value={file.duration}
@@ -109,7 +112,7 @@ class SlidesTable extends Table {
         </td>
         <td>
           <button
-            class="btn btn-danger"
+            class="delete"
             type="button"
             data-index={index}
             onclick={this.deleteItem}

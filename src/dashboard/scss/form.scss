@@ -1,0 +1,116 @@
+form > * {
+  padding: 0.6rem;
+  border-right: 1px solid rgb(204, 204, 204);
+  border-top: 1px solid rgb(204, 204, 204);
+  border-bottom: 1px solid rgb(204, 204, 204);
+}
+
+form > :first-child {
+  border-top-left-radius: 0.4rem;
+  border-bottom-left-radius: 0.4rem;
+  border-left: 1px solid rgb(204, 204, 204);
+}
+
+form > :last-child {
+  border-top-right-radius: 0.4rem;
+  border-bottom-right-radius: 0.4rem;
+}
+
+form > input,
+form > select {
+  flex-grow: 1;
+}
+
+details {
+  grid-column-end: span 2;
+}
+
+form > label,
+form > button,
+form > span {
+  background: rgb(238, 238, 238);
+}
+
+form > button {
+  transition: background 0.15s;
+}
+
+form > input,
+form > select,
+form > button {
+  border-left: none;
+}
+
+form {
+  display: flex;
+}
+
+.button {
+  padding: 0.6rem;
+  border-radius: 0.4rem;
+  border: 2px solid rgb(238, 68, 68);
+  color: rgb(238, 68, 68);
+  background: none;
+  transition: background 0.15s;
+  grid-column-end: span 2;
+}
+
+.file-button {
+  background: rgb(238, 238, 238);
+  transition: background 0.15s;
+  border-radius: 0.4rem 0 0 0.4rem;
+  border-right: 1px solid rgb(204, 204, 204);
+}
+
+form > button:hover {
+  background: rgb(221, 221, 221);
+}
+
+.file-button:hover {
+  background: rgb(221, 221, 221);
+}
+
+.file-form > label > * {
+  padding: 0.6rem;
+}
+
+.file-form {
+  padding-top: 0.8rem;
+}
+
+.button:hover {
+  background: rgba(238, 68, 68, 0.1);
+}
+
+.file-form > label {
+  background: none;
+  flex-grow: 1;
+  padding: 0;
+  display: flex;
+}
+
+.sticky {
+  position: sticky;
+  bottom: 0;
+  padding-bottom: 0.8rem;
+  background: rgb(255, 255, 255);
+}
+
+.grid {
+  display: grid;
+  column-gap: 0.8rem;
+  row-gap: 0.8rem;
+}
+
+input[type='file'] {
+  opacity: 0;
+  width: 0;
+  padding: 0;
+}
+
+@media (max-width: $xs) {
+  details,
+  .button {
+    grid-column-end: auto;
+  }
+}

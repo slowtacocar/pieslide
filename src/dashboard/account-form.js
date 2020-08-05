@@ -7,135 +7,103 @@ import jsx from "../lib/jsx.js";
 class AccountForm extends jsx.Component {
   render() {
     return (
-      <div>
-        <div class="spacer" id="accountSettings"></div>
-        <h1>Account Settings</h1>
-        <p class="lead">
-          Use the controls to change settings related to your account.
-        </p>
+      <section>
+        <header id="accountSettings">
+          <h2>Account Settings</h2>
+          <p>Use the controls to change settings related to your account.</p>
+        </header>
 
-        <div class="form-row mb-3">
-          <div class="input-group col-md">
-            <input
-              type="email"
-              ref="inputNewEmail"
-              class="form-control"
-              placeholder="New Email"
-              aria-label="New Email"
-            ></input>
-            <div class="input-group-append">
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                data-toggle="modal"
-                data-target="#modalAuth"
-                data-callback="changeEmail"
-                onclick={this.setCallback}
-              >Update</button>
-            </div>
-          </div>
-          <div class="input-group col-md">
+        <div class="grid">
+          <form onsubmit={this.setCallbackAndData}>
+            <input type="email" placeholder="New Email" name="new"></input>
+            <button type="submit" value="changeEmail">Update</button>
+          </form>
+          <form onsubmit={this.setCallbackAndData}>
             <input
               type="password"
-              ref="inputNewPassword"
-              class="form-control"
               placeholder="New Password"
-              aria-label="New Password"
+              name="new"
             ></input>
-            <div class="input-group-append">
-              <button
-                class="btn btn-outline-secondary"
-                type="button"
-                data-toggle="modal"
-                data-target="#modalAuth"
-                data-callback="changePassword"
-                onclick={this.setCallback}
-              >Update</button>
-            </div>
-          </div>
+            <button type="submit" value="changePassword">Update</button>
+          </form>
+          <button
+            class="button"
+            type="button"
+            value="deleteAccount"
+            onclick={this.setCallback}
+          >Delete Account</button>
         </div>
-        <button
-          class="btn btn-outline-danger btn-block"
-          type="button"
-          data-toggle="modal"
-          data-target="#modalAuth"
-          data-callback="deleteAccount"
-          onclick={this.setCallback}
-        >Delete Account</button>
 
-        <div
-          class="modal fade"
-          id="modalAuth"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby="modalLabelAuth"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="modalLabelAuth">
-                  Enter Current Password
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="input-group">
-                  <input
-                    type="password"
-                    class="form-control"
-                    placeholder="Current Password"
-                    aria-label="Current Password"
-                    ref="inputCurrentPassword"
-                  ></input>
-                  <div class="input-group-append">
-                    <button
-                      class="btn btn-outline-primary"
-                      type="button"
-                      ref="buttonLogIn"
-                      onclick={this.reauthenticate}
-                      data-dismiss="modal"
-                    >Log In</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        <dialog ref="dialog" class="modal">
+          <h3>Enter current password:</h3>
+          <form method="dialog" onsubmit={this.reauthenticateFormSubmitted}>
+            <input
+              type="password"
+              placeholder="Current Password"
+              name="current"
+            ></input>
+            <button type="submit" ref="buttonLogIn" value="{}">Log In</button>
+          </form>
+        </dialog>
+      </section>
     );
   }
 
-  setCallback(event) {
-    this.refs.buttonLogIn.dataset.callback = event.target.dataset.callback;
+  setCallbackAndData(event) {
+    const formData = new FormData(event.target);
+
+    this.refs.buttonLogIn.value = JSON.stringify({
+      "new": formData.get("new")
+    });
+    this.refs.dialog.onclose = this[ event.submitter.value ];
+    this.refs.dialog.showModal();
+
+    return false;
   }
 
-  async reauthenticate(event) {
+  setCallback(event) {
+    this.refs.dialog.onclose = this[ event.target.value ];
+    this.refs.dialog.showModal();
+
+    return false;
+  }
+
+  reauthenticateFormSubmitted(event) {
+    const formData = new FormData(event.target);
+
+    this.refs.buttonLogIn.value = JSON.stringify({
+      ...JSON.parse(this.refs.buttonLogIn.value),
+      "current": formData.get("current")
+    });
+  }
+
+  async reauthenticate(password) {
     const provider = firebase.auth.EmailAuthProvider;
 
     await this.user.reauthenticateWithCredential(provider.credential(
       this.user.email,
-      this.refs.inputOldPassword.value
+      password
     ));
-    this[ event.target.dataset.callback ]();
   }
 
-  changeEmail() {
-    this.user.updateEmail(this.refs.inputNewEmail.value);
+  async changeEmail(event) {
+    const data = JSON.parse(event.target.returnValue);
+
+    await this.reauthenticate(data.current);
+    this.user.updateEmail(data.new);
   }
 
-  changePassword() {
-    this.user.updatePassword(this.refs.inputNewPassword.value);
+  async changePassword(event) {
+    const data = JSON.parse(event.target.returnValue);
+
+    await this.reauthenticate(data.current);
+    this.user.updatePassword(data.new);
   }
 
-  deleteAccount() {
+  async deleteAccount(event) {
+    const data = JSON.parse(event.target.returnValue);
+
+    await this.reauthenticate(data.current);
     this.user.delete();
   }
 
