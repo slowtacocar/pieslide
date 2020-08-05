@@ -55,6 +55,11 @@ class Component {
     // Create an instance of `createElement` that can access `this`
     this.createElement = createElement;
   }
+
+  render() {
+    // Default render function
+    return "";
+  }
 }
 
 function render(container, ...elements) {
