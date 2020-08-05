@@ -28,13 +28,11 @@
   "dependencies": {
     "@babel/runtime": "^7.10.5",
     "@babel/runtime-corejs3": "^7.10.5",
-    "bootstrap": "^4.5.0",
     "firebase": "^7.17.1",
     "firebaseui": "^4.6.0",
     "functions": "file:functions",
     "jquery": "^3.0.0",
-    "jquery-ui": "^1.12.1",
-    "popper.js": "^1.16.0"
+    "jquery-ui": "^1.12.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
