@@ -1,3 +1,15 @@
+/* eslint-disable max-classes-per-file */
+
+function appendArray(element, children) {
+  for (const child of children) {
+    if (Array.isArray(child)) {
+      appendArray(element, child);
+    } else {
+      element.append(child);
+    }
+  }
+}
+
 function createElement(type, props, ...children) {
   // Create an element, generally from JSX
 
@@ -5,7 +17,7 @@ function createElement(type, props, ...children) {
     // `type` is a string, so create a normal DOM element
     const element = document.createElement(type);
 
-    element.append(...children);
+    appendArray(element, children);
 
     for (const prop in props) {
       if (prop === "ref") {
@@ -24,7 +36,8 @@ function createElement(type, props, ...children) {
   }
 
   // `type` is a component, so render it
-  const component = new type(props); // eslint-disable-line babel/new-cap
+  // eslint-disable-next-line babel/new-cap
+  const component = new type(props, children);
 
   if (props && this.refs) {
     // Add the component to the refs
@@ -62,6 +75,17 @@ class Component {
   }
 }
 
+class Fragment extends Component {
+  constructor(props, children) {
+    super(props);
+    this.children = children;
+  }
+
+  render() {
+    return this.children;
+  }
+}
+
 function render(container, ...elements) {
   // Empty the container, then add all elements to it
   while (container.firstChild) {
@@ -69,12 +93,13 @@ function render(container, ...elements) {
   }
 
   if (elements) {
-    container.append(...elements);
+    appendArray(container, elements);
   }
 }
 
 export default {
   Component,
+  Fragment,
   createElement,
   render
 };

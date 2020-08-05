@@ -20,22 +20,23 @@
   border: none;
   background: rgb(238, 85, 85);
   color: rgb(255, 255, 255);
-}
-
-#alert > div {
   display: flex;
 }
 
-#alert > div > span {
+#alert:not([open]) {
+  display: none;
+}
+
+#alert > span {
   flex-grow: 1;
 }
 
-#alert > div > button {
+#alert > button {
   background: none;
   border: none;
   color: inherit;
 }
 
-#alert > div > button:hover {
+#alert > button:hover {
   color: rgb(221, 221, 221);
 }

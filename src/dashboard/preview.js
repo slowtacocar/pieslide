@@ -1,11 +1,12 @@
 /** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
 
 import jsx from "../lib/jsx.js";
 
 class Preview extends jsx.Component {
   render() {
     const element =
-      <div>
+      <>
         <dialog
           class="modal preview"
           ref="modalImagePreview"
@@ -29,7 +30,7 @@ class Preview extends jsx.Component {
             </dialog>
             : ""
         }
-      </div>;
+      </>;
 
     return element;
   }

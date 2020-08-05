@@ -11,19 +11,15 @@ textarea {
 body {
   margin: 0;
   font-family: $font-family;
+  display: grid;
 }
 
 main > div {
   padding: 0.8rem;
 }
 
-#grid {
-  display: grid;
-}
-
 html,
-body,
-#grid {
+body {
   height: 100%;
 }
 

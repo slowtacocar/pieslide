@@ -1,4 +1,5 @@
 /** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
 
 import Table from "./table.js";
 import jsx from "../lib/jsx.js";

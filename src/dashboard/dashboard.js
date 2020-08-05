@@ -1,4 +1,5 @@
 /** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
 
 import "./scss/dashboard.scss";
 import "firebase/auth";
@@ -24,7 +25,7 @@ class Dashboard extends jsx.Component {
 
   render() {
     const element =
-      <div id="grid">
+      <>
         <nav id="navbar">
           <span>PieSlide</span>
           <a href="index.html" class="active-link">Dashboard</a>
@@ -48,12 +49,10 @@ class Dashboard extends jsx.Component {
           </div>
         </main>
         <dialog role="alert" ref="alertError" id="alert">
-          <div>
-            <span ref="textError"></span>
-            <button type="button" onclick={this.hideAlertError}>&times;</button>
-          </div>
+          <span ref="textError"></span>
+          <button type="button" onclick={this.hideAlertError}>&times;</button>
         </dialog>
-      </div>;
+      </>;
 
     this.auth.onAuthStateChanged(this.changeUser);
 

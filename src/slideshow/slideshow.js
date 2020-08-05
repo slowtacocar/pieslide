@@ -1,4 +1,5 @@
 /** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
 
 import "./slideshow.scss";
 import "firebase/auth";
@@ -22,12 +23,12 @@ class Slideshow extends jsx.Component {
 
   render() {
     const element =
-      <div>
+      <>
         <Slides ref="slides" />
         <Logo ref="logo" />
         <News ref="news" />
         <Time ref="time" />
-      </div>;
+      </>;
 
     firebase.auth().onAuthStateChanged(this.changeUser);
 

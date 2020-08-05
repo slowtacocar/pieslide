@@ -1,4 +1,5 @@
 /** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
 
 import "./404.scss";
 import jsx from "../lib/jsx.js";
