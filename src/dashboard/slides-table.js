@@ -31,49 +31,41 @@ class SlidesTable extends Table {
       ...props,
       "defaultData": { "slides": [] },
       "name": "slide",
-      "sticky": true
+      "sticky": true,
+      "video": true
     });
   }
 
   render() {
     const element =
-      <div>
-        <div id="slides" class="spacer"></div>
-        <h1>Slides</h1>
-        <p class="lead">
-          Use the input at the bottom of the screen to upload images for your
-          slideshow, and drag the table rows to change the order of the slides.
-        </p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">File Name</th>
-              <th scope="col">Preview</th>
-              <th scope="col">Duration</th>
-              <th scope="col">Delete</th>
-            </tr>
-          </thead>
-          <tbody ref="tableBody">
-          </tbody>
-        </table>
-        {super.render()}
-        <div
-          class="alert alert-warning mb-0 fixed-bottom"
-          role="alert"
-          ref="alertSave"
-          hidden
-        >
-          <button class="btn btn-primary" onclick={this.save}>
-            Save Changes
-          </button>
-          <button class="btn btn-secondary" onclick={this.stopSort}>
-            Discard Changes
-          </button>
+      <section>
+        <header id="slides">
+          <h2>Slides</h2>
+          <p class="lead">
+            Use the input at the bottom of the screen to upload images for your
+            slideshow, and drag the table rows to change the order of the
+            slides.
+          </p>
+        </header>
+        <div class="table-scroller">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">File Name</th>
+                <th scope="col">Preview</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody ref="tableBody">
+            </tbody>
+          </table>
         </div>
-      </div>;
+        {super.render()}
+      </section>;
 
     jQuery(this.refs.tableBody).sortable({
-      "stop": this.startSort
+      "stop": this.updateSort
     });
 
     return element;
@@ -98,30 +90,29 @@ class SlidesTable extends Table {
         <td>
           <button
             type="button"
-            class="btn btn-primary"
             data-link={url}
-            data-toggle="modal"
             data-type={type}
-            data-target={
+            onclick={
               VIDEO_TYPES.includes(type)
-                ? "#modalPreviewVideo"
-                : "#modalPreviewImage"
+                ? this.refs.preview.showVideo
+                : this.refs.preview.showImage
             }
           >View Preview</button>
         </td>
         <td>
           <input
-            class="form-control duration"
+            class="duration"
             min="0"
             type="number"
             value={file.duration}
+            data-index={index}
             hidden={VIDEO_TYPES.includes(type)}
-            onchange={this.startSort}
+            onchange={this.updateDuration}
           ></input>
         </td>
         <td>
           <button
-            class="btn btn-danger delete"
+            class="delete"
             type="button"
             data-index={index}
             onclick={this.deleteItem}
@@ -158,28 +149,19 @@ class SlidesTable extends Table {
     this.defaultDuration = doc.get("duration");
   }
 
-  updateSortStatus(done) {
-    for (const element of this.refs.tableBody.querySelectorAll(".delete")) {
-      element.disabled = !done;
-    }
-
-    this.refs.alertSave.hidden = done;
-  }
-
-  startSort() {
-    this.updateSortStatus(false);
-  }
-
-  stopSort() {
-    this.updateSortStatus(true);
-  }
-
-  save() {
+  updateSort() {
     const slides = Array.from(this.refs.tableBody.children)
       .map(this.getObject);
 
     this.docRef.update({ slides });
-    this.stopSort();
+  }
+
+  updateDuration(event) {
+    const { index } = event.target.dataset;
+    const slide = this.slides[ index ];
+
+    slide.duration = event.target.value;
+    this.docRef.update({ "slides": this.slides });
   }
 
   getObject(row) {

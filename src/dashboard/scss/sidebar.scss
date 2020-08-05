@@ -1,0 +1,30 @@
+#sidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 0.8rem 0.8rem 0.8rem 0;
+  background: rgb(238, 238, 238);
+  flex-grow: 1;
+}
+
+#sidebar > a {
+  text-decoration: none;
+  color: rgb(51, 85, 255);
+  padding: 0.6rem;
+}
+
+#sidebar > a.active-link {
+  text-decoration: none;
+  color: rgb(238, 238, 238);
+  background: rgb(51, 85, 255);
+  border-radius: 0 0.4rem 0.4rem 0;
+}
+
+@media (max-width: $sm) {
+  #sidebar {
+    display: none;
+  }
+
+  main {
+    grid-column-end: span 2;
+  }
+}

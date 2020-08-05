@@ -5,31 +5,38 @@ import jsx from "../lib/jsx.js";
 
 class LogoTable extends Table {
   constructor(props) {
-    super({ ...props, "defaultData": { "name": null }, "name": "logo" });
+    super({
+      ...props,
+      "defaultData": { "name": null },
+      "name": "logo"
+    });
   }
 
   render() {
     return (
-      <div>
-        <div id="logo" class="spacer"></div>
-        <h1>Logo</h1>
-        <p class="lead">
-          Use the input to change the logo that appears in the corner
-          of your slideshow.
-        </p>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Current Logo</th>
-              <th scope="col">Preview</th>
-              <th scope="col">Delete</th>
-            </tr>
-          </thead>
-          <tbody ref="tableBody">
-          </tbody>
-        </table>
+      <section>
+        <header id="logo">
+          <h2>Logo</h2>
+          <p>
+            Use the input to change the logo that appears in the corner
+            of your slideshow.
+          </p>
+        </header>
+        <div class="table-scroller">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Current Logo</th>
+                <th scope="col">Preview</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody ref="tableBody">
+            </tbody>
+          </table>
+        </div>
         {super.render()}
-      </div>
+      </section>
     );
   }
 
@@ -38,20 +45,18 @@ class LogoTable extends Table {
       const url = await this.folderRef.child(data.name).getDownloadURL();
       const element =
         <tr>
-          <th scope="row">{this.name}</th>
+          <th scope="row">{data.name}</th>
           <td>
             <button
               type="button"
-              class="btn btn-primary"
               data-link={url}
-              data-target="#modalPreviewImage"
-              data-toggle="modal"
+              onclick={this.refs.preview.showImage}
             >View Preview</button>
           </td>
           <td>
             <button
               type="button"
-              class="btn btn-danger delete"
+              class="delete"
               onclick={this.deleteItem}
               data-name={data.name}
             >Delete</button>

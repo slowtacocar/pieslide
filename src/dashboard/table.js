@@ -1,79 +1,38 @@
 /** @jsx this.createElement */
 
-import jQuery from "jquery";
+import Preview from "./preview.js";
 import jsx from "../lib/jsx.js";
 
 class Table extends jsx.Component {
   render() {
     const element =
-      <div>
-        <div class={`input-group${
-          this.props.sticky ? " position-sticky b-0 py-2 bg-white" : ""
-        }`}>
-          <div class="custom-file">
+      <div class={
+        this.props.sticky ? "sticky" : ""
+      }>
+        <form class="file-form">
+          <label>
+            <span class="file-button">Browse</span>
+            <span ref="inputGroupLabel">Choose file</span>
             <input
               type="file"
-              class="custom-file-input"
-              id={`inputGroup${this.props.name}`}
               accept="image/*"
               onchange={this.updateFilename}
               ref="inputGroup"
             ></input>
-            <label
-              class="custom-file-label mb-0"
-              for={`inputGroup${this.props.name}`}
-              aria-describedby={`inputGroup${this.props.name}Addon`}
-              ref="inputGroupLabel"
-            >Choose file</label>
-          </div>
-          <div class="input-group-append">
-            <button
-              type="button"
-              class="input-group-text"
-              id={`inputGroup${this.props.name}Addon`}
-              onclick={this.openProgressModal}
-            >Upload</button>
-          </div>
-        </div>
-        <div
-          class="modal fade"
+          </label>
+          <button
+            type="button"
+            onclick={this.openProgressModal}
+          >Upload</button>
+        </form>
+        <dialog
+          class="modal"
           ref="progressModal"
-          tabindex="-1"
-          role="dialog"
-          aria-labelledby={`${name}ProgressModalLabel`}
-          aria-hidden="true"
         >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id={`${name}ProgressModalLabel`}>
-                  Uploading {this.props.name}
-                </h5>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="progress">
-                  <div
-                    class="progress-bar"
-                    role="progressbar"
-                    ref="progressBar"
-                  ></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+          <progress max="1" ref="progressBar"></progress>
+        </dialog>
+        <Preview ref="preview" video={this.props.video} name={this.props.name}/>
       </div>;
-
-    this.$progressModal = jQuery(this.refs.progressModal)
-      .on("shown.bs.modal", this.upload);
 
     return element;
   }
@@ -91,34 +50,26 @@ class Table extends jsx.Component {
   }
 
   openProgressModal() {
-    this.refs.progressBar.classList.remove("bg-danger");
-    this.refs.progressBar.style.width = "0";
-    this.$progressModal.modal();
-  }
-
-  upload() {
+    this.refs.progressBar.value = 0;
+    this.refs.progressModal.showModal();
     [ this.file ] = this.refs.inputGroup.files;
     this.folderRef.child(this.file.name).put(this.file)
       .on(
         "state_changed",
         this.updateProgress,
-        this.uploadError,
+        null,
         this.uploadSuccess
       );
   }
 
   updateProgress(snapshot) {
-    const progress = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+    const progress = snapshot.bytesTransferred / snapshot.totalBytes;
 
-    this.refs.progressBar.style.width = `${progress}%`;
-  }
-
-  uploadError() {
-    this.refs.progressBar.classList.add("bg-danger");
+    this.refs.progressBar.value = progress;
   }
 
   uploadSuccess() {
-    this.$progressModal.modal("hide");
+    this.refs.progressModal.close();
     this.docRef.update(this.toObject(this.file.name));
   }
 

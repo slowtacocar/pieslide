@@ -1,44 +1,55 @@
-@import 'bootstrap/scss/bootstrap';
+$font-family: Arial, sans-serif;
+$font-size-3: 1.17em;
+$font-size-2: 1.5em;
+
+@mixin pill {
+  font-weight: 700;
+  background: rgb(255, 255, 255);
+  margin: 0;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
 
 body {
   overflow-x: hidden;
+  background: rgb(0, 0, 0);
   margin: 0;
-  background: $black;
+  font-family: $font-family;
 }
 
-.loose-fixed-bottom {
+#logo {
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+#news {
+  @include pill();
+
+  line-height: 1.2;
   position: fixed;
   bottom: 0;
   transform: translate(100vw);
+  white-space: nowrap;
+  font-size: $font-size-3;
 }
 
-.slide {
+#slides > * {
   position: absolute;
   left: 0;
   right: 0;
-  height: calc(100vh - 4rem - 2px);
+  height: calc(100vh - 2rem - 1.17em * 1.2);
 }
 
 .hidden {
   opacity: 0;
 }
 
-.no-wrap {
-  white-space: nowrap;
-}
+#time {
+  @include pill();
 
-.bold {
-  font-weight: $font-weight-bolder;
-}
-
-.fixed-top-left {
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-
-.fixed-top-right {
   position: fixed;
   top: 0;
   right: 0;
+  font-size: $font-size-2;
 }

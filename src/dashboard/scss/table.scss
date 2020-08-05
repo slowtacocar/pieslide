@@ -1,0 +1,59 @@
+td > button {
+  padding: 0.6rem;
+  border-radius: 0.4rem;
+  background: rgb(51, 85, 255);
+  transition: background 0.15s;
+  border: none;
+  color: rgb(255, 255, 255);
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+td > button.delete {
+  background: rgb(238, 68, 68);
+}
+
+td > input {
+  border: 1px solid rgb(204, 204, 204);
+  border-radius: 0.4rem;
+  padding: 0.6rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+td > button:hover {
+  background: rgb(17, 17, 238);
+  transition: background 0.15s;
+}
+
+td > button.delete:hover {
+  background: rgb(238, 34, 34);
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table-scroller {
+  overflow-x: auto;
+}
+
+tr:nth-child(even) {
+  background-color: rgb(246, 246, 246);
+}
+
+thead {
+  border-top: 1px solid rgb(204, 204, 204);
+  border-bottom: 2px solid rgb(204, 204, 204);
+}
+
+th {
+  font-weight: 700;
+}
+
+td,
+th {
+  padding: 0.8rem;
+}

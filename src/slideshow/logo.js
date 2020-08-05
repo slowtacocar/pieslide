@@ -5,7 +5,7 @@ import jsx from "../lib/jsx.js";
 class Logo extends jsx.Component {
   render() {
     return (
-      <div ref="logo" class="fixed-top-left"></div>
+      <div ref="logo" id="logo"></div>
     );
   }
 
