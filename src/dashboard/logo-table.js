@@ -45,7 +45,7 @@ class LogoTable extends Table {
       const url = await this.folderRef.child(data.name).getDownloadURL();
       const element =
         <tr>
-          <th scope="row">{this.name}</th>
+          <th scope="row">{data.name}</th>
           <td>
             <button
               type="button"
