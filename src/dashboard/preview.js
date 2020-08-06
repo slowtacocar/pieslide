@@ -12,7 +12,7 @@ class Preview extends jsx.Component {
           ref="modalImagePreview"
         >
           <img ref="imagePreview"></img>
-          <form method="dialog">
+          <form class="form" method="dialog">
             <button type="submit">Close</button>
           </form>
         </dialog>
@@ -24,7 +24,7 @@ class Preview extends jsx.Component {
               onclose={this.closeVideo}
             >
               <div id={`modalBodyPreviewVideo${this.props.name}`}></div>
-              <form method="dialog">
+              <form class="form" method="dialog">
                 <button type="submit">Close</button>
               </form>
             </dialog>

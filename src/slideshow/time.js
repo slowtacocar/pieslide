@@ -6,7 +6,7 @@ import jsx from "../lib/jsx.js";
 class Time extends jsx.Component {
   render() {
     const element =
-      <p id="time" ref="time"></p>;
+      <time id="time" ref="time"></time>;
 
     window.setInterval(this.loop, 1000);
 

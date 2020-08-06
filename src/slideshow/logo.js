@@ -6,7 +6,7 @@ import jsx from "../lib/jsx.js";
 class Logo extends jsx.Component {
   render() {
     return (
-      <div ref="logo" id="logo"></div>
+      <img ref="logo" id="logo" crossorigin="anonymous"></img>
     );
   }
 
@@ -16,8 +16,15 @@ class Logo extends jsx.Component {
     settingsRef.onSnapshot(this.changeSettings);
   }
 
-  changeData(doc) {
-    this.setImage(doc.get("name"), this.folderRef);
+  async changeData(doc) {
+    const name = doc.get("name");
+
+    if (name) {
+      this.refs.logo.hidden = false;
+      this.refs.logo.src = await this.folderRef.child(name).getDownloadURL();
+    } else {
+      this.refs.logo.hidden = true;
+    }
   }
 
   changeSettings(doc) {
@@ -25,17 +32,6 @@ class Logo extends jsx.Component {
 
     this.refs.logo.style.width = `${size}vw`;
     this.refs.logo.style.height = `${size}vh`;
-  }
-
-  async setImage(name, ref) {
-    if (name) {
-      const url = await ref.child(name).getDownloadURL();
-
-      this.refs.logo.style.background =
-        `url(${url}) top left/contain no-repeat`;
-    } else {
-      this.refs.logo.style.background = "none";
-    }
   }
 }
 

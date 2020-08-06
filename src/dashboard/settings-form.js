@@ -6,15 +6,15 @@ import jsx from "../lib/jsx.js";
 class SettingsForm extends jsx.Component {
   render() {
     return (
-      <section>
-        <header id="slideshowSettings">
-          <h2>Slideshow Settings</h2>
+      <section id="slideshowSettings">
+        <header>
+          <h1>Slideshow Settings</h1>
           <p>
             Use the controls to change some general settings for your slideshow.
           </p>
         </header>
         <div class="grid">
-          <form>
+          <div class="form">
             <label for="inputGroupTime">
               Time Visibility
             </label>
@@ -26,9 +26,9 @@ class SettingsForm extends jsx.Component {
               <option value="show">Show</option>
               <option value="hide">Hide</option>
             </select>
-          </form>
+          </div>
 
-          <form>
+          <div class="form">
             <label for="inputGroupDuration">
               Default Slide Duration
             </label>
@@ -40,8 +40,8 @@ class SettingsForm extends jsx.Component {
               min="0"
               step="any"
             ></input>
-          </form>
-          <form>
+          </div>
+          <div class="form">
             <label for="inputGroupTransition">
               Transition Time
             </label>
@@ -53,9 +53,9 @@ class SettingsForm extends jsx.Component {
               min="0"
               step="any"
             ></input>
-          </form>
+          </div>
 
-          <form>
+          <div class="form">
             <label for="inputGroupSize">
               Logo Size
             </label>
@@ -69,7 +69,7 @@ class SettingsForm extends jsx.Component {
               step="any"
             ></input>
             <span>%</span>
-          </form>
+          </div>
 
           <button
             class="button"
@@ -79,7 +79,7 @@ class SettingsForm extends jsx.Component {
 
           <details>
             <summary>Advanced Settings</summary>
-            <form>
+            <div class="form">
               <label for="inputGroupNews">
                 News Sources
               </label>
@@ -89,7 +89,7 @@ class SettingsForm extends jsx.Component {
                 ref="inputGroupNews"
                 onchange={this.newsChanged}
               ></input>
-            </form>
+            </div>
           </details>
         </div>
       </section>

@@ -15,9 +15,9 @@ class LogoTable extends Table {
 
   render() {
     return (
-      <section>
-        <header id="logo">
-          <h2>Logo</h2>
+      <section id="logo">
+        <header>
+          <h1>Logo</h1>
           <p>
             Use the input to change the logo that appears in the corner
             of your slideshow.

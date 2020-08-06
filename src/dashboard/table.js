@@ -8,7 +8,7 @@ class Table extends jsx.Component {
   render() {
     const element =
       <>
-        <form class={`file-form${this.props.sticky ? " sticky" : ""}`}>
+        <div class={`form file-form${this.props.sticky ? " sticky" : ""}`}>
           <label>
             <span class="file-button">Browse</span>
             <span ref="inputGroupLabel">Choose file</span>
@@ -23,7 +23,7 @@ class Table extends jsx.Component {
             type="button"
             onclick={this.openProgressModal}
           >Upload</button>
-        </form>
+        </div>
         <dialog
           class="modal"
           ref="progressModal"

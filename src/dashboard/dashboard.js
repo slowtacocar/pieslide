@@ -48,10 +48,10 @@ class Dashboard extends jsx.Component {
             <AccountForm ref="accountForm" />
           </div>
         </main>
-        <dialog role="alert" ref="alertError" id="alert">
-          <span ref="textError"></span>
+        <p ref="error" role="alert" id="alert" hidden>
+          <span ref="errorSpan"></span>
           <button type="button" onclick={this.hideAlertError}>&times;</button>
-        </dialog>
+        </p>
       </>;
 
     this.auth.onAuthStateChanged(this.changeUser);
@@ -87,12 +87,12 @@ class Dashboard extends jsx.Component {
   }
 
   hideAlertError() {
-    this.refs.alertError.close();
+    this.refs.error.hidden = true;
   }
 
   showAlertError(msg) {
-    this.refs.textError.textContent = msg;
-    this.refs.alertError.show();
+    this.refs.errorSpan.textContent = msg;
+    this.refs.error.hidden = false;
 
     return false;
   }

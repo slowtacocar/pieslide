@@ -7,12 +7,6 @@ const NEWS_SPEED = 0.15;
 const RSS_API_URL = "https://api.rss2json.com/v1/api.json?rss_url=";
 
 class News extends jsx.Component {
-  constructor(props) {
-    super(props);
-    this.ii = -1;
-    this.isRunning = false;
-  }
-
   render() {
     return (
       <p ref="news" id="news"></p>
