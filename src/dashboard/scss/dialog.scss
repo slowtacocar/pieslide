@@ -16,14 +16,17 @@
 #alert {
   position: fixed;
   bottom: 0;
-  width: auto;
+  width: 100%;
   border: none;
   background: rgb(238, 85, 85);
   color: rgb(255, 255, 255);
   display: flex;
+  margin: 0;
+  padding: 0.6rem;
+  box-sizing: border-box;
 }
 
-#alert:not([open]) {
+#alert[hidden] {
   display: none;
 }
 

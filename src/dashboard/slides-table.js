@@ -39,10 +39,10 @@ class SlidesTable extends Table {
 
   render() {
     const element =
-      <section>
-        <header id="slides">
-          <h2>Slides</h2>
-          <p class="lead">
+      <section id="slides">
+        <header>
+          <h1>Slides</h1>
+          <p>
             Use the input at the bottom of the screen to upload images for your
             slideshow, and drag the table rows to change the order of the
             slides.

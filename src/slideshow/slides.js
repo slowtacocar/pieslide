@@ -6,32 +6,21 @@ import jsx from "../lib/jsx.js";
 const LOAD_TIME = 1000;
 
 class Slides extends jsx.Component {
-  constructor(props) {
-    super(props);
-    this.isRunning = false;
-  }
-
   render() {
-    const element =
-      <div id="slides">
-        <div ref="slide1"></div>
-        <div class="hidden" ref="slide2"></div>
-      </div>;
-
-    this.slideElements = [
-      this.refs.slide1,
-      this.refs.slide2
-    ];
-
-    return element;
+    return (
+      <>
+        <img class="slide" ref="slide1" crossorigin="anonymous"></img>
+        <img class="slide hidden" ref="slide2" crossorigin="anonymous"></img>
+      </>
+    );
   }
 
   loop() {
     if (this.slides[ this.index ]) {
       const duration = this.slides[ this.index ].duration * 1000;
 
-      for (const slideElement of this.slideElements) {
-        slideElement.classList.toggle("hidden");
+      for (const ref in this.refs) {
+        this.refs[ ref ].classList.toggle("hidden");
       }
 
       this.isRunning = true;
@@ -44,10 +33,9 @@ class Slides extends jsx.Component {
   }
 
   preload() {
-    for (const slideElement of this.slideElements) {
-      if (slideElement.classList.contains("hidden")) {
-        slideElement.style.background =
-          `black url(${this.urls[ this.index ]}) center/contain no-repeat`;
+    for (const ref in this.refs) {
+      if (this.refs[ ref ].classList.contains("hidden")) {
+        this.refs[ ref ].src = this.urls[ this.index ];
       }
     }
   }
@@ -58,28 +46,12 @@ class Slides extends jsx.Component {
     settingsRef.onSnapshot(this.changeSettings);
   }
 
-  changeData(doc) {
-    this.setData(
-      doc.get("slides"),
-      this.folderRef
-    );
-  }
+  async changeData(doc) {
+    this.slides = doc.get("slides");
 
-  async setData(data, ref) {
-    this.ref = ref;
-    this.slides = data;
+    const urls = await Promise.all(this.slides.map(this.getUrl));
 
-    const url = await Promise.all(data.map(this.getUrl));
-
-    this.setVars(url);
-  }
-
-  getUrl(slide) {
-    return this.ref.child(slide.name).getDownloadURL();
-  }
-
-  setVars(url) {
-    this.urls = url;
+    this.urls = urls;
     this.index = 0;
 
     if (!this.isRunning) {
@@ -87,9 +59,13 @@ class Slides extends jsx.Component {
     }
   }
 
+  getUrl(slide) {
+    return this.folderRef.child(slide.name).getDownloadURL();
+  }
+
   changeSettings(doc) {
-    for (const slideElement of this.slideElements) {
-      slideElement.style.transition = `opacity ${doc.get("transition")}s`;
+    for (const ref in this.refs) {
+      this.refs[ ref ].style.transition = `opacity ${doc.get("transition")}s`;
     }
   }
 }

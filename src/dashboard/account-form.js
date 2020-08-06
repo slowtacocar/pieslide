@@ -8,18 +8,18 @@ import jsx from "../lib/jsx.js";
 class AccountForm extends jsx.Component {
   render() {
     return (
-      <section>
-        <header id="accountSettings">
-          <h2>Account Settings</h2>
+      <section id="accountSettings">
+        <header>
+          <h1>Account Settings</h1>
           <p>Use the controls to change settings related to your account.</p>
         </header>
 
         <div class="grid">
-          <form onsubmit={this.setCallbackAndData}>
+          <form class="form" onsubmit={this.setCallbackAndData}>
             <input type="email" placeholder="New Email" name="new"></input>
             <button type="submit" value="changeEmail">Update</button>
           </form>
-          <form onsubmit={this.setCallbackAndData}>
+          <form class="form" onsubmit={this.setCallbackAndData}>
             <input
               type="password"
               placeholder="New Password"
@@ -37,7 +37,11 @@ class AccountForm extends jsx.Component {
 
         <dialog ref="dialog" class="modal">
           <h3>Enter current password:</h3>
-          <form method="dialog" onsubmit={this.reauthenticateFormSubmitted}>
+          <form
+            class="form"
+            method="dialog"
+            onsubmit={this.reauthenticateFormSubmitted}
+          >
             <input
               type="password"
               placeholder="Current Password"
