@@ -12,6 +12,10 @@
   padding: $padding-inline;
 }
 
+#sidebar > a:not(.active-link) {
+  transition: color 0.15s;
+}
+
 #sidebar > a.active-link {
   text-decoration: none;
   color: $background-gray;
@@ -19,7 +23,7 @@
   border-radius: 0 $border-radius $border-radius 0;
 }
 
-#sidebar > a:hover {
+#sidebar > a:not(.active-link):hover {
   color: $blue-hover;
 }
 
