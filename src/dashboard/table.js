@@ -2,6 +2,7 @@
 /** @jsxFrag jsx.Fragment */
 
 import Preview from "./preview.js";
+import dialogPolyfill from "dialog-polyfill";
 import jsx from "../lib/jsx.js";
 
 class Table extends jsx.Component {
@@ -28,6 +29,8 @@ class Table extends jsx.Component {
         </dialog>
         <Preview ref="preview" video={this.props.video} name={this.props.name}/>
       </>;
+
+    dialogPolyfill.registerDialog(this.refs.progressModal);
 
     return element;
   }

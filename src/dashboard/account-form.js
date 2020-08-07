@@ -2,12 +2,13 @@
 /** @jsxFrag jsx.Fragment */
 
 import "firebase/auth";
+import dialogPolyfill from "dialog-polyfill";
 import firebase from "firebase/app";
 import jsx from "../lib/jsx.js";
 
 class AccountForm extends jsx.Component {
   render() {
-    return (
+    const element =
       <section id="accountSettings">
         <header>
           <h1>Account Settings</h1>
@@ -50,8 +51,11 @@ class AccountForm extends jsx.Component {
             <button type="submit" ref="buttonLogIn" value="{}">Log In</button>
           </form>
         </dialog>
-      </section>
-    );
+      </section>;
+
+    dialogPolyfill.registerDialog(this.refs.dialog);
+
+    return element;
   }
 
   setCallbackAndData(event) {
