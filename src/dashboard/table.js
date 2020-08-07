@@ -8,17 +8,13 @@ class Table extends jsx.Component {
   render() {
     const element =
       <>
-        <div class={`form file-form${this.props.sticky ? " sticky" : ""}`}>
-          <label>
-            <span class="file-button">Browse</span>
-            <span ref="inputGroupLabel">Choose file</span>
-            <input
-              type="file"
-              accept="image/*"
-              onchange={this.updateFilename}
-              ref="inputGroup"
-            ></input>
-          </label>
+        <div class={`form padding ${this.props.sticky ? " sticky" : ""}`}>
+          <input
+            type="file"
+            accept="image/*"
+            onchange={this.updateFilename}
+            ref="inputGroup"
+          ></input>
           <button
             type="button"
             onclick={this.openProgressModal}
@@ -40,12 +36,6 @@ class Table extends jsx.Component {
     this.folderRef = folderRef;
     this.docRef = docRef;
     this.docRef.onSnapshot(this.changeData);
-  }
-
-  updateFilename(event) {
-    const [ { name } ] = event.target.files;
-
-    this.refs.inputGroupLabel.textContent = name;
   }
 
   openProgressModal() {
