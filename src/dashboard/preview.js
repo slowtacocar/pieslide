@@ -1,6 +1,7 @@
 /** @jsx this.createElement */
 /** @jsxFrag jsx.Fragment */
 
+import dialogPolyfill from "dialog-polyfill";
 import jsx from "../lib/jsx.js";
 
 class Preview extends jsx.Component {
@@ -31,6 +32,12 @@ class Preview extends jsx.Component {
             : ""
         }
       </>;
+
+    dialogPolyfill.registerDialog(this.refs.modalImagePreview);
+
+    if (this.props.video) {
+      dialogPolyfill.registerDialog(this.refs.modalVideoPreview);
+    }
 
     return element;
   }

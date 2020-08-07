@@ -1,34 +1,30 @@
 td > button {
-  padding: 0.6rem;
-  border-radius: 0.4rem;
-  background: rgb(51, 85, 255);
-  transition: background 0.15s;
-  border: none;
-  color: rgb(255, 255, 255);
+  @include button($color: $white, $background: $blue, $border: none);
+
   margin-left: auto;
   margin-right: auto;
   display: block;
 }
 
 td > button.delete {
-  background: rgb(238, 68, 68);
+  background: $red;
 }
 
 td > input {
-  border: 1px solid rgb(204, 204, 204);
-  border-radius: 0.4rem;
-  padding: 0.6rem;
+  border: 1px solid $border-gray;
+  border-radius: $border-radius;
+  padding: $padding-inline;
   width: 100%;
   box-sizing: border-box;
 }
 
 td > button:hover {
-  background: rgb(17, 17, 238);
+  background: $blue-hover;
   transition: background 0.15s;
 }
 
 td > button.delete:hover {
-  background: rgb(238, 34, 34);
+  background: $red-hover;
 }
 
 table {
@@ -36,17 +32,21 @@ table {
   width: 100%;
 }
 
+.padding {
+  padding-top: $padding-block;
+}
+
 .table-scroller {
   overflow-x: auto;
 }
 
 tr:nth-child(even) {
-  background-color: rgb(246, 246, 246);
+  background-color: $background-light-gray;
 }
 
 thead {
-  border-top: 1px solid rgb(204, 204, 204);
-  border-bottom: 2px solid rgb(204, 204, 204);
+  border-top: 1px solid $border-gray;
+  border-bottom: 2px solid $border-gray;
 }
 
 th {
@@ -55,5 +55,5 @@ th {
 
 td,
 th {
-  padding: 0.8rem;
+  padding: $padding-inline;
 }

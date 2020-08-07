@@ -4,12 +4,12 @@ header > h1 {
 
 header > p {
   font-size: $font-size-3;
-  color: rgb(68, 68, 68);
+  color: $text-gray;
   font-weight: 200;
 }
 
 section {
-  margin-bottom: 4.6rem;
+  margin-bottom: $margin-section;
 }
 
 section:last-child {

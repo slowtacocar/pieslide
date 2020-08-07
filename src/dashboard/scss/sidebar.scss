@@ -1,22 +1,26 @@
 #sidebar {
   display: flex;
   flex-direction: column;
-  padding: 0.8rem 0.8rem 0.8rem 0;
-  background: rgb(238, 238, 238);
+  padding: $padding-inline $padding-inline $padding-inline 0;
+  background: $background-gray;
   flex-grow: 1;
 }
 
 #sidebar > a {
   text-decoration: none;
-  color: rgb(51, 85, 255);
-  padding: 0.6rem;
+  color: $blue;
+  padding: $padding-inline;
 }
 
 #sidebar > a.active-link {
   text-decoration: none;
-  color: rgb(238, 238, 238);
-  background: rgb(51, 85, 255);
-  border-radius: 0 0.4rem 0.4rem 0;
+  color: $background-gray;
+  background: $blue;
+  border-radius: 0 $border-radius $border-radius 0;
+}
+
+#sidebar > a:hover {
+  color: $blue-hover;
 }
 
 @media (max-width: $sm) {
