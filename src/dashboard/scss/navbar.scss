@@ -1,13 +1,13 @@
 #navbar {
-  background: rgb(34, 34, 34);
+  background: $black;
   display: flex;
   align-items: center;
-  color: rgb(238, 238, 238);
+  color: $background-gray;
   grid-column-end: span 2;
 }
 
 #navbar > * {
-  margin: 0.8rem;
+  margin: $padding-inline;
 }
 
 #navbar > span {
@@ -27,24 +27,20 @@
 
 #navbar > button {
   margin-left: auto;
-  padding: 0.6rem;
-  border-radius: 0.4rem;
-  border: 2px solid rgb(221, 221, 221);
+  padding: $padding-inline;
+  border-radius: $border-radius;
+  border: 2px solid $background-gray;
   background: none;
   transition: background 0.15s;
-  color: rgb(238, 238, 238);
+  color: $background-gray;
 }
 
 #navbar > a:hover {
-  color: rgb(221, 221, 221);
-}
-
-#sidebar > a:hover {
-  color: rgb(17, 17, 238);
+  color: $background-gray-hover;
 }
 
 #navbar > button:hover {
-  background: rgba(221, 221, 221, 0.1);
+  background: rgba($background-gray-hover, 0.1);
 }
 
 @media (max-width: $xs) {

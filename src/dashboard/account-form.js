@@ -28,7 +28,7 @@ class AccountForm extends jsx.Component {
             <button type="submit" value="changePassword">Update</button>
           </form>
           <button
-            class="button"
+            class="red-button"
             type="button"
             value="deleteAccount"
             onclick={this.setCallback}

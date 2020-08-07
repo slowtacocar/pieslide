@@ -1,0 +1,17 @@
+details,
+.red-button {
+  grid-column-end: span 2;
+}
+
+.grid {
+  display: grid;
+  column-gap: $padding-inline;
+  row-gap: $padding-inline;
+}
+
+@media (max-width: $xs) {
+  details,
+  .red-button {
+    grid-column-end: auto;
+  }
+}

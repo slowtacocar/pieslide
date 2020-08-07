@@ -1,6 +1,6 @@
 .modal {
-  border-radius: 0.4rem;
-  border: 1px solid rgb(204, 204, 204);
+  border-radius: $border-radius;
+  border: 1px solid $border-gray;
 }
 
 .preview {
@@ -18,11 +18,11 @@
   bottom: 0;
   width: 100%;
   border: none;
-  background: rgb(238, 85, 85);
-  color: rgb(255, 255, 255);
+  background: $red;
+  color: $white;
   display: flex;
   margin: 0;
-  padding: 0.6rem;
+  padding: $padding-inline;
   box-sizing: border-box;
 }
 
@@ -41,5 +41,5 @@
 }
 
 #alert > button:hover {
-  color: rgb(221, 221, 221);
+  color: $background-gray-hover;
 }

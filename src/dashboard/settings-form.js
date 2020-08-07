@@ -72,7 +72,7 @@ class SettingsForm extends jsx.Component {
           </div>
 
           <button
-            class="button"
+            class="red-button"
             type="button"
             onclick={this.reload}
           >Refresh Slideshow</button>
