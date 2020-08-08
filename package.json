@@ -34,7 +34,8 @@
     "firebaseui": "^4.6.0",
     "functions": "file:functions",
     "jquery": "^3.0.0",
-    "jquery-ui": "^1.12.1"
+    "jquery-ui": "^1.12.1",
+    "whatwg-fetch": "^3.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",

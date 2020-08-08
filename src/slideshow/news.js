@@ -1,6 +1,7 @@
 /** @jsx this.createElement */
 /** @jsxFrag jsx.Fragment */
 
+import "whatwg-fetch";
 import jsx from "../lib/jsx.js";
 
 const NEWS_SPEED = 0.15;
