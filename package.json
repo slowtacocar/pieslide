@@ -28,6 +28,7 @@
   "dependencies": {
     "@babel/runtime": "^7.10.5",
     "@babel/runtime-corejs3": "^7.10.5",
+    "core-js": "^3.6.5",
     "dialog-polyfill": "^0.5.2",
     "firebase": "^7.17.1",
     "firebaseui": "^4.6.0",

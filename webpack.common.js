@@ -79,6 +79,31 @@ module.exports = {
         use: ['babel-loader', 'eslint-loader']
       },
       {
+        "include": [
+          path.resolve(__dirname, "node_modules/@firebase"),
+          path.resolve(__dirname, "node_modules/firebase")
+        ],
+        "test": /\.m?js$/,
+        "use": [
+          {
+            "loader": "babel-loader",
+            "options": {
+              "presets":
+              [
+                [
+                  "@babel/preset-env",
+                  {
+                    "corejs": 3,
+                    "useBuiltIns": "usage"
+                  }
+                ]
+              ],
+              "sourceType": "unambiguous"
+            }
+          }
+        ]
+      },
+      {
         test: /\.(scss)$/,
         include: path.resolve(__dirname, 'src'),
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'sass-loader']
