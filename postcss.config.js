@@ -1,10 +1,10 @@
-module.exports = ctx => ({
-  inline: false,
-  annotation: true,
-  sourcesContent: true,
-  plugins: {
-    autoprefixer: {
-      cascade: false
+module.exports = () => ({
+  "annotation": true,
+  "inline": false,
+  "plugins": {
+    "autoprefixer": {
+      "cascade": false
     }
-  }
-})
+  },
+  "sourcesContent": true
+});
