@@ -15,12 +15,12 @@ class AccountForm extends jsx.Component {
           <p>Use the controls to change settings related to your account.</p>
         </header>
 
-        <div class="grid">
-          <form class="form" onsubmit={this.setCallbackAndData}>
+        <div id="accountGrid">
+          <form class="form" onsubmit={this.setCallbackAndData} id="email">
             <input type="email" placeholder="New Email" name="new"></input>
             <button type="submit" value="changeEmail">Update</button>
           </form>
-          <form class="form" onsubmit={this.setCallbackAndData}>
+          <form class="form" onsubmit={this.setCallbackAndData} id="password">
             <input
               type="password"
               placeholder="New Password"
@@ -33,6 +33,7 @@ class AccountForm extends jsx.Component {
             type="button"
             value="deleteAccount"
             onclick={this.setCallback}
+            id="delete"
           >Delete Account</button>
         </div>
 

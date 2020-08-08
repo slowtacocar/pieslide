@@ -40,14 +40,14 @@ class Dashboard extends jsx.Component {
           <a href="#accountSettings">Account Settings</a>
         </nav>
 
-        <main>
+        <div class="main">
           <div>
             <SlidesTable ref="slidesTable" />
             <LogoTable ref="logoTable" />
             <SettingsForm ref="settingsForm" />
             <AccountForm ref="accountForm" />
           </div>
-        </main>
+        </div>
         <p ref="error" role="alert" id="alert" hidden>
           <span ref="errorSpan"></span>
           <button type="button" onclick={this.hideAlertError}>&times;</button>

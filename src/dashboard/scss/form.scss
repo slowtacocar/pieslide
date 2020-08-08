@@ -55,3 +55,80 @@
   padding-bottom: $padding-inline;
   background: $white;
 }
+
+#accountGrid {
+  grid-template:
+    'email password' auto
+    'delete delete' auto /
+    1fr 1fr;
+  display: grid;
+  grid-gap: $padding-block;
+}
+
+#settingsGrid {
+  grid-template:
+    'time duration' auto
+    'transition size' auto
+    'refresh refresh' auto
+    'advanced advanced' auto /
+    1fr 1fr;
+  display: grid;
+  grid-gap: $padding-block;
+}
+
+#email {
+  grid-area: email;
+}
+
+#password {
+  grid-area: password;
+}
+
+#delete {
+  grid-area: delete;
+}
+
+#time {
+  grid-area: time;
+}
+
+#duration {
+  grid-area: duration;
+}
+
+#transition {
+  grid-area: transition;
+}
+
+#size {
+  grid-area: size;
+}
+
+#refresh {
+  grid-area: refresh;
+}
+
+#advanced {
+  grid-area: advanced;
+}
+
+@media (max-width: $xs) {
+  #accountGrid {
+    grid-template:
+      'email' auto
+      'password' auto
+      'delete' auto /
+      1fr;
+  }
+
+  #settingsGrid {
+    grid-template:
+      'time' auto
+      'duration' auto
+      'transition' auto
+      'size' auto
+      'refresh' auto
+      'advanced' auto /
+      1fr;
+  }
+}

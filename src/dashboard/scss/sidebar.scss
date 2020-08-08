@@ -3,7 +3,7 @@
   flex-direction: column;
   padding: $padding-inline $padding-inline $padding-inline 0;
   background: $background-gray;
-  flex-grow: 1;
+  grid-area: sidebar;
 }
 
 #sidebar > a {
@@ -30,9 +30,5 @@
 @media (max-width: $sm) {
   #sidebar {
     display: none;
-  }
-
-  main {
-    grid-column-end: span 2;
   }
 }

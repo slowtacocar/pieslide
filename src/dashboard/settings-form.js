@@ -13,8 +13,8 @@ class SettingsForm extends jsx.Component {
             Use the controls to change some general settings for your slideshow.
           </p>
         </header>
-        <div class="grid">
-          <div class="form">
+        <div id="settingsGrid">
+          <div class="form" id="time">
             <label for="inputGroupTime">
               Time Visibility
             </label>
@@ -28,7 +28,7 @@ class SettingsForm extends jsx.Component {
             </select>
           </div>
 
-          <div class="form">
+          <div class="form" id="duration">
             <label for="inputGroupDuration">
               Default Slide Duration
             </label>
@@ -41,7 +41,7 @@ class SettingsForm extends jsx.Component {
               step="any"
             ></input>
           </div>
-          <div class="form">
+          <div class="form" id="transition">
             <label for="inputGroupTransition">
               Transition Time
             </label>
@@ -55,7 +55,7 @@ class SettingsForm extends jsx.Component {
             ></input>
           </div>
 
-          <div class="form">
+          <div class="form" id="size">
             <label for="inputGroupSize">
               Logo Size
             </label>
@@ -75,22 +75,25 @@ class SettingsForm extends jsx.Component {
             class="red-button"
             type="button"
             onclick={this.reload}
+            id="refresh"
           >Refresh Slideshow</button>
 
-          <details>
-            <summary>Advanced Settings</summary>
-            <div class="form">
-              <label for="inputGroupNews">
-                News Sources
-              </label>
-              <input
-                type="text"
-                id="inputGroupNews"
-                ref="inputGroupNews"
-                onchange={this.newsChanged}
-              ></input>
-            </div>
-          </details>
+          <div id="advanced">
+            <details>
+              <summary>Advanced Settings</summary>
+              <div class="form">
+                <label for="inputGroupNews">
+                  News Sources
+                </label>
+                <input
+                  type="text"
+                  id="inputGroupNews"
+                  ref="inputGroupNews"
+                  onchange={this.newsChanged}
+                ></input>
+              </div>
+            </details>
+          </div>
         </div>
       </section>
     );

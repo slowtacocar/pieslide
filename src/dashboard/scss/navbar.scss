@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   color: $background-gray;
-  grid-column-end: span 2;
+  grid-area: navbar;
 }
 
 #navbar > * {
