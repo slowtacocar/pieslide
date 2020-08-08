@@ -101,15 +101,26 @@ class SlidesTable extends Table {
           >View Preview</button>
         </td>
         <td>
-          <input
-            class="duration"
-            min="0"
-            type="number"
-            value={file.duration}
-            data-index={index}
-            hidden={VIDEO_TYPES.includes(type)}
-            onchange={this.updateDuration}
-          ></input>
+          {
+            VIDEO_TYPES.includes(type)
+              ? <input
+                class="duration"
+                min="0"
+                type="number"
+                value={file.duration}
+                data-index={index}
+                hidden
+                onchange={this.updateDuration}
+              ></input>
+              : <input
+                class="duration"
+                min="0"
+                type="number"
+                value={file.duration}
+                data-index={index}
+                onchange={this.updateDuration}
+              ></input>
+          }
         </td>
         <td>
           <button
