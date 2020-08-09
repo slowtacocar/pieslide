@@ -1,0 +1,63 @@
+@value v-padding-block from './theme.module.css';
+
+.grid {
+  grid-template:
+    'time duration' auto
+    'transition size' auto
+    'refresh refresh' auto
+    'advanced advanced' auto /
+    1fr 1fr;
+  display: grid;
+  gap: v-padding-block;
+}
+
+.time {
+  composes: form from './theme.module.css';
+
+  grid-area: time;
+}
+
+.duration {
+  composes: form from './theme.module.css';
+
+  grid-area: duration;
+}
+
+.transition {
+  composes: form from './theme.module.css';
+
+  grid-area: transition;
+}
+
+.size {
+  composes: form from './theme.module.css';
+
+  grid-area: size;
+}
+
+.refresh {
+  composes: redButton from './theme.module.css';
+
+  grid-area: refresh;
+}
+
+.advanced {
+  grid-area: advanced;
+}
+
+.news {
+  composes: form from './theme.module.css';
+}
+
+@media (max-width: $xs) {
+  .grid {
+    grid-template:
+      'time' auto
+      'duration' auto
+      'transition' auto
+      'size' auto
+      'refresh' auto
+      'advanced' auto /
+      1fr;
+  }
+}

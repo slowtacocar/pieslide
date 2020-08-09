@@ -5,22 +5,26 @@ import "firebase/auth";
 import dialogPolyfill from "dialog-polyfill";
 import firebase from "firebase/app";
 import jsx from "../lib/jsx.js";
+import styles from "./account-form.module.css";
 
 class AccountForm extends jsx.Component {
   render() {
     const element =
-      <section id="accountSettings">
+      <section id="accountSettings" class="section">
         <header>
-          <h1>Account Settings</h1>
-          <p>Use the controls to change settings related to your account.</p>
+          <h1 class="header">Account Settings</h1>
+          <p class="headerSub">Use the controls to change settings related to your account.</p>
         </header>
 
-        <div id="accountGrid">
-          <form class="form" onsubmit={this.setCallbackAndData} id="email">
+        <div class={styles.grid}>
+          <form onsubmit={this.setCallbackAndData} class={styles.newEmail}>
             <input type="email" placeholder="New Email" name="new"></input>
             <button type="submit" value="changeEmail">Update</button>
           </form>
-          <form class="form" onsubmit={this.setCallbackAndData} id="password">
+          <form
+            onsubmit={this.setCallbackAndData}
+            class={styles.newPassword}
+          >
             <input
               type="password"
               placeholder="New Password"
@@ -29,20 +33,19 @@ class AccountForm extends jsx.Component {
             <button type="submit" value="changePassword">Update</button>
           </form>
           <button
-            class="red-button"
             type="button"
             value="deleteAccount"
             onclick={this.setCallback}
-            id="delete"
+            class={styles.delete}
           >Delete Account</button>
         </div>
 
-        <dialog ref="dialog" class="modal fixed">
+        <dialog ref="dialog" class={styles.modal}>
           <h3>Enter current password:</h3>
           <form
-            class="form"
             method="dialog"
             onsubmit={this.reauthenticateFormSubmitted}
+            class={styles.currentPassword}
           >
             <input
               type="password"

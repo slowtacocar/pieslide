@@ -1,0 +1,122 @@
+@value v-font-size-3: 1.17em;
+@value v-font-size-2: 1.5em;
+@value v-font-size-1: 2em;
+@value m-medium: (max-width: 700px);
+@value m-small: (max-width: 500px);
+@value v-border-radius: 0.4rem;
+@value v-padding-inline: 0.6rem;
+@value v-padding-block: 0.8rem;
+@value v-background-light-gray: rgb(246, 246, 246);
+@value v-border-gray: rgb(204, 204, 204);
+@value v-background-gray: rgb(238, 238, 238);
+@value v-background-gray-hover: rgb(214, 214, 214);
+@value v-background-gray-transparent: rgba(238, 238, 238, 0.1);
+@value v-red: rgb(238, 68, 68);
+@value v-red-hover: rgb(214, 61, 61);
+@value v-red-transparent: rgba(238, 68, 68, 0.1);
+@value v-white: rgb(255, 255, 255);
+@value v-black: rgb(34, 34, 34);
+@value v-text-gray: rgb(68, 68, 68);
+@value v-margin-section: 4.6rem;
+@value v-blue: rgb(51, 136, 221);
+@value v-blue-hover: rgb(46, 122, 199);
+
+.button {
+  padding: v-padding-inline;
+  border-radius: v-border-radius;
+  transition: background 0.15s;
+}
+
+.form {
+  display: flex;
+}
+
+.form * {
+  padding: v-padding-inline;
+  border-left: none;
+  border-right: 1px solid v-border-gray;
+  border-top: 1px solid v-border-gray;
+  border-bottom: 1px solid v-border-gray;
+  margin: 0;
+  display: block;
+}
+
+.form :first-child {
+  border-top-left-radius: v-border-radius;
+  border-bottom-left-radius: v-border-radius;
+  border-left: 1px solid v-border-gray;
+}
+
+.form :last-child {
+  border-top-right-radius: v-border-radius;
+  border-bottom-right-radius: v-border-radius;
+}
+
+.form input,
+.form select {
+  flex-grow: 1;
+}
+
+.form label,
+.form button,
+.form span {
+  background: v-background-gray;
+}
+
+.form button {
+  transition: background 0.15s;
+}
+
+.form button:hover {
+  background: v-background-gray-hover;
+}
+
+.redButton {
+  composes: button;
+
+  color: v-red;
+  background: none;
+  border: 2px solid v-red;
+}
+
+.redButton:hover {
+  background: v-red-transparent;
+}
+
+.tableButton {
+  composes: button;
+
+  color: v-white;
+  border: none;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.tableButtonDelete {
+  composes: tableButton;
+
+  background: v-red;
+}
+
+.tableButtonDelete:hover {
+  background: v-red-hover;
+}
+
+.tableButtonPreview {
+  composes: tableButton;
+
+  background: v-blue;
+}
+
+.tableButtonPreview:hover {
+  background: v-blue-hover;
+}
+
+.modal {
+  border-radius: v-border-radius;
+  border: 1px solid v-border-gray;
+  position: fixed;
+  top: 50%;
+  transform: translate(0, -50%);
+}

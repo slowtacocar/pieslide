@@ -11,6 +11,7 @@ import Table from "./table.js";
 import firebase from "firebase/app";
 import jQuery from "jquery";
 import jsx from "../lib/jsx.js";
+import styles from "./slides-table.module.css";
 
 const VIDEO_TYPES = [
   "ogm",
@@ -40,10 +41,10 @@ class SlidesTable extends Table {
 
   render() {
     const element =
-      <section id="slides">
+      <section id="slides" class="section">
         <header>
-          <h1>Slides</h1>
-          <p>
+          <h1 class="header">Slides</h1>
+          <p class="headerSub">
             Use the input at the bottom of the screen to upload images for your
             slideshow, and drag the table rows to change the order of the
             slides.
@@ -80,6 +81,7 @@ class SlidesTable extends Table {
             type="button"
             data-link={url}
             data-type={type}
+            class={styles.preview}
             onclick={
               VIDEO_TYPES.includes(type)
                 ? this.refs.preview.showVideo
@@ -91,7 +93,7 @@ class SlidesTable extends Table {
           {
             VIDEO_TYPES.includes(type)
               ? <input
-                class="duration"
+                class={styles.duration}
                 min="0"
                 type="number"
                 value={file.duration}
@@ -100,7 +102,7 @@ class SlidesTable extends Table {
                 onchange={this.updateDuration}
               ></input>
               : <input
-                class="duration"
+                class={styles.duration}
                 min="0"
                 type="number"
                 value={file.duration}
@@ -111,10 +113,10 @@ class SlidesTable extends Table {
         </td>
         <td>
           <button
-            class="delete"
             type="button"
             data-index={index}
             onclick={this.deleteItem}
+            class={styles.delete}
           >Delete</button>
         </td>
       </tr>;
@@ -165,7 +167,7 @@ class SlidesTable extends Table {
 
   getObject(row) {
     return {
-      "duration": row.querySelector(".duration").value,
+      "duration": row.querySelector(`.${styles.duration}`).value,
       "name": row.querySelector(".title").textContent
     };
   }

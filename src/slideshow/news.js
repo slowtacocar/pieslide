@@ -2,6 +2,7 @@
 /** @jsxFrag jsx.Fragment */
 
 import jsx from "../lib/jsx.js";
+import styles from "./news.module.css";
 
 const NEWS_SPEED = 0.15;
 const RSS_API_URL = "https://api.rss2json.com/v1/api.json?rss_url=";
@@ -9,7 +10,7 @@ const RSS_API_URL = "https://api.rss2json.com/v1/api.json?rss_url=";
 class News extends jsx.Component {
   render() {
     return (
-      <p ref="news" id="news"></p>
+      <p ref="news" class={styles.news}></p>
     );
   }
 

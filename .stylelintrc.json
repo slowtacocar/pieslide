@@ -1,5 +1,6 @@
 {
   "extends": [
-    "stylelint-config-strict-scss"
+    "stylelint-config-standard",
+    "stylelint-config-rational-order"
   ]
 }

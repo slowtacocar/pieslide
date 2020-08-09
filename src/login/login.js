@@ -1,8 +1,8 @@
 /** @jsx this.createElement */
 /** @jsxFrag jsx.Fragment */
 
-import "./login.scss";
 import "firebase/auth";
+import "firebaseui/dist/firebaseui.css";
 import * as firebaseui from "firebaseui";
 import config from "../lib/config.js";
 import firebase from "firebase/app";

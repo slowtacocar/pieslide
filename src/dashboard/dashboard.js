@@ -1,7 +1,7 @@
 /** @jsx this.createElement */
 /** @jsxFrag jsx.Fragment */
 
-import "./scss/dashboard.scss";
+import "dialog-polyfill/dist/dialog-polyfill.css";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
@@ -12,6 +12,7 @@ import SlidesTable from "./slides-table.js";
 import config from "../lib/config.js";
 import firebase from "firebase/app";
 import jsx from "../lib/jsx.js";
+import styles from "./dashboard.module.css";
 
 class Dashboard extends jsx.Component {
   constructor(props) {
@@ -26,32 +27,36 @@ class Dashboard extends jsx.Component {
   render() {
     const element =
       <>
-        <nav id="navbar">
-          <span>PieSlide</span>
-          <a href="index.html" class="active-link">Dashboard</a>
-          <a href="slideshow.html" target="_blank">Slideshow</a>
-          <button type="button" onclick={this.signOut}>Sign Out</button>
+        <nav class={styles.navbar}>
+          <span class={styles.navbarSpan}>PieSlide</span>
+          <a href="index.html" class={styles.navbarLinkActive}>Dashboard</a>
+          <a href="slideshow.html" target="_blank" class={styles.navbarLink}>Slideshow</a>
+          <button type="button" onclick={this.signOut} class={styles.navbarButton}>Sign Out</button>
         </nav>
 
-        <nav id="sidebar">
-          <a href="#slides" class="active-link">Slides</a>
-          <a href="#logo">Logo</a>
-          <a href="#slideshowSettings">Slideshow Settings</a>
-          <a href="#accountSettings">Account Settings</a>
+        <nav class={styles.sidebar}>
+          <a href="#slides" class={`${styles.active} ${styles.sidebarLink}`}>Slides</a>
+          <a href="#logo" class={styles.sidebarLink}>Logo</a>
+          <a href="#slideshowSettings" class={styles.sidebarLink}>Slideshow Settings</a>
+          <a href="#accountSettings" class={styles.sidebarLink}>Account Settings</a>
         </nav>
 
-        <div class="main">
-          <div>
+        <div class={styles.mainContainer}>
+          <div class={styles.main}>
             <SlidesTable ref="slidesTable" />
             <LogoTable ref="logoTable" />
             <SettingsForm ref="settingsForm" />
             <AccountForm ref="accountForm" />
           </div>
         </div>
-        <p ref="error" role="alert" id="alert" hidden>
-          <span ref="errorSpan"></span>
-          <button type="button" onclick={this.hideAlertError}>&times;</button>
-        </p>
+        <div ref="error" role="alert" class={styles.error} hidden>
+          <p ref="errorSpan" class={styles.errorSpan}></p>
+          <button
+            type="button"
+            onclick={this.hideAlertError}
+            class={styles.errorButton}
+          >&times;</button>
+        </div>
       </>;
 
     this.auth.onAuthStateChanged(this.changeUser);

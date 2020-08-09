@@ -3,32 +3,33 @@
 
 import dialogPolyfill from "dialog-polyfill";
 import jsx from "../lib/jsx.js";
+import styles from "./preview.module.css";
 
 class Preview extends jsx.Component {
   render() {
     const element =
       <>
         <dialog
-          class="modal preview fixed"
           ref="modalImagePreview"
+          class={styles.modal}
         >
-          <img ref="imagePreview"></img>
-          <form class="form" method="dialog">
+          <img ref="imagePreview" class={styles.modalImg}></img>
+          <form method="dialog" class={styles.form}>
             <button type="submit">Close</button>
           </form>
         </dialog>
         {
           this.props.video
             ? <dialog
-              class="modal preview"
-              ref="modalVideoPreview"
-              onclose={this.closeVideo}
-            >
-              <div id={`modalBodyPreviewVideo${this.props.name}`}></div>
-              <form class="form" method="dialog">
-                <button type="submit">Close</button>
-              </form>
-            </dialog>
+                ref="modalVideoPreview"
+                onclose={this.closeVideo}
+                class={styles.modal}
+              >
+                <div ref="modalBodyPreviewVideo"></div>
+                <form method="dialog" class={styles.form}>
+                  <button type="submit">Close</button>
+                </form>
+              </dialog>
             : ""
         }
       </>;
@@ -51,7 +52,7 @@ class Preview extends jsx.Component {
         ></source>
       </video>;
 
-    jsx.render(this.refs[ `modalBodyPreviewVideo${this.props.name}` ], element);
+    jsx.render(this.refs.modalBodyPreviewVideo, element);
   }
 
   showImage(event) {

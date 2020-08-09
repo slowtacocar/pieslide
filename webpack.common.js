@@ -18,7 +18,7 @@ module.exports = {
       {
         "include": path.resolve(__dirname, "src"),
         "test": /\.m?js$/,
-        "use": [ "babel-loader", "eslint-loader" ]
+        "use": [ "babel-loader" ]
       },
       {
         "include": [
@@ -46,13 +46,11 @@ module.exports = {
         ]
       },
       {
-        "include": path.resolve(__dirname, "src"),
-        "test": /\.(scss)$/,
+        "test": /\.css$/,
         "use": [
           MiniCssExtractPlugin.loader,
           "css-loader",
-          "postcss-loader",
-          "sass-loader"
+          "postcss-loader"
         ]
       }
     ]
@@ -75,7 +73,6 @@ module.exports = {
     new CleanWebpackPlugin({
       "cleanStaleWebpackAssets": false
     }),
-    new StylelintPlugin(),
     new MiniCssExtractPlugin({
       "chunkFilename": "[id].[contenthash].css",
       "filename": "[name].[contenthash].css"
