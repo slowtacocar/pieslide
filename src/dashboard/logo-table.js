@@ -23,19 +23,6 @@ class LogoTable extends Table {
             of your slideshow.
           </p>
         </header>
-        <div class="table-scroller">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Current Logo</th>
-                <th scope="col">Preview</th>
-                <th scope="col">Delete</th>
-              </tr>
-            </thead>
-            <tbody ref="tableBody">
-            </tbody>
-          </table>
-        </div>
         {super.render()}
       </section>
     );

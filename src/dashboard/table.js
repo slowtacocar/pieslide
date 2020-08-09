@@ -9,6 +9,20 @@ class Table extends jsx.Component {
   render() {
     const element =
       <>
+        <div class="table-scroller">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">File Name</th>
+                <th scope="col">Preview</th>
+                {this.props.duration ? <th scope="col">Duration</th> : ""}
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody ref="tableBody">
+            </tbody>
+          </table>
+        </div>
         <div class={`form padding ${this.props.sticky ? " sticky" : ""}`}>
           <input
             type="file"
