@@ -22,7 +22,7 @@ class Table extends jsx.Component {
           >Upload</button>
         </div>
         <dialog
-          class="modal"
+          class="modal fixed"
           ref="progressModal"
         >
           <progress max="1" ref="progressBar"></progress>

@@ -9,7 +9,7 @@ class Preview extends jsx.Component {
     const element =
       <>
         <dialog
-          class="modal preview"
+          class="modal preview fixed"
           ref="modalImagePreview"
         >
           <img ref="imagePreview"></img>

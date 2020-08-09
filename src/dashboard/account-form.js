@@ -37,7 +37,7 @@ class AccountForm extends jsx.Component {
           >Delete Account</button>
         </div>
 
-        <dialog ref="dialog" class="modal">
+        <dialog ref="dialog" class="modal fixed">
           <h3>Enter current password:</h3>
           <form
             class="form"
