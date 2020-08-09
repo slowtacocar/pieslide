@@ -63,7 +63,7 @@
     'delete delete' auto /
     1fr 1fr;
   display: grid;
-  grid-gap: $padding-block;
+  gap: $padding-block;
 }
 
 #settingsGrid {
@@ -74,7 +74,7 @@
     'advanced advanced' auto /
     1fr 1fr;
   display: grid;
-  grid-gap: $padding-block;
+  gap: $padding-block;
 }
 
 #email {
