@@ -38,7 +38,7 @@
   border-top: 1px solid v-border-gray;
   border-bottom: 1px solid v-border-gray;
   margin: 0;
-  display: block;
+  display: inline-block;
 }
 
 .form :first-child {
