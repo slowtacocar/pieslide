@@ -17,18 +17,18 @@ class AccountForm extends jsx.Component {
         </header>
 
         <div class={styles.grid}>
-          <form onsubmit={this.setCallbackAndData} class={styles.newEmail}>
-            <input type="email" placeholder="New Email" name="new"></input>
+          <form onsubmit={this.setCallback} class={styles.newEmail}>
+            <input type="email" placeholder="New Email" ref="newEmail"></input>
             <button type="submit" value="changeEmail">Update</button>
           </form>
           <form
-            onsubmit={this.setCallbackAndData}
+            onsubmit={this.setCallback}
             class={styles.newPassword}
           >
             <input
               type="password"
               placeholder="New Password"
-              name="new"
+              ref="newPassword"
             ></input>
             <button type="submit" value="changePassword">Update</button>
           </form>
@@ -44,15 +44,15 @@ class AccountForm extends jsx.Component {
           <h3>Enter current password:</h3>
           <form
             method="dialog"
-            onsubmit={this.reauthenticateFormSubmitted}
             class={styles.currentPassword}
           >
             <input
               type="password"
               placeholder="Current Password"
               name="current"
+              ref="currentPassword"
             ></input>
-            <button type="submit" ref="buttonLogIn" value="{}">Log In</button>
+            <button type="submit" ref="buttonLogIn">Log In</button>
           </form>
         </dialog>
       </section>;
@@ -62,61 +62,34 @@ class AccountForm extends jsx.Component {
     return element;
   }
 
-  setCallbackAndData(event) {
-    const formData = new FormData(event.target);
-
-    this.refs.buttonLogIn.value = JSON.stringify({
-      "new": formData.get("new")
-    });
+  setCallback(event) {
     this.refs.dialog.onclose = this[ event.submitter.value ];
     this.refs.dialog.showModal();
 
     return false;
   }
 
-  setCallback(event) {
-    this.refs.dialog.onclose = this[ event.target.value ];
-    this.refs.dialog.showModal();
-
-    return false;
-  }
-
-  reauthenticateFormSubmitted(event) {
-    const formData = new FormData(event.target);
-
-    this.refs.buttonLogIn.value = JSON.stringify({
-      ...JSON.parse(this.refs.buttonLogIn.value),
-      "current": formData.get("current")
-    });
-  }
-
-  async reauthenticate(password) {
+  async reauthenticate() {
     const provider = firebase.auth.EmailAuthProvider;
 
     await this.user.reauthenticateWithCredential(provider.credential(
       this.user.email,
-      password
+      this.refs.currentPassword.value
     ));
   }
 
-  async changeEmail(event) {
-    const data = JSON.parse(event.target.returnValue);
-
-    await this.reauthenticate(data.current);
-    this.user.updateEmail(data.new);
+  async changeEmail() {
+    await this.reauthenticate();
+    this.user.updateEmail(this.refs.newEmail.value);
   }
 
-  async changePassword(event) {
-    const data = JSON.parse(event.target.returnValue);
-
-    await this.reauthenticate(data.current);
-    this.user.updatePassword(data.new);
+  async changePassword() {
+    await this.reauthenticate();
+    this.user.updatePassword(this.refs.newPassword.value);
   }
 
-  async deleteAccount(event) {
-    const data = JSON.parse(event.target.returnValue);
-
-    await this.reauthenticate(data.current);
+  async deleteAccount() {
+    await this.reauthenticate();
     this.user.delete();
   }
 
