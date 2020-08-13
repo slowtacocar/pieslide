@@ -6,6 +6,10 @@ select {
   font: inherit;
 }
 
+input {
+  background: v-white;
+}
+
 html,
 body {
   height: 100%;
