@@ -2,6 +2,7 @@
 /** @jsxFrag jsx.Fragment */
 
 import "./slideshow.module.css";
+import "./theme.module.css";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
