@@ -20,11 +20,10 @@ class Logo extends jsx.Component {
   async changeData(doc) {
     const name = doc.get("name");
 
+    this.refs.logo.hidden = !name;
+
     if (name) {
-      this.refs.logo.hidden = false;
       this.refs.logo.src = await this.folderRef.child(name).getDownloadURL();
-    } else {
-      this.refs.logo.hidden = true;
     }
   }
 
