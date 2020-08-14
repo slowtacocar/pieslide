@@ -63,7 +63,7 @@ class AccountForm extends jsx.Component {
   }
 
   setCallback(event) {
-    this.refs.dialog.onclose = this[ event.submitter.value ];
+    this.refs.dialog.onclose = this[ (event.target.querySelector("button") || event.target).value ];
     this.refs.dialog.showModal();
 
     return false;
