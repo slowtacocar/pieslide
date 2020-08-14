@@ -60,7 +60,7 @@ class LogoTable extends Table {
   }
 
   async deleteItem(event) {
-    await this.folderRef.child(event.target.dataset.name).delete();
+    await this.folderRef.child(event.target.getAttribute("data-name")).delete();
     this.docRef.update({ "name": null });
   }
 

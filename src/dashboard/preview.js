@@ -47,8 +47,8 @@ class Preview extends jsx.Component {
     const element =
       <video autoplay controls>
         <source
-          src={event.relatedTarget.dataset.link}
-          type={`video/${event.relatedTarget.dataset.type}`}
+          src={event.relatedTarget.getAttribute("data-link")}
+          type={`video/${event.relatedTarget.getAttribute("data-type")}`}
         ></source>
       </video>;
 
@@ -56,7 +56,7 @@ class Preview extends jsx.Component {
   }
 
   showImage(event) {
-    this.refs.imagePreview.src = event.target.dataset.link;
+    this.refs.imagePreview.src = event.target.getAttribute("data-link");
     this.refs.modalImagePreview.showModal();
   }
 

@@ -125,7 +125,7 @@ class SlidesTable extends Table {
   }
 
   async deleteItem(event) {
-    const { index } = event.target.dataset;
+    const index = event.target.getAttribute("data-index");
     const [ slide ] = this.slides.splice(index, 1);
 
     await this.folderRef.child(slide.name).delete();
@@ -158,7 +158,7 @@ class SlidesTable extends Table {
   }
 
   updateDuration(event) {
-    const { index } = event.target.dataset;
+    const index = event.target.getAttribute("data-index");
     const slide = this.slides[ index ];
 
     slide.duration = event.target.value;
