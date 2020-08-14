@@ -20,6 +20,35 @@
 @value v-blue: rgb(51, 136, 221);
 @value v-blue-hover: rgb(46, 122, 199);
 
+input,
+button,
+select {
+  font: inherit;
+  width: auto;
+}
+
+input {
+  background: v-white;
+}
+
+:global(.header) {
+  margin-top: 0;
+}
+
+:global(.headerSub) {
+  font-size: v-font-size-3;
+  color: v-text-gray;
+  font-weight: 200;
+}
+
+:global(.section) {
+  margin-bottom: v-margin-section;
+}
+
+:global(.section):last-child {
+  margin-bottom: 0;
+}
+
 .button {
   padding: v-padding-inline;
   border-radius: v-border-radius;
