@@ -1,4 +1,4 @@
-@value v-padding-block from './theme.module.css';
+@value v-padding-block, m-medium from './theme.module.css';
 
 .grid {
   grid-template:
@@ -49,7 +49,7 @@
   composes: form from './theme.module.css';
 }
 
-@media (max-width: $xs) {
+@media m-medium {
   .grid {
     grid-template:
       'time' auto

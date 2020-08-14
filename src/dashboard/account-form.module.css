@@ -1,4 +1,4 @@
-@value v-padding-block, v-red from './theme.module.css';
+@value v-padding-block, v-red, m-medium from './theme.module.css';
 
 .modal {
   composes: modal from './theme.module.css';
@@ -35,7 +35,7 @@
   composes: form from './theme.module.css';
 }
 
-@media (max-width: $xs) {
+@media m-medium {
   .grid {
     grid-template:
       'email' auto

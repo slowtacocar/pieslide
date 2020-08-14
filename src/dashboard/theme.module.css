@@ -2,7 +2,6 @@
 @value v-font-size-2: 1.5em;
 @value v-font-size-1: 2em;
 @value m-medium: (max-width: 700px);
-@value m-small: (max-width: 500px);
 @value v-border-radius: 0.4rem;
 @value v-padding-inline: 0.6rem;
 @value v-padding-block: 0.8rem;

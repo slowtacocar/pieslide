@@ -1,7 +1,7 @@
 # Testing
 ## Environments
 - All browsers in the browserslist (`npx browserslist`)
-- All 3 breakpoints for each browser (2000px, 600px, 300px)
+- All 3 breakpoints for each browser (2000px, 650px, 300px)
 ## Tests
 Note: JS functionality tests do not have to be run on every breakpoint, but they do have to be run on every browser
 ### 404
