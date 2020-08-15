@@ -27,7 +27,8 @@ select {
   width: auto;
 }
 
-input {
+input,
+select {
   background: v-white;
 }
 
