@@ -82,6 +82,7 @@ input {
 
 .form input,
 .form select {
+  width: 0;
   flex-grow: 1;
 }
 
