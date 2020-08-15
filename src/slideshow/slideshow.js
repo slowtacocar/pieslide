@@ -1,7 +1,8 @@
 /** @jsx this.createElement */
 /** @jsxFrag jsx.Fragment */
 
-import "./slideshow.scss";
+import "./slideshow.module.css";
+import "./theme.module.css";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";

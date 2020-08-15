@@ -122,7 +122,6 @@
     "prefer-regex-literals": ["error", { "disallowRedundantWrapping": true }],
     "radix": ["error", "as-needed"],
     "require-await": "error",
-    "require-unicode-regexp": "error",
     "vars-on-top": "error",
     "wrap-iife": ["error", "inside"],
     "yoda": "error",

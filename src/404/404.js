@@ -1,13 +1,13 @@
 /** @jsx this.createElement */
 /** @jsxFrag jsx.Fragment */
 
-import "./404.scss";
 import jsx from "../lib/jsx.js";
+import styles from "./404.module.css";
 
 class Error404 extends jsx.Component {
   render() {
     return (
-      <div id="message">
+      <div class={styles.message}>
         <h2>404</h2>
         <h1>Page Not Found</h1>
         <p>

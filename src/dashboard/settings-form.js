@@ -2,19 +2,20 @@
 /** @jsxFrag jsx.Fragment */
 
 import jsx from "../lib/jsx.js";
+import styles from "./settings-form.module.css";
 
 class SettingsForm extends jsx.Component {
   render() {
     return (
-      <section id="slideshowSettings">
+      <section id="slideshowSettings" class="section">
         <header>
-          <h1>Slideshow Settings</h1>
-          <p>
+          <h1 class="header">Slideshow Settings</h1>
+          <p class="headerSub">
             Use the controls to change some general settings for your slideshow.
           </p>
         </header>
-        <div class="grid">
-          <div class="form">
+        <div class={styles.grid}>
+          <div class={styles.time}>
             <label for="inputGroupTime">
               Time Visibility
             </label>
@@ -28,7 +29,7 @@ class SettingsForm extends jsx.Component {
             </select>
           </div>
 
-          <div class="form">
+          <div class={styles.duration}>
             <label for="inputGroupDuration">
               Default Slide Duration
             </label>
@@ -41,7 +42,7 @@ class SettingsForm extends jsx.Component {
               step="any"
             ></input>
           </div>
-          <div class="form">
+          <div class={styles.transition}>
             <label for="inputGroupTransition">
               Transition Time
             </label>
@@ -55,7 +56,7 @@ class SettingsForm extends jsx.Component {
             ></input>
           </div>
 
-          <div class="form">
+          <div class={styles.size}>
             <label for="inputGroupSize">
               Logo Size
             </label>
@@ -72,25 +73,27 @@ class SettingsForm extends jsx.Component {
           </div>
 
           <button
-            class="red-button"
             type="button"
             onclick={this.reload}
+            class={styles.refresh}
           >Refresh Slideshow</button>
 
-          <details>
-            <summary>Advanced Settings</summary>
-            <div class="form">
-              <label for="inputGroupNews">
-                News Sources
-              </label>
-              <input
-                type="text"
-                id="inputGroupNews"
-                ref="inputGroupNews"
-                onchange={this.newsChanged}
-              ></input>
-            </div>
-          </details>
+          <div class={styles.advanced}>
+            <details>
+              <summary>Advanced Settings</summary>
+              <div class={styles.news}>
+                <label for="inputGroupNews">
+                  News Sources
+                </label>
+                <input
+                  type="text"
+                  id="inputGroupNews"
+                  ref="inputGroupNews"
+                  onchange={this.newsChanged}
+                ></input>
+              </div>
+            </details>
+          </div>
         </div>
       </section>
     );

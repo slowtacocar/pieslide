@@ -2,11 +2,12 @@
 /** @jsxFrag jsx.Fragment */
 
 import jsx from "../lib/jsx.js";
+import styles from "./logo.module.css";
 
 class Logo extends jsx.Component {
   render() {
     return (
-      <img ref="logo" id="logo" crossorigin="anonymous"></img>
+      <img ref="logo" class={styles.logo} crossorigin="anonymous"></img>
     );
   }
 
@@ -19,11 +20,10 @@ class Logo extends jsx.Component {
   async changeData(doc) {
     const name = doc.get("name");
 
+    this.refs.logo.hidden = !name;
+
     if (name) {
-      this.refs.logo.hidden = false;
       this.refs.logo.src = await this.folderRef.child(name).getDownloadURL();
-    } else {
-      this.refs.logo.hidden = true;
     }
   }
 

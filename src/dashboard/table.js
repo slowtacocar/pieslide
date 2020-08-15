@@ -4,12 +4,27 @@
 import Preview from "./preview.js";
 import dialogPolyfill from "dialog-polyfill";
 import jsx from "../lib/jsx.js";
+import styles from "./table.module.css";
 
 class Table extends jsx.Component {
   render() {
     const element =
       <>
-        <div class={`form padding ${this.props.sticky ? " sticky" : ""}`}>
+        <div class={styles.tableContainer}>
+          <table class={styles.table}>
+            <thead class={styles.head}>
+              <tr>
+                <th scope="col">File Name</th>
+                <th scope="col">Preview</th>
+                {this.props.duration ? <th scope="col">Duration</th> : ""}
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody ref="tableBody">
+            </tbody>
+          </table>
+        </div>
+        <div class={this.props.sticky ? styles.uploadSticky : styles.upload}>
           <input
             type="file"
             accept="image/*"
@@ -22,10 +37,10 @@ class Table extends jsx.Component {
           >Upload</button>
         </div>
         <dialog
-          class="modal"
           ref="progressModal"
+          class={styles.modal}
         >
-          <progress max="1" ref="progressBar"></progress>
+          <progress max="1" ref="progressBar" class={styles.progressBar}></progress>
         </dialog>
         <Preview ref="preview" video={this.props.video} name={this.props.name}/>
       </>;

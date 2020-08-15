@@ -1,11 +1,15 @@
 /* eslint-disable max-classes-per-file */
 
 function appendArray(element, children) {
-  for (const child of children) {
+  for (let child of children) {
     if (Array.isArray(child)) {
       appendArray(element, child);
     } else {
-      element.append(child);
+      if (typeof child === "string") {
+        child = document.createTextNode(child);
+      }
+
+      element.appendChild(child);
     }
   }
 }

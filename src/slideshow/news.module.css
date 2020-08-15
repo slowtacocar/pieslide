@@ -1,0 +1,10 @@
+.news {
+  composes: pill from './theme.module.css';
+  composes: font-size-3 from './theme.module.css';
+
+  line-height: 1.2;
+  position: fixed;
+  bottom: 0;
+  transform: translate(100vw);
+  white-space: nowrap;
+}

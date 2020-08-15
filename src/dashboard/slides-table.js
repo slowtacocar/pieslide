@@ -11,6 +11,7 @@ import Table from "./table.js";
 import firebase from "firebase/app";
 import jQuery from "jquery";
 import jsx from "../lib/jsx.js";
+import styles from "./slides-table.module.css";
 
 const VIDEO_TYPES = [
   "ogm",
@@ -31,6 +32,7 @@ class SlidesTable extends Table {
     super({
       ...props,
       "defaultData": { "slides": [] },
+      "duration": true,
       "name": "slide",
       "sticky": true,
       "video": true
@@ -39,29 +41,15 @@ class SlidesTable extends Table {
 
   render() {
     const element =
-      <section id="slides">
+      <section id="slides" class="section">
         <header>
-          <h1>Slides</h1>
-          <p>
+          <h1 class="header">Slides</h1>
+          <p class="headerSub">
             Use the input at the bottom of the screen to upload images for your
             slideshow, and drag the table rows to change the order of the
             slides.
           </p>
         </header>
-        <div class="table-scroller">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">File Name</th>
-                <th scope="col">Preview</th>
-                <th scope="col">Duration</th>
-                <th scope="col">Delete</th>
-              </tr>
-            </thead>
-            <tbody ref="tableBody">
-            </tbody>
-          </table>
-        </div>
         {super.render()}
       </section>;
 
@@ -93,6 +81,7 @@ class SlidesTable extends Table {
             type="button"
             data-link={url}
             data-type={type}
+            class={styles.preview}
             onclick={
               VIDEO_TYPES.includes(type)
                 ? this.refs.preview.showVideo
@@ -101,22 +90,33 @@ class SlidesTable extends Table {
           >View Preview</button>
         </td>
         <td>
-          <input
-            class="duration"
-            min="0"
-            type="number"
-            value={file.duration}
-            data-index={index}
-            hidden={VIDEO_TYPES.includes(type)}
-            onchange={this.updateDuration}
-          ></input>
+          {
+            VIDEO_TYPES.includes(type)
+              ? <input
+                class={styles.duration}
+                min="0"
+                type="number"
+                value={file.duration}
+                data-index={index}
+                hidden
+                onchange={this.updateDuration}
+              ></input>
+              : <input
+                class={styles.duration}
+                min="0"
+                type="number"
+                value={file.duration}
+                data-index={index}
+                onchange={this.updateDuration}
+              ></input>
+          }
         </td>
         <td>
           <button
-            class="delete"
             type="button"
             data-index={index}
             onclick={this.deleteItem}
+            class={styles.delete}
           >Delete</button>
         </td>
       </tr>;
@@ -125,7 +125,7 @@ class SlidesTable extends Table {
   }
 
   async deleteItem(event) {
-    const { index } = event.target.dataset;
+    const index = event.target.getAttribute("data-index");
     const [ slide ] = this.slides.splice(index, 1);
 
     await this.folderRef.child(slide.name).delete();
@@ -158,7 +158,7 @@ class SlidesTable extends Table {
   }
 
   updateDuration(event) {
-    const { index } = event.target.dataset;
+    const index = event.target.getAttribute("data-index");
     const slide = this.slides[ index ];
 
     slide.duration = event.target.value;
@@ -167,7 +167,7 @@ class SlidesTable extends Table {
 
   getObject(row) {
     return {
-      "duration": row.querySelector(".duration").value,
+      "duration": row.querySelector(`.${styles.duration}`).value,
       "name": row.querySelector(".title").textContent
     };
   }

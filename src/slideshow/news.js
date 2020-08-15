@@ -2,14 +2,16 @@
 /** @jsxFrag jsx.Fragment */
 
 import jsx from "../lib/jsx.js";
+import styles from "./news.module.css";
 
 const NEWS_SPEED = 0.15;
 const RSS_API_URL = "https://api.rss2json.com/v1/api.json?rss_url=";
+const NEWS_DELAY = 1000;
 
 class News extends jsx.Component {
   render() {
     return (
-      <p ref="news" id="news"></p>
+      <p ref="news" class={styles.news}></p>
     );
   }
 
@@ -29,7 +31,7 @@ class News extends jsx.Component {
 
     this.animation.effect.updateTiming({
       "duration": width / NEWS_SPEED,
-      "endDelay": 1000
+      "endDelay": NEWS_DELAY
     });
     this.animation.play();
   }
@@ -38,11 +40,7 @@ class News extends jsx.Component {
     const response = await fetch(RSS_API_URL + link);
     const data = await response.json();
 
-    return data.items.map(this.getTitle).join(" \u2022 ");
-  }
-
-  getTitle(item) {
-    return item.title;
+    return data.items.map(({ title }) => title).join(" \u2022 ");
   }
 
   changeData(doc) {
@@ -53,8 +51,7 @@ class News extends jsx.Component {
         { "transform": "translate(100vw)" },
         { "transform": "translate(-100%)" }
       ]);
-      this.animation.onfinish = this.loop;
-      this.loop();
+      (this.animation.onfinish = this.loop)();
     }
   }
 }

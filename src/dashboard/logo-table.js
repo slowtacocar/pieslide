@@ -3,6 +3,7 @@
 
 import Table from "./table.js";
 import jsx from "../lib/jsx.js";
+import styles from "./logo-table.module.css";
 
 class LogoTable extends Table {
   constructor(props) {
@@ -15,27 +16,14 @@ class LogoTable extends Table {
 
   render() {
     return (
-      <section id="logo">
+      <section id="logo" class="section">
         <header>
-          <h1>Logo</h1>
-          <p>
+          <h1 class="header">Logo</h1>
+          <p class="headerSub">
             Use the input to change the logo that appears in the corner
             of your slideshow.
           </p>
         </header>
-        <div class="table-scroller">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Current Logo</th>
-                <th scope="col">Preview</th>
-                <th scope="col">Delete</th>
-              </tr>
-            </thead>
-            <tbody ref="tableBody">
-            </tbody>
-          </table>
-        </div>
         {super.render()}
       </section>
     );
@@ -52,14 +40,15 @@ class LogoTable extends Table {
               type="button"
               data-link={url}
               onclick={this.refs.preview.showImage}
+              class={styles.preview}
             >View Preview</button>
           </td>
           <td>
             <button
               type="button"
-              class="delete"
               onclick={this.deleteItem}
               data-name={data.name}
+              class={styles.delete}
             >Delete</button>
           </td>
         </tr>;
@@ -71,7 +60,7 @@ class LogoTable extends Table {
   }
 
   async deleteItem(event) {
-    await this.folderRef.child(event.target.dataset.name).delete();
+    await this.folderRef.child(event.target.getAttribute("data-name")).delete();
     this.docRef.update({ "name": null });
   }
 

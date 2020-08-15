@@ -1,0 +1,51 @@
+@value v-padding-block, v-padding-inline, v-white, v-background-light-gray, v-border-gray from './theme.module.css';
+
+.tableContainer {
+  overflow-x: auto;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.table thead {
+  border-top: 1px solid v-border-gray;
+  border-bottom: 2px solid v-border-gray;
+}
+
+.table th,
+.table td {
+  padding: v-padding-inline;
+}
+
+.table tr:nth-child(even) {
+  background-color: v-background-light-gray;
+}
+
+.upload {
+  composes: form from './theme.module.css';
+
+  padding-top: v-padding-block;
+}
+
+.uploadSticky {
+  composes: upload;
+
+  position: sticky;
+  bottom: 0;
+  padding-bottom: v-padding-inline;
+  background: v-white;
+}
+
+.modal {
+  composes: modal from './theme.module.css';
+
+  max-width: 40rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.progressBar {
+  width: 100%;
+}

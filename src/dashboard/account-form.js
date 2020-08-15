@@ -5,50 +5,54 @@ import "firebase/auth";
 import dialogPolyfill from "dialog-polyfill";
 import firebase from "firebase/app";
 import jsx from "../lib/jsx.js";
+import styles from "./account-form.module.css";
 
 class AccountForm extends jsx.Component {
   render() {
     const element =
-      <section id="accountSettings">
+      <section id="accountSettings" class="section">
         <header>
-          <h1>Account Settings</h1>
-          <p>Use the controls to change settings related to your account.</p>
+          <h1 class="header">Account Settings</h1>
+          <p class="headerSub">Use the controls to change settings related to your account.</p>
         </header>
 
-        <div class="grid">
-          <form class="form" onsubmit={this.setCallbackAndData}>
-            <input type="email" placeholder="New Email" name="new"></input>
+        <div class={styles.grid}>
+          <form onsubmit={this.setCallback} class={styles.newEmail}>
+            <input type="email" placeholder="New Email" ref="newEmail"></input>
             <button type="submit" value="changeEmail">Update</button>
           </form>
-          <form class="form" onsubmit={this.setCallbackAndData}>
+          <form
+            onsubmit={this.setCallback}
+            class={styles.newPassword}
+          >
             <input
               type="password"
               placeholder="New Password"
-              name="new"
+              ref="newPassword"
             ></input>
             <button type="submit" value="changePassword">Update</button>
           </form>
           <button
-            class="red-button"
             type="button"
             value="deleteAccount"
             onclick={this.setCallback}
+            class={styles.delete}
           >Delete Account</button>
         </div>
 
-        <dialog ref="dialog" class="modal">
+        <dialog ref="dialog" class={styles.modal}>
           <h3>Enter current password:</h3>
           <form
-            class="form"
             method="dialog"
-            onsubmit={this.reauthenticateFormSubmitted}
+            class={styles.currentPassword}
           >
             <input
               type="password"
               placeholder="Current Password"
               name="current"
+              ref="currentPassword"
             ></input>
-            <button type="submit" ref="buttonLogIn" value="{}">Log In</button>
+            <button type="submit" ref="buttonLogIn">Log In</button>
           </form>
         </dialog>
       </section>;
@@ -58,61 +62,34 @@ class AccountForm extends jsx.Component {
     return element;
   }
 
-  setCallbackAndData(event) {
-    const formData = new FormData(event.target);
-
-    this.refs.buttonLogIn.value = JSON.stringify({
-      "new": formData.get("new")
-    });
-    this.refs.dialog.onclose = this[ event.submitter.value ];
-    this.refs.dialog.showModal();
-
-    return false;
-  }
-
   setCallback(event) {
-    this.refs.dialog.onclose = this[ event.target.value ];
+    this.refs.dialog.onclose = this[ (event.target.querySelector("button") || event.target).value ];
     this.refs.dialog.showModal();
 
     return false;
   }
 
-  reauthenticateFormSubmitted(event) {
-    const formData = new FormData(event.target);
-
-    this.refs.buttonLogIn.value = JSON.stringify({
-      ...JSON.parse(this.refs.buttonLogIn.value),
-      "current": formData.get("current")
-    });
-  }
-
-  async reauthenticate(password) {
+  async reauthenticate() {
     const provider = firebase.auth.EmailAuthProvider;
 
     await this.user.reauthenticateWithCredential(provider.credential(
       this.user.email,
-      password
+      this.refs.currentPassword.value
     ));
   }
 
-  async changeEmail(event) {
-    const data = JSON.parse(event.target.returnValue);
-
-    await this.reauthenticate(data.current);
-    this.user.updateEmail(data.new);
+  async changeEmail() {
+    await this.reauthenticate();
+    this.user.updateEmail(this.refs.newEmail.value);
   }
 
-  async changePassword(event) {
-    const data = JSON.parse(event.target.returnValue);
-
-    await this.reauthenticate(data.current);
-    this.user.updatePassword(data.new);
+  async changePassword() {
+    await this.reauthenticate();
+    this.user.updatePassword(this.refs.newPassword.value);
   }
 
-  async deleteAccount(event) {
-    const data = JSON.parse(event.target.returnValue);
-
-    await this.reauthenticate(data.current);
+  async deleteAccount() {
+    await this.reauthenticate();
     this.user.delete();
   }
 
