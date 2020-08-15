@@ -93,7 +93,7 @@ class Dashboard extends jsx.Component {
   }
 
   hideAlertError() {
-    this.refs.error.setAttribute("hidden");
+    this.refs.error.setAttribute("hidden", "");
   }
 
   showAlertError(msg) {
