@@ -40,7 +40,7 @@ class Table extends jsx.Component {
           ref="progressModal"
           class={styles.modal}
         >
-          <progress max="1" ref="progressBar"></progress>
+          <progress max="1" ref="progressBar" class={styles.progressBar}></progress>
         </dialog>
         <Preview ref="preview" video={this.props.video} name={this.props.name}/>
       </>;

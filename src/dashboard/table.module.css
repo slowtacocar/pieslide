@@ -40,4 +40,12 @@
 
 .modal {
   composes: modal from './theme.module.css';
+
+  max-width: 40rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.progressBar {
+  width: 100%;
 }
