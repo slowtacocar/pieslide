@@ -9,9 +9,9 @@
 }
 
 .duration {
+  box-sizing: border-box;
+  width: 100%;
+  padding: v-padding-inline;
   border: 1px solid v-border-gray;
   border-radius: v-border-radius;
-  padding: v-padding-inline;
-  width: 100%;
-  box-sizing: border-box;
 }

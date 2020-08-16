@@ -31,15 +31,27 @@ class Dashboard extends jsx.Component {
         <nav class={styles.navbar}>
           <span class={styles.navbarSpan}>PieSlide</span>
           <a href="index.html" class={styles.navbarLinkActive}>Dashboard</a>
-          <a href="slideshow.html" target="_blank" class={styles.navbarLink}>Slideshow</a>
-          <button type="button" onclick={this.signOut} class={styles.navbarButton}>Sign Out</button>
+          <a href="slideshow.html" target="_blank" class={styles.navbarLink}>
+            Slideshow
+          </a>
+          <button
+            type="button"
+            onclick={this.signOut}
+            class={styles.navbarButton}
+          >Sign Out</button>
         </nav>
 
         <nav class={styles.sidebar}>
-          <a href="#slides" class={`${styles.active} ${styles.sidebarLink}`}>Slides</a>
+          <a href="#slides" class={`${styles.active} ${styles.sidebarLink}`}>
+            Slides
+          </a>
           <a href="#logo" class={styles.sidebarLink}>Logo</a>
-          <a href="#slideshowSettings" class={styles.sidebarLink}>Slideshow Settings</a>
-          <a href="#accountSettings" class={styles.sidebarLink}>Account Settings</a>
+          <a href="#slideshowSettings" class={styles.sidebarLink}>
+            Slideshow Settings
+          </a>
+          <a href="#accountSettings" class={styles.sidebarLink}>
+            Account Settings
+          </a>
         </nav>
 
         <div class={styles.mainContainer}>

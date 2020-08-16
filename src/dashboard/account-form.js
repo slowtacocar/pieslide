@@ -13,7 +13,9 @@ class AccountForm extends jsx.Component {
       <section id="accountSettings" class="section">
         <header>
           <h1 class="header">Account Settings</h1>
-          <p class="headerSub">Use the controls to change settings related to your account.</p>
+          <p class="headerSub">
+            Use the controls to change settings related to your account.
+          </p>
         </header>
 
         <div class={styles.grid}>
@@ -63,7 +65,8 @@ class AccountForm extends jsx.Component {
   }
 
   setCallback(event) {
-    this.refs.dialog.onclose = this[ (event.target.querySelector("button") || event.target).value ];
+    this.refs.dialog.onclose =
+      this[ (event.target.querySelector("button") || event.target).value ];
     this.refs.dialog.showModal();
 
     return false;

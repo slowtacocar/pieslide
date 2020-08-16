@@ -1,8 +1,8 @@
 @value v-black from "./theme.module.css";
 
 body {
-  overflow-x: hidden;
-  background: v-black;
   margin: 0;
+  overflow-x: hidden;
   font-family: system-ui;
+  background: v-black;
 }
