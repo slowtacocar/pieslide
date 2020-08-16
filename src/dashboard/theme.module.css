@@ -23,8 +23,8 @@
 input,
 button,
 select {
-  font: inherit;
   width: auto;
+  font: inherit;
 }
 
 input,
@@ -37,9 +37,9 @@ select {
 }
 
 :global(.headerSub) {
-  font-size: v-font-size-3;
   color: v-text-gray;
   font-weight: 200;
+  font-size: v-font-size-3;
 }
 
 :global(.section) {
@@ -61,19 +61,19 @@ select {
 }
 
 .form * {
-  padding: v-padding-inline;
-  border-left: none;
-  border-right: 1px solid v-border-gray;
-  border-top: 1px solid v-border-gray;
-  border-bottom: 1px solid v-border-gray;
-  margin: 0;
   display: inline-block;
+  margin: 0;
+  padding: v-padding-inline;
+  border-top: 1px solid v-border-gray;
+  border-right: 1px solid v-border-gray;
+  border-bottom: 1px solid v-border-gray;
+  border-left: none;
 }
 
 .form :first-child {
+  border-left: 1px solid v-border-gray;
   border-top-left-radius: v-border-radius;
   border-bottom-left-radius: v-border-radius;
-  border-left: 1px solid v-border-gray;
 }
 
 .form :last-child {
@@ -83,8 +83,8 @@ select {
 
 .form input,
 .form select {
-  width: 0;
   flex-grow: 1;
+  width: 0;
 }
 
 .form label,
@@ -103,7 +103,6 @@ select {
 
 .redButton {
   composes: button;
-
   color: v-red;
   background: none;
   border: 2px solid v-red;
@@ -115,17 +114,15 @@ select {
 
 .tableButton {
   composes: button;
-
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
   color: v-white;
   border: none;
-  margin-left: auto;
-  margin-right: auto;
-  display: block;
 }
 
 .tableButtonDelete {
   composes: tableButton;
-
   background: v-red;
 }
 
@@ -135,7 +132,6 @@ select {
 
 .tableButtonPreview {
   composes: tableButton;
-
   background: v-blue;
 }
 
@@ -144,9 +140,9 @@ select {
 }
 
 .modal {
-  border-radius: v-border-radius;
-  border: 1px solid v-border-gray;
   position: fixed;
   top: 50%;
+  border: 1px solid v-border-gray;
+  border-radius: v-border-radius;
   transform: translate(0, -50%);
 }

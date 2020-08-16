@@ -1,43 +1,38 @@
 @value v-padding-block, m-medium from './theme.module.css';
 
 .grid {
+  display: grid;
   grid-template:
     'time duration' auto
     'transition size' auto
     'refresh refresh' auto
     'advanced advanced' auto /
     1fr 1fr;
-  display: grid;
   gap: v-padding-block;
 }
 
 .time {
   composes: form from './theme.module.css';
-
   grid-area: time;
 }
 
 .duration {
   composes: form from './theme.module.css';
-
   grid-area: duration;
 }
 
 .transition {
   composes: form from './theme.module.css';
-
   grid-area: transition;
 }
 
 .size {
   composes: form from './theme.module.css';
-
   grid-area: size;
 }
 
 .refresh {
   composes: redButton from './theme.module.css';
-
   grid-area: refresh;
 }
 

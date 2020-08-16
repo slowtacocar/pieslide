@@ -10,9 +10,9 @@
 }
 
 .pill {
-  font-weight: 700;
-  background: v-white;
   margin: 0;
   padding: 1rem;
+  font-weight: 700;
+  background: v-white;
   border-radius: 0.5rem;
 }

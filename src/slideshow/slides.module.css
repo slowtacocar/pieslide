@@ -1,7 +1,7 @@
 .slide {
   position: absolute;
-  left: 0;
   right: 0;
+  left: 0;
   width: 100%;
   height: calc(100vh - 2rem - 1.17em * 1.2);
   object-fit: contain;

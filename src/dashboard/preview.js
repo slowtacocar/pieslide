@@ -21,15 +21,15 @@ class Preview extends jsx.Component {
         {
           this.props.video
             ? <dialog
-                ref="modalVideoPreview"
-                onclose={this.closeVideo}
-                class={styles.modal}
-              >
-                <div ref="modalBodyPreviewVideo"></div>
-                <form method="dialog" class={styles.form}>
-                  <button type="submit">Close</button>
-                </form>
-              </dialog>
+              ref="modalVideoPreview"
+              onclose={this.closeVideo}
+              class={styles.modal}
+            >
+              <div ref="modalBodyPreviewVideo"></div>
+              <form method="dialog" class={styles.form}>
+                <button type="submit">Close</button>
+              </form>
+            </dialog>
             : ""
         }
       </>;

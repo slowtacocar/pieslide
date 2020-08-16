@@ -5,8 +5,8 @@
 }
 
 .table {
-  border-collapse: collapse;
   width: 100%;
+  border-collapse: collapse;
 }
 
 .table thead {
@@ -25,13 +25,11 @@
 
 .upload {
   composes: form from './theme.module.css';
-
   padding-top: v-padding-block;
 }
 
 .uploadSticky {
   composes: upload;
-
   position: sticky;
   bottom: 0;
   padding-bottom: v-padding-inline;
@@ -40,10 +38,9 @@
 
 .modal {
   composes: modal from './theme.module.css';
-
-  max-width: 40rem;
-  width: 100%;
   box-sizing: border-box;
+  width: 100%;
+  max-width: 40rem;
 }
 
 .progressBar {

@@ -5,29 +5,26 @@
 }
 
 .grid {
+  display: grid;
   grid-template:
     'email password' auto
     'delete delete' auto /
     1fr 1fr;
-  display: grid;
   gap: v-padding-block;
 }
 
 .newEmail {
   composes: form from './theme.module.css';
-
   grid-area: email;
 }
 
 .newPassword {
   composes: form from './theme.module.css';
-
   grid-area: password;
 }
 
 .delete {
   composes: redButton from './theme.module.css';
-
   grid-area: delete;
 }
 
