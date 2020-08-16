@@ -19,6 +19,8 @@
 @value v-margin-section: 4.6rem;
 @value v-blue: rgb(51, 136, 221);
 @value v-blue-hover: rgb(46, 122, 199);
+@value v-yellow: rgb(238, 153, 51);
+@value v-yellow-transparent: rgba(238, 153, 51, 0.1);
 
 input,
 button,
@@ -99,17 +101,6 @@ select {
 
 .form button:hover {
   background: v-background-gray-hover;
-}
-
-.redButton {
-  composes: button;
-  color: v-red;
-  background: none;
-  border: 2px solid v-red;
-}
-
-.redButton:hover {
-  background: v-red-transparent;
 }
 
 .tableButton {

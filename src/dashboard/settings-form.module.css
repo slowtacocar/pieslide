@@ -1,4 +1,4 @@
-@value v-padding-block, m-medium from './theme.module.css';
+@value v-padding-block, m-medium, v-yellow, v-yellow-transparent from './theme.module.css';
 
 .grid {
   display: grid;
@@ -32,8 +32,15 @@
 }
 
 .refresh {
-  composes: redButton from './theme.module.css';
+  composes: button from './theme.module.css';
   grid-area: refresh;
+  color: v-yellow;
+  background: none;
+  border: 2px solid v-yellow;
+}
+
+.refresh:hover {
+  background: v-yellow-transparent;
 }
 
 .advanced {

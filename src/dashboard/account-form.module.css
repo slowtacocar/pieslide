@@ -1,4 +1,4 @@
-@value v-padding-block, v-red, m-medium from './theme.module.css';
+@value v-padding-block, v-red, m-medium, v-red-transparent from './theme.module.css';
 
 .modal {
   composes: modal from './theme.module.css';
@@ -24,8 +24,15 @@
 }
 
 .delete {
-  composes: redButton from './theme.module.css';
+  composes: button from './theme.module.css';
   grid-area: delete;
+  color: v-red;
+  background: none;
+  border: 2px solid v-red;
+}
+
+.delete:hover {
+  background: v-red-transparent;
 }
 
 .currentPassword {
