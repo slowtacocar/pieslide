@@ -24,18 +24,21 @@ class Table extends jsx.Component {
             </tbody>
           </table>
         </div>
-        <div class={this.props.sticky ? styles.uploadSticky : styles.upload}>
+        <form
+          class={this.props.sticky ? styles.uploadSticky : styles.upload}
+          onsubmit={this.openProgressModal}
+        >
           <input
             type="file"
             accept="image/*"
             onchange={this.updateFilename}
             ref="inputGroup"
+            required
           ></input>
           <button
-            type="button"
-            onclick={this.openProgressModal}
+            type="submit"
           >Upload</button>
-        </div>
+        </form>
         <dialog
           ref="progressModal"
           class={styles.modal}
@@ -57,7 +60,8 @@ class Table extends jsx.Component {
     this.docRef.onSnapshot(this.changeData);
   }
 
-  openProgressModal() {
+  openProgressModal(event) {
+    event.preventDefault();
     this.refs.progressBar.value = 0;
     this.refs.progressModal.showModal();
     [ this.file ] = this.refs.inputGroup.files;

@@ -20,7 +20,8 @@ class AccountForm extends jsx.Component {
 
         <div class={styles.grid}>
           <form onsubmit={this.setCallback} class={styles.newEmail}>
-            <input type="email" placeholder="New Email" ref="newEmail"></input>
+            <input type="email" placeholder="New Email" ref="newEmail" required>
+            </input>
             <button type="submit" value="changeEmail">Update</button>
           </form>
           <form
@@ -31,6 +32,7 @@ class AccountForm extends jsx.Component {
               type="password"
               placeholder="New Password"
               ref="newPassword"
+              required
             ></input>
             <button type="submit" value="changePassword">Update</button>
           </form>
@@ -45,14 +47,16 @@ class AccountForm extends jsx.Component {
         <dialog ref="dialog" class={styles.modal}>
           <h3>Enter current password:</h3>
           <form
-            method="dialog"
             class={styles.currentPassword}
+            ref="reauthenticateForm"
           >
             <input
               type="password"
               placeholder="Current Password"
               name="current"
               ref="currentPassword"
+              required
+              oninput={this.currentPasswordChanged}
             ></input>
             <button type="submit" ref="buttonLogIn">Log In</button>
           </form>
@@ -64,36 +68,58 @@ class AccountForm extends jsx.Component {
     return element;
   }
 
+  currentPasswordChanged() {
+    this.refs.currentPassword.setCustomValidity("");
+  }
+
   setCallback(event) {
-    this.refs.dialog.onclose =
+    this.refs.reauthenticateForm.onsubmit =
       this[ (event.target.querySelector("button") || event.target).value ];
     this.refs.dialog.showModal();
-
-    return false;
+    event.preventDefault();
   }
 
   async reauthenticate() {
     const provider = firebase.auth.EmailAuthProvider;
 
-    await this.user.reauthenticateWithCredential(provider.credential(
-      this.user.email,
-      this.refs.currentPassword.value
-    ));
+    try {
+      await this.user.reauthenticateWithCredential(provider.credential(
+        this.user.email,
+        this.refs.currentPassword.value
+      ));
+      this.refs.dialog.close();
+
+      return true;
+    } catch (error) {
+      this.refs.currentPassword.setCustomValidity("Incorrect Password");
+      this.refs.buttonLogIn.click();
+
+      return false;
+    }
   }
 
-  async changeEmail() {
-    await this.reauthenticate();
-    this.user.updateEmail(this.refs.newEmail.value);
+  async changeEmail(event) {
+    event.preventDefault();
+
+    if (await this.reauthenticate()) {
+      this.user.updateEmail(this.refs.newEmail.value);
+    }
   }
 
-  async changePassword() {
-    await this.reauthenticate();
-    this.user.updatePassword(this.refs.newPassword.value);
+  async changePassword(event) {
+    event.preventDefault();
+
+    if (await this.reauthenticate()) {
+      this.user.updatePassword(this.refs.newPassword.value);
+    }
   }
 
-  async deleteAccount() {
-    await this.reauthenticate();
-    this.user.delete();
+  async deleteAccount(event) {
+    event.preventDefault();
+
+    if (await this.reauthenticate()) {
+      this.user.delete();
+    }
   }
 
   changeUser(user) {
