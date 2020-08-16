@@ -7,18 +7,19 @@ const TerserPlugin = require("terser-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 module.exports = {
+  "context": path.resolve(__dirname, 'src'),
   "entry": {
-    "404": "./src/404/404.js",
-    "dashboard": "./src/dashboard/dashboard.js",
-    "login": "./src/login/login.js",
-    "slideshow": "./src/slideshow/slideshow.js"
+    "404": "./404/404.js",
+    "dashboard": "./dashboard/dashboard.js",
+    "login": "./login/login.js",
+    "slideshow": "./slideshow/slideshow.js"
   },
   "module": {
     "rules": [
       {
         "include": path.resolve(__dirname, "src"),
         "test": /\.m?js$/,
-        "use": [ "babel-loader" ]
+        "use": [ "babel-loader", "eslint-loader" ]
       },
       {
         "include": [
@@ -70,6 +71,9 @@ module.exports = {
     "hints": false
   },
   "plugins": [
+    new StylelintPlugin({
+      "files": "**/*.@(s?(a|c)|c)ss"
+    }),
     new CleanWebpackPlugin({
       "cleanStaleWebpackAssets": false
     }),
