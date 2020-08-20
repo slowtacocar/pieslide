@@ -1,4 +1,6 @@
-export default {
+import * as firebase from "firebase/app";
+
+firebase.initializeApp({
   "apiKey": "AIzaSyCqXsPnGH_BoUDap1nxMSZX7WdOHs0tQFA",
   "appId": "1:15324979686:web:d7910cad504253a3c97627",
   "authDomain": "pieslide.firebaseapp.com",
@@ -7,4 +9,6 @@ export default {
   "messagingSenderId": "15324979686",
   "projectId": "pieslide",
   "storageBucket": "pieslide.appspot.com"
-};
+});
+
+export default firebase;

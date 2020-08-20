@@ -9,10 +9,10 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 module.exports = {
   "context": path.resolve(__dirname, 'src'),
   "entry": {
-    "404": "./404/404.js",
-    "dashboard": "./dashboard/dashboard.js",
-    "login": "./login/login.js",
-    "slideshow": "./slideshow/slideshow.js"
+    "error": "./error/index.js",
+    "dashboard": "./dashboard/index.js",
+    "login": "./login/index.js",
+    "slideshow": "./slideshow/index.js"
   },
   "module": {
     "rules": [
@@ -84,33 +84,25 @@ module.exports = {
     new HtmlWebpackPlugin({
       "chunks": [ "login" ],
       "filename": "login.html",
-      "meta": {
-        "viewport": "width=device-width, initial-scale=1, shrink-to-fit=no"
-      },
+      "template": "common/index.ejs",
       "title": "PieSlide - Login"
     }),
     new HtmlWebpackPlugin({
       "chunks": [ "dashboard" ],
       "filename": "index.html",
-      "meta": {
-        "viewport": "width=device-width, initial-scale=1, shrink-to-fit=no"
-      },
+      "template": "common/index.ejs",
       "title": "PieSlide - Dashboard"
     }),
     new HtmlWebpackPlugin({
       "chunks": [ "slideshow" ],
       "filename": "slideshow.html",
-      "meta": {
-        "viewport": "width=device-width, initial-scale=1, shrink-to-fit=no"
-      },
+      "template": "common/index.ejs",
       "title": "PieSlide - Slideshow"
     }),
     new HtmlWebpackPlugin({
-      "chunks": [ "404" ],
+      "chunks": [ "error" ],
       "filename": "404.html",
-      "meta": {
-        "viewport": "width=device-width, initial-scale=1"
-      },
+      "template": "common/index.ejs",
       "title": "Page Not Found"
     })
   ],
