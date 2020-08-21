@@ -1,4 +1,4 @@
-@value v-black from "./index.module.css";
+@value v-black from "./theme.module.css";
 
 body {
   margin: 0;

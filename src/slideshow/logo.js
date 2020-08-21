@@ -1,38 +1,32 @@
-/** @jsx this.createElement */
-/** @jsxFrag jsx.Fragment */
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import CSSModules from "react-css-modules";
+import styles from "./Logo.module.css";
 
-import jsx from "../lib/jsx.js";
-import styles from "./logo.module.css";
+function Logo(props) {
+  const [url, setUrl] = useState();
 
-class Logo extends jsx.Component {
-  render() {
+  useEffect(() => {
+    (async () => {
+      setUrl(await props.storageRef.child(props.logo).getDownloadURL());
+    })();
+  }, [props.logo, props.storageRef]);
+
+  if (url) {
     return (
-      <img ref="logo" class={styles.logo} crossorigin="anonymous"></img>
+      <img style={{
+        width: `${props.size}vw`,
+        height: `${props.size}vh`
+      }} styleName="logo" crossOrigin="anonymous" src={url} />
     );
   }
-
-  changeUser(docRef, folderRef, settingsRef) {
-    docRef.onSnapshot(this.changeData);
-    this.folderRef = folderRef;
-    settingsRef.onSnapshot(this.changeSettings);
-  }
-
-  async changeData(doc) {
-    const name = doc.get("name");
-
-    this.refs.logo.hidden = !name;
-
-    if (name) {
-      this.refs.logo.src = await this.folderRef.child(name).getDownloadURL();
-    }
-  }
-
-  changeSettings(doc) {
-    const size = doc.get("size");
-
-    this.refs.logo.style.width = `${size}vw`;
-    this.refs.logo.style.height = `${size}vh`;
-  }
+  return null;
 }
 
-export default Logo;
+Logo.propTypes = {
+  "logo": PropTypes.string.isRequired,
+  "storageRef": PropTypes.object.isRequired,
+  "size": PropTypes.string.isRequired
+}
+
+export default CSSModules(Logo, styles);

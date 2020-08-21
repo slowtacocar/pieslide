@@ -1,6 +1,6 @@
 .news {
-  composes: pill from './index.module.css';
-  composes: font-size-3 from './index.module.css';
+  composes: pill from './theme.module.css';
+  composes: font-size-3 from './theme.module.css';
   position: fixed;
   bottom: 0;
   line-height: 1.2;

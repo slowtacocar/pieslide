@@ -2,6 +2,7 @@
   "root": true,
   "parser": "babel-eslint",
   "env": {
+    "es6": true,
     "browser": true
   },
   "plugins": [
@@ -9,7 +10,8 @@
   ],
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
   ],
   "rules": {
     "valid-typeof": 0,

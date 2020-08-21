@@ -1,30 +1,18 @@
-/** @jsx this.createElement */
-/** @jsxFrag jsx.Fragment */
+import React, { useState, useEffect } from "react";
+import CSSModules from "react-css-modules";
+import styles from "./Time.module.css";
 
-import jsx from "../lib/jsx.js";
-import styles from "./time.module.css";
+function Time() {
+  const [time, setTime] = useState();
 
-class Time extends jsx.Component {
-  render() {
-    const element =
-      <time class={styles.time} ref="time"></time>;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date().toLocaleTimeString());
+    }, 1000);
+    return () => clearInterval(interval);
+  });
 
-    window.setInterval(this.loop, 1000);
-
-    return element;
-  }
-
-  loop() {
-    this.refs.time.textContent = new Date().toLocaleTimeString();
-  }
-
-  changeUser(docRef) {
-    docRef.onSnapshot(this.changeData);
-  }
-
-  changeData(doc) {
-    this.refs.time.hidden = !doc.get("time");
-  }
+  return <time styleName="time">{time}</time>;
 }
 
-export default Time;
+export default CSSModules(Time, styles);
