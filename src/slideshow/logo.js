@@ -1,32 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import CSSModules from "react-css-modules";
-import styles from "./Logo.module.css";
+import "./Logo.module.css";
+import { useUrl } from "../common/hooks";
 
 function Logo(props) {
-  const [url, setUrl] = useState();
+  const logo = useUrl({ "name": props.logo }, props.storageRef);
 
-  useEffect(() => {
-    (async () => {
-      setUrl(await props.storageRef.child(props.logo).getDownloadURL());
-    })();
-  }, [props.logo, props.storageRef]);
-
-  if (url) {
-    return (
-      <img style={{
-        width: `${props.size}vw`,
-        height: `${props.size}vh`
-      }} styleName="logo" crossOrigin="anonymous" src={url} />
-    );
-  }
-  return null;
+  return logo ? (
+    <img style={{
+      width: `${props.size}vw`,
+      height: `${props.size}vh`
+    }} styleName="logo" crossOrigin="anonymous" src={logo.url} />
+  ) : null;
 }
 
 Logo.propTypes = {
   "logo": PropTypes.string.isRequired,
   "storageRef": PropTypes.object.isRequired,
-  "size": PropTypes.string.isRequired
+  "size": PropTypes.any.isRequired
 }
 
-export default CSSModules(Logo, styles);
+export default Logo;

@@ -1,18 +1,23 @@
-@value m-medium, m-medium, v-red, v-white, v-blue, v-blue-hover, v-black, v-padding-inline, v-background-gray, v-background-gray-hover, v-font-size-3, v-border-radius, v-background-gray-transparent from './theme.module.css';
+@value m-medium, m-medium, v-red, v-white, v-blue, v-blue-hover, v-black, v-padding-inline, v-background-gray, v-background-gray-hover, v-font-size-3, v-border-radius, v-background-gray-transparent from './index.module.css';
 
 html,
-body {
+body,
+:global(#root),
+.container {
   height: 100%;
 }
 
 body {
+  margin: 0;
+  font-family: system-ui;
+}
+
+.container {
   display: grid;
   grid-template:
     'navbar navbar' auto
     'sidebar main' 1fr /
     auto 1fr;
-  margin: 0;
-  font-family: system-ui;
 }
 
 .mainContainer {
@@ -92,7 +97,7 @@ body {
 }
 
 .navbarButton {
-  composes: button from './theme.module.css';
+  composes: button from './index.module.css';
   composes: navbarItem;
   margin-left: auto;
   color: v-background-gray;
@@ -117,25 +122,24 @@ body {
   padding: v-padding-inline;
   color: v-blue;
   text-decoration: none;
+  transition: color 0.15s;
 }
 
-.sidebarLink.active {
+.sidebarLinkActive {
+  display: block;
+  padding: v-padding-inline;
   color: v-background-gray;
   text-decoration: none;
   background: v-blue;
   border-radius: 0 v-border-radius v-border-radius 0;
 }
 
-.sidebarLink:not(.active) {
-  transition: color 0.15s;
-}
-
-.sidebarLink:not(.active):hover {
+.sidebarLink:hover {
   color: v-blue-hover;
 }
 
 @media m-medium {
-  body {
+  .container {
     grid-template:
       'navbar' auto
       'main' 1fr /

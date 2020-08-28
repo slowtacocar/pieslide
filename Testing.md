@@ -8,6 +8,7 @@ These tests are run on every browser once at any window size
 - Sign in through Google and email
 - Ensure redirection works with and without the URL parameter
 ### Dashboard
+All Dashboard tests should be run with another dashboard window open to ensure that changes are applied
 #### Main
 - Ensure that all navbar and sidebar links work
 - Make sure font color changes on hover
@@ -18,8 +19,8 @@ These tests are run on every browser once at any window size
 - Delete all images
 - Add some images and ensure the progress modal appears
 - View the preview on a couple of images and ensure the modal appears
-- Change the order of the images and refresh to ensure changes applied
-- Change the duration of the images and refresh to ensure changes applied
+- Change the order of the images and ensure changes applied
+- Change the duration of the images and ensure changes applied
 - Delete some images
 - Randomly manipulate the table and ensure changes applied
 #### Logo table
@@ -27,7 +28,7 @@ These tests are run on every browser once at any window size
 - Add a logo and ensure the progress modal appears
 - View the preview on the logo and ensure the modal appears
 #### Settings form
-- Change each setting and refresh to ensure changes applied
+- Change each setting and ensure changes applied
 - Input odd values (no value, negative numbers, etc.) and ensure that no errors occur
 - Ensure the details element is styled correctly and works (if supported)
 - Press refresh slideshow and ensure the slideshow refreshes

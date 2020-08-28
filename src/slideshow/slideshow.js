@@ -1,43 +1,53 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import CSSModules from "react-css-modules";
-import styles from "./Slideshow.module.css";
-import { firestore, storage } from "../common/firebase";
+import React from "react";
+import firebase from "../common/firebase";
+import "firebase/auth";
+import "firebase/firestore";
+import "firebase/storage";
+import "./Slideshow.module.css";
+import { useAuth, useData } from "../common/hooks";
+import Slides from "./Slides";
 import Logo from "./Logo";
 import Time from "./Time";
 import News from "./News";
 
-function Slideshow(props) {
-  const docRef = firestore.collection("user").doc(props.user.uid);
-  const storageRef = storage.ref().child("user").child(props.user.uid);
-
-  const [data, setData] = useState();
-
-  useEffect(() => docRef.onSnapshot((doc) => {
-    setData(doc.data());
-  }), [props.user.uid]);
-
-  if (data) {
-    if (data.message === "reload") {
-      (async function() {
-        await docRef.update({ "message": "" });
-        location.reload();
-      })();
-    } else {
-      return (
-        <>
-          {data.logo && <Logo storageRef={storageRef} logo={data.logo} size={data.size} />}
-          {data.time && <Time />}
-          <News news={data.news} />
-        </>
-      );
-    }
+function Slideshow() {
+  async function reload() {
+    await docRef.update({ "message": "" });
+    location.reload();
   }
-  return null;
+
+  const auth = React.useMemo(() => firebase.auth(), []);
+  const firestore = React.useMemo(() => firebase.firestore(), []);
+  const storage = React.useMemo(() => firebase.storage(), []);
+  const user = useAuth(auth);
+  const docRef = React.useMemo(() => (
+    user && firestore.collection("user").doc(user.uid)
+  ), [firestore, user]);
+  const storageRef = React.useMemo(() => (
+    user && storage.ref().child("user").child(user.uid)
+  ), [storage, user]);
+  const data = useData(docRef);
+
+  if (data && data.message === "reload") {
+    reload();
+  }
+
+  return data ? (
+    <>
+      {data.slides.length && (
+        <Slides
+          storageRef={storageRef}
+          slides={data.slides}
+          transition={data.transition}
+        />
+      )}
+      {data.logo && (
+        <Logo storageRef={storageRef} logo={data.logo} size={data.size} />
+      )}
+      {data.time && <Time />}
+      <News news={data.news} />
+    </>
+  ) : null;
 }
 
-Slideshow.propTypes = {
-  "user": PropTypes.object.isRequired
-};
-
-export default CSSModules(Slideshow, styles);
+export default Slideshow;

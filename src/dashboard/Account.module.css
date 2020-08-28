@@ -1,7 +1,7 @@
-@value v-padding-block, v-red, m-medium, v-red-transparent from './theme.module.css';
+@value v-padding-block, v-red, m-medium, v-red-transparent from './index.module.css';
 
 .modal {
-  composes: modal from './theme.module.css';
+  composes: modal from './index.module.css';
 }
 
 .grid {
@@ -14,17 +14,17 @@
 }
 
 .newEmail {
-  composes: form from './theme.module.css';
+  composes: form from './index.module.css';
   grid-area: email;
 }
 
 .newPassword {
-  composes: form from './theme.module.css';
+  composes: form from './index.module.css';
   grid-area: password;
 }
 
 .delete {
-  composes: button from './theme.module.css';
+  composes: button from './index.module.css';
   grid-area: delete;
   color: v-red;
   background: none;
@@ -36,7 +36,7 @@
 }
 
 .currentPassword {
-  composes: form from './theme.module.css';
+  composes: form from './index.module.css';
 }
 
 @media m-medium {

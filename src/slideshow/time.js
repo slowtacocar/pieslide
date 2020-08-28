@@ -1,18 +1,26 @@
-import React, { useState, useEffect } from "react";
-import CSSModules from "react-css-modules";
-import styles from "./Time.module.css";
+import React from "react";
+import "./Time.module.css";
 
 function Time() {
-  const [time, setTime] = useState();
+  function reducer() {
+    const date = new Date();
 
-  useEffect(() => {
+    return { "time": date.toLocaleTimeString() };
+  }
+
+  const [state, dispatch] = React.useReducer(reducer, undefined, reducer);
+
+  React.useEffect(() => {
     const interval = setInterval(() => {
-      setTime(new Date().toLocaleTimeString());
+      dispatch();
     }, 1000);
-    return () => clearInterval(interval);
-  });
 
-  return <time styleName="time">{time}</time>;
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  return <p styleName="time">{state.time}</p>;
 }
 
-export default CSSModules(Time, styles);
+export default Time;

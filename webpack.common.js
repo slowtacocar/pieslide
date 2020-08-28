@@ -19,7 +19,10 @@ module.exports = {
       {
         "include": path.resolve(__dirname, "src"),
         "test": /\.m?js$/,
-        "use": [ "babel-loader", "eslint-loader" ]
+        "use": [
+          "babel-loader",
+          "eslint-loader"
+        ]
       },
       {
         "include": [
@@ -31,8 +34,7 @@ module.exports = {
           {
             "loader": "babel-loader",
             "options": {
-              "presets":
-              [
+              "presets": [
                 [
                   "@babel/preset-env",
                   {
@@ -50,14 +52,24 @@ module.exports = {
         "test": /\.css$/,
         "use": [
           MiniCssExtractPlugin.loader,
-          "css-loader",
+          {
+            "loader": "css-loader",
+            "options": {
+              "modules": {
+                "localIdentName": "src-[path][name]__[local]"
+              }
+            }
+          },
           "postcss-loader"
         ]
       }
     ]
   },
   "optimization": {
-    "minimizer": [ new TerserPlugin(), new OptimizeCSSAssetsPlugin() ],
+    "minimizer": [
+      new TerserPlugin(),
+      new OptimizeCSSAssetsPlugin()
+    ],
     "moduleIds": "hashed",
     "splitChunks": {
       "chunks": "all"
@@ -82,25 +94,33 @@ module.exports = {
       "filename": "[name].[contenthash].css"
     }),
     new HtmlWebpackPlugin({
-      "chunks": [ "login" ],
+      "chunks": [
+        "login"
+      ],
       "filename": "login.html",
       "template": "common/index.ejs",
       "title": "PieSlide - Login"
     }),
     new HtmlWebpackPlugin({
-      "chunks": [ "dashboard" ],
+      "chunks": [
+        "dashboard"
+      ],
       "filename": "index.html",
       "template": "common/index.ejs",
       "title": "PieSlide - Dashboard"
     }),
     new HtmlWebpackPlugin({
-      "chunks": [ "slideshow" ],
+      "chunks": [
+        "slideshow"
+      ],
       "filename": "slideshow.html",
       "template": "common/index.ejs",
       "title": "PieSlide - Slideshow"
     }),
     new HtmlWebpackPlugin({
-      "chunks": [ "error" ],
+      "chunks": [
+        "error"
+      ],
       "filename": "404.html",
       "template": "common/index.ejs",
       "title": "Page Not Found"

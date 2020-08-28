@@ -1,5 +1,5 @@
 .modal {
-  composes: modal from './theme.module.css';
+  composes: modal from './index.module.css';
   box-sizing: border-box;
   width: 100%;
   max-width: 40rem;
@@ -10,5 +10,5 @@
 }
 
 .form {
-  composes: form from './theme.module.css';
+  composes: form from './index.module.css';
 }

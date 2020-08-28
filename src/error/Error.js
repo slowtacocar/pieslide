@@ -1,6 +1,5 @@
 import React from "react";
-import CSSModules from "react-css-modules";
-import styles from "./Error.module.css";
+import "./Error.module.css";
 
 function Error() {
   return (
@@ -15,4 +14,4 @@ function Error() {
   );
 }
 
-export default CSSModules(Error, styles);
+export default Error;
