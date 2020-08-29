@@ -4,7 +4,7 @@
 import jsx from "../lib/jsx.js";
 import styles from "./news.module.css";
 
-const NEWS_SPEED = 0.15;
+const NEWS_SPEED = 10000;
 const RSS_API_URL = "https://api.rss2json.com/v1/api.json?rss_url=";
 const NEWS_DELAY = 1000;
 
@@ -29,10 +29,7 @@ class News extends jsx.Component {
       parseInt(getComputedStyle(this.refs.news).width.replace("px", "")) +
       window.innerWidth;
 
-    this.animation.effect.updateTiming({
-      "duration": width / NEWS_SPEED,
-      "endDelay": NEWS_DELAY
-    });
+    this.animation.playbackRate = NEWS_SPEED / width;
     this.animation.play();
   }
 
@@ -50,7 +47,10 @@ class News extends jsx.Component {
       this.animation = this.refs.news.animate([
         { "transform": "translate(100vw)" },
         { "transform": "translate(-100%)" }
-      ]);
+      ], {
+        "duration": 50000,
+        "endDelay": NEWS_DELAY
+      });
       (this.animation.onfinish = this.loop)();
     }
   }
