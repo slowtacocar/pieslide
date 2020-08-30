@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./News.module.css";
 
-const NEWS_SPEED = 0.15;
 const RSS_API_URL = "https://api.rss2json.com/v1/api.json?rss_url=";
 
 function News(props) {
@@ -11,7 +10,7 @@ function News(props) {
     const newsWidth = parseInt(styles.width.replace("px", ""));
     const fullWidth = newsWidth + innerWidth;
 
-    return fullWidth / NEWS_SPEED;
+    return 10000 / fullWidth;
   }, []);
 
   const getNews = React.useCallback(async () => {
@@ -33,9 +32,7 @@ function News(props) {
   const animation = React.useRef();
 
   React.useEffect(() => {
-    animation.current && animation.current.effect.updateTiming({
-      "duration": duration()
-    });
+    animation.current && (animation.current.playbackRate = duration());
   }, [duration, text])
 
   React.useEffect(() => {
@@ -43,7 +40,8 @@ function News(props) {
     animation.current = news.current.animate([
       { "transform": "translate(100vw)" },
       { "transform": "translate(-100%)" }
-    ], duration());
+    ], 50000);
+    animation.current.playbackRate = duration();
     animation.current.onfinish = async (event) => {
       await getNews();
       event.target.play()
