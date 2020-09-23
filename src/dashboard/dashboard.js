@@ -15,6 +15,11 @@ import firebase from "firebase/app";
 import jsx from "../lib/jsx.js";
 import styles from "./dashboard.module.css";
 
+// TODO: Remove this once all users have updated their slideshow link
+if (new URLSearchParams(location.search).get("redir") === "slideshow.html") {
+  location.replace("slideshow.html");
+}
+
 class Dashboard extends jsx.Component {
   constructor(props) {
     super(props);
@@ -30,7 +35,9 @@ class Dashboard extends jsx.Component {
       <>
         <nav class={styles.navbar}>
           <span class={styles.navbarSpan}>PieSlide</span>
-          <a href="index.html" class={styles.navbarLinkActive}>Dashboard</a>
+          <a href="index.html" class={styles.navbarLinkActive}>
+            Dashboard
+          </a>
           <a href="slideshow.html" target="_blank" class={styles.navbarLink}>
             Slideshow
           </a>
@@ -38,14 +45,18 @@ class Dashboard extends jsx.Component {
             type="button"
             onclick={this.signOut}
             class={styles.navbarButton}
-          >Sign Out</button>
+          >
+            Sign Out
+          </button>
         </nav>
 
         <nav class={styles.sidebar}>
           <a href="#slides" class={`${styles.active} ${styles.sidebarLink}`}>
             Slides
           </a>
-          <a href="#logo" class={styles.sidebarLink}>Logo</a>
+          <a href="#logo" class={styles.sidebarLink}>
+            Logo
+          </a>
           <a href="#slideshowSettings" class={styles.sidebarLink}>
             Slideshow Settings
           </a>
@@ -68,7 +79,9 @@ class Dashboard extends jsx.Component {
             type="button"
             onclick={this.hideAlertError}
             class={styles.errorButton}
-          >&times;</button>
+          >
+            &times;
+          </button>
         </div>
       </>;
 
