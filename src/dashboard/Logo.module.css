@@ -24,9 +24,9 @@
 }
 
 .preview {
-  composes: tableButtonPreview from './index.module.css';
+  composes: tableButtonPreview from "./index.module.css";
 }
 
 .delete {
-  composes: tableButtonDelete from './index.module.css';
+  composes: tableButtonDelete from "./index.module.css";
 }

@@ -1,11 +1,11 @@
 @value v-border-gray, v-padding-inline, v-border-radius from './index.module.css';
 
 .preview {
-  composes: tableButtonPreview from './index.module.css';
+  composes: tableButtonPreview from "./index.module.css";
 }
 
 .delete {
-  composes: tableButtonDelete from './index.module.css';
+  composes: tableButtonDelete from "./index.module.css";
 }
 
 .duration {

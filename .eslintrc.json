@@ -1,25 +1,8 @@
 {
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
-  },
   "root": true,
-  "parser": "babel-eslint",
   "env": {
     "es6": true,
-    "browser": true
+    "node": true
   },
-  "plugins": [
-    "babel"
-  ],
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended"
-  ],
-  "rules": {
-    "valid-typeof": 0,
-    "babel/valid-typeof": 1
-  }
+  "extends": ["eslint:recommended"]
 }

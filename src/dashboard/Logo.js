@@ -8,12 +8,12 @@ import Preview from "./Preview";
 function Logo(props) {
   const preview = React.useRef();
 
-  const logoName = React.useMemo(() => ({ "name": props.logo }), [props.logo]);
+  const logoName = React.useMemo(() => ({ name: props.logo }), [props.logo]);
   const logo = useUrl(logoName, props.storageRef);
 
   async function deleteLogo() {
     await props.storageRef.child(logo.name).delete();
-    props.docRef.update({ "logo": null });
+    props.docRef.update({ logo: null });
   }
 
   function showPreview() {
@@ -21,7 +21,7 @@ function Logo(props) {
   }
 
   function success(name) {
-    props.docRef.update({ "logo": name });
+    props.docRef.update({ logo: name });
   }
 
   return (
@@ -72,9 +72,9 @@ function Logo(props) {
 }
 
 Logo.propTypes = {
-  "logo": PropTypes.string,
-  "docRef": PropTypes.object.isRequired,
-  "storageRef": PropTypes.object.isRequired
-}
+  logo: PropTypes.string,
+  docRef: PropTypes.object.isRequired,
+  storageRef: PropTypes.object.isRequired,
+};
 
 export default Logo;

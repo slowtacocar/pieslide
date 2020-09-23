@@ -20,30 +20,32 @@ export function useData(docRef) {
   function reducer(state, action) {
     if (state.data) {
       for (const key in action.data) {
-        if (JSON.stringify(action.data[key]) === JSON.stringify(state.data[key])) {
+        if (
+          JSON.stringify(action.data[key]) === JSON.stringify(state.data[key])
+        ) {
           action.data[key] = state.data[key];
         }
       }
     }
 
-    return { "data": action.data };
+    return { data: action.data };
   }
 
   const [state, dispatch] = React.useReducer(reducer, {});
 
   function snapshot(doc) {
     if (doc.exists) {
-      dispatch({ "data": doc.data() });
+      dispatch({ data: doc.data() });
     } else {
       doc.ref.set({
-        "duration": 5,
-        "message": "",
-        "news": [ "https://news.google.com/news/rss" ],
-        "size": 30,
-        "time": true,
-        "transition": 0.25,
-        "logo": null,
-        "slides": []
+        duration: 5,
+        message: "",
+        news: ["https://news.google.com/news/rss"],
+        size: 30,
+        time: true,
+        transition: 0.25,
+        logo: null,
+        slides: [],
       });
     }
   }
@@ -58,7 +60,7 @@ export function useUrls(data, storageRef) {
 
   React.useEffect(() => {
     async function getDownloadUrl(datum) {
-      const url = await storageRef.child(datum.name).getDownloadURL()
+      const url = await storageRef.child(datum.name).getDownloadURL();
 
       return { url, ...datum };
     }
@@ -78,7 +80,7 @@ export function useUrl(data, storageRef) {
 
   React.useEffect(() => {
     async function getDownloadUrl() {
-      const url = await storageRef.child(data.name).getDownloadURL()
+      const url = await storageRef.child(data.name).getDownloadURL();
 
       setDataWithUrl({ url, ...data });
     }

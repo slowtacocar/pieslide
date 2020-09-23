@@ -12,7 +12,7 @@ import News from "./News";
 
 function Slideshow() {
   async function reload() {
-    await docRef.update({ "message": "" });
+    await docRef.update({ message: "" });
     location.reload();
   }
 
@@ -20,12 +20,14 @@ function Slideshow() {
   const firestore = React.useMemo(() => firebase.firestore(), []);
   const storage = React.useMemo(() => firebase.storage(), []);
   const user = useAuth(auth);
-  const docRef = React.useMemo(() => (
-    user && firestore.collection("user").doc(user.uid)
-  ), [firestore, user]);
-  const storageRef = React.useMemo(() => (
-    user && storage.ref().child("user").child(user.uid)
-  ), [storage, user]);
+  const docRef = React.useMemo(
+    () => user && firestore.collection("user").doc(user.uid),
+    [firestore, user]
+  );
+  const storageRef = React.useMemo(
+    () => user && storage.ref().child("user").child(user.uid),
+    [storage, user]
+  );
   const data = useData(docRef);
 
   if (data && data.message === "reload") {

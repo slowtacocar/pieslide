@@ -1,7 +1,7 @@
 @value v-padding-inline, v-white, v-padding-block from './index.module.css';
 
 .upload {
-  composes: form from './index.module.css';
+  composes: form from "./index.module.css";
   padding-top: v-padding-block;
 }
 
@@ -14,7 +14,7 @@
 }
 
 .modal {
-  composes: modal from './index.module.css';
+  composes: modal from "./index.module.css";
   box-sizing: border-box;
   width: 100%;
   max-width: 40rem;

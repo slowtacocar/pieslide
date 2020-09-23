@@ -7,124 +7,110 @@ const TerserPlugin = require("terser-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 module.exports = {
-  "context": path.resolve(__dirname, 'src'),
-  "entry": {
-    "error": "./error/index.js",
-    "dashboard": "./dashboard/index.js",
-    "login": "./login/index.js",
-    "slideshow": "./slideshow/index.js"
+  context: path.resolve(__dirname, "src"),
+  entry: {
+    error: "./error/index.js",
+    dashboard: "./dashboard/index.js",
+    login: "./login/index.js",
+    slideshow: "./slideshow/index.js",
   },
-  "module": {
-    "rules": [
+  module: {
+    rules: [
       {
-        "include": path.resolve(__dirname, "src"),
-        "test": /\.m?js$/,
-        "use": [
-          "babel-loader",
-          "eslint-loader"
-        ]
+        include: path.resolve(__dirname, "src"),
+        test: /\.m?js$/,
+        use: ["babel-loader", "eslint-loader"],
       },
       {
-        "include": [
+        include: [
           path.resolve(__dirname, "node_modules/@firebase"),
-          path.resolve(__dirname, "node_modules/firebase")
+          path.resolve(__dirname, "node_modules/firebase"),
         ],
-        "test": /\.m?js$/,
-        "use": [
+        test: /\.m?js$/,
+        use: [
           {
-            "loader": "babel-loader",
-            "options": {
-              "presets": [
+            loader: "babel-loader",
+            options: {
+              presets: [
                 [
                   "@babel/preset-env",
                   {
-                    "corejs": 3,
-                    "useBuiltIns": "usage"
-                  }
-                ]
+                    corejs: 3,
+                    useBuiltIns: "usage",
+                  },
+                ],
               ],
-              "sourceType": "unambiguous"
-            }
-          }
-        ]
+              sourceType: "unambiguous",
+            },
+          },
+        ],
       },
       {
-        "test": /\.css$/,
-        "use": [
+        test: /\.css$/,
+        use: [
           MiniCssExtractPlugin.loader,
           {
-            "loader": "css-loader",
-            "options": {
-              "modules": {
-                "localIdentName": "src-[path][name]__[local]"
-              }
-            }
+            loader: "css-loader",
+            options: {
+              modules: {
+                localIdentName: "src-[path][name]__[local]",
+              },
+            },
           },
-          "postcss-loader"
-        ]
-      }
-    ]
-  },
-  "optimization": {
-    "minimizer": [
-      new TerserPlugin(),
-      new OptimizeCSSAssetsPlugin()
+          "postcss-loader",
+        ],
+      },
     ],
-    "moduleIds": "hashed",
-    "splitChunks": {
-      "chunks": "all"
-    }
   },
-  "output": {
-    "filename": "[name].[contenthash].js",
-    "path": path.resolve(__dirname, "public")
+  optimization: {
+    minimizer: [new TerserPlugin(), new OptimizeCSSAssetsPlugin()],
+    moduleIds: "hashed",
+    splitChunks: {
+      chunks: "all",
+    },
   },
-  "performance": {
-    "hints": false
+  output: {
+    filename: "[name].[contenthash].js",
+    path: path.resolve(__dirname, "public"),
   },
-  "plugins": [
+  performance: {
+    hints: false,
+  },
+  plugins: [
     new StylelintPlugin({
-      "files": "**/*.@(s?(a|c)|c)ss"
+      files: "**/*.@(s?(a|c)|c)ss",
     }),
     new CleanWebpackPlugin({
-      "cleanStaleWebpackAssets": false
+      cleanStaleWebpackAssets: false,
     }),
     new MiniCssExtractPlugin({
-      "chunkFilename": "[id].[contenthash].css",
-      "filename": "[name].[contenthash].css"
+      chunkFilename: "[id].[contenthash].css",
+      filename: "[name].[contenthash].css",
     }),
     new HtmlWebpackPlugin({
-      "chunks": [
-        "login"
-      ],
-      "filename": "login.html",
-      "template": "common/index.ejs",
-      "title": "PieSlide - Login"
+      chunks: ["login"],
+      filename: "login.html",
+      template: "common/index.ejs",
+      title: "PieSlide - Login",
     }),
     new HtmlWebpackPlugin({
-      "chunks": [
-        "dashboard"
-      ],
-      "filename": "index.html",
-      "template": "common/index.ejs",
-      "title": "PieSlide - Dashboard"
+      chunks: ["dashboard"],
+      filename: "index.html",
+      template: "common/index.ejs",
+      title: "PieSlide - Dashboard",
     }),
     new HtmlWebpackPlugin({
-      "chunks": [
-        "slideshow"
-      ],
-      "filename": "slideshow.html",
-      "template": "common/index.ejs",
-      "title": "PieSlide - Slideshow"
+      chunks: ["slideshow"],
+      filename: "slideshow.html",
+      template: "common/index.ejs",
+      title: "PieSlide - Slideshow",
     }),
     new HtmlWebpackPlugin({
-      "chunks": [
-        "error"
-      ],
-      "filename": "404.html",
-      "template": "common/index.ejs",
-      "title": "Page Not Found"
-    })
+      chunks: ["error"],
+      filename: "404.html",
+      template: "common/index.ejs",
+      title: "Page Not Found",
+    }),
   ],
-  "stats": "errors-warnings"
+  stats: "errors-warnings",
 };

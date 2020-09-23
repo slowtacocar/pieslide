@@ -15,7 +15,7 @@ function Upload(props) {
 
     modal.current.showModal();
     const [file] = inputGroup.current.files;
-    const ref = props.storageRef.child(file.name)
+    const ref = props.storageRef.child(file.name);
     ref.put(file).on("state_changed", updateProgress, null, () => {
       modal.current.close();
       props.success(file.name);
@@ -43,9 +43,9 @@ function Upload(props) {
 }
 
 Upload.propTypes = {
-  "storageRef": PropTypes.object.isRequired,
-  "success": PropTypes.func.isRequired,
-  "sticky": PropTypes.bool
-}
+  storageRef: PropTypes.object.isRequired,
+  success: PropTypes.func.isRequired,
+  sticky: PropTypes.bool,
+};
 
 export default Upload;

@@ -5,19 +5,17 @@ import "firebase/auth";
 
 function Login() {
   const uiConfig = {
-    "signInFlow": "popup",
-    "signInSuccessUrl": "/",
-    "signInOptions": [
+    signInFlow: "popup",
+    signInSuccessUrl: "/",
+    signInOptions: [
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID
-    ]
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    ],
   };
 
   const auth = firebase.auth();
 
-  return (
-    <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth}/>
-  );
+  return <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth} />;
 }
 
 export default Login;

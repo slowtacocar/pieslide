@@ -9,10 +9,10 @@ function Preview(props, ref) {
   const [src, setSrc] = React.useState();
 
   React.useImperativeHandle(ref, () => ({
-    "showModal": (newSrc) => {
+    showModal: (newSrc) => {
       modal.current.showModal();
       setSrc(newSrc);
-    }
+    },
   }));
 
   return (

@@ -8,9 +8,7 @@
     "value-keyword-case": [
       "lower",
       {
-        "ignoreProperties": [
-          "composes"
-        ]
+        "ignoreProperties": ["composes"]
       }
     ]
   }

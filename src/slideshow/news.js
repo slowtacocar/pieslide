@@ -33,27 +33,33 @@ function News(props) {
 
   React.useEffect(() => {
     animation.current && (animation.current.playbackRate = duration());
-  }, [duration, text])
+  }, [duration, text]);
 
   React.useEffect(() => {
     getNews();
-    animation.current = news.current.animate([
-      { "transform": "translate(100vw)" },
-      { "transform": "translate(-100%)" }
-    ], 50000);
+    animation.current = news.current.animate(
+      [{ transform: "translate(100vw)" }, { transform: "translate(-100%)" }],
+      50000
+    );
     animation.current.playbackRate = duration();
     animation.current.onfinish = async (event) => {
       await getNews();
-      event.target.play()
+      event.target.play();
     };
-    return () => {animation.current.cancel()};
+    return () => {
+      animation.current.cancel();
+    };
   }, [duration, getNews]);
 
-  return <p styleName="news" ref={news}>{text}</p>;
+  return (
+    <p styleName="news" ref={news}>
+      {text}
+    </p>
+  );
 }
 
 News.propTypes = {
-  "news": PropTypes.arrayOf(PropTypes.string).isRequired
+  news: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default News;

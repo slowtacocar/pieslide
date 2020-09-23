@@ -5,7 +5,7 @@ function Time() {
   function reducer() {
     const date = new Date();
 
-    return { "time": date.toLocaleTimeString() };
+    return { time: date.toLocaleTimeString() };
   }
 
   const [state, dispatch] = React.useReducer(reducer, undefined, reducer);

@@ -15,12 +15,14 @@ function Dashboard() {
   const firestore = React.useMemo(() => firebase.firestore(), []);
   const storage = React.useMemo(() => firebase.storage(), []);
   const user = useAuth(auth);
-  const docRef = React.useMemo(() => (
-    user && firestore.collection("user").doc(user.uid)
-  ), [firestore, user]);
-  const storageRef = React.useMemo(() => (
-    user && storage.ref().child("user").child(user.uid)
-  ), [storage, user]);
+  const docRef = React.useMemo(
+    () => user && firestore.collection("user").doc(user.uid),
+    [firestore, user]
+  );
+  const storageRef = React.useMemo(
+    () => user && storage.ref().child("user").child(user.uid),
+    [storage, user]
+  );
   const data = useData(docRef);
 
   function signOut() {
@@ -31,7 +33,9 @@ function Dashboard() {
     <div styleName="container">
       <nav styleName="navbar">
         <span styleName="navbarSpan">PieSlide</span>
-        <a href="index.html" styleName="navbarLinkActive">Dashboard</a>
+        <a href="index.html" styleName="navbarLinkActive">
+          Dashboard
+        </a>
         <a href="slideshow.html" target="_blank" styleName="navbarLink">
           Slideshow
         </a>
@@ -41,12 +45,18 @@ function Dashboard() {
       </nav>
 
       <nav styleName="sidebar">
-        <a href="#slides" styleName="sidebarLinkActive">Slides</a>
-        <a href="#logo" styleName="sidebarLink">Logo</a>
+        <a href="#slides" styleName="sidebarLinkActive">
+          Slides
+        </a>
+        <a href="#logo" styleName="sidebarLink">
+          Logo
+        </a>
         <a href="#slideshowSettings" styleName="sidebarLink">
           Slideshow Settings
         </a>
-        <a href="#accountSettings" styleName="sidebarLink">Account Settings</a>
+        <a href="#accountSettings" styleName="sidebarLink">
+          Account Settings
+        </a>
       </nav>
 
       <div styleName="mainContainer">

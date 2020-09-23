@@ -25,10 +25,12 @@ function Account(props) {
         const provider = firebase.auth.EmailAuthProvider;
 
         try {
-          await props.user.reauthenticateWithCredential(provider.credential(
-            props.user.email,
-            event.target.currentPassword.value
-          ));
+          await props.user.reauthenticateWithCredential(
+            provider.credential(
+              props.user.email,
+              event.target.currentPassword.value
+            )
+          );
           modal.current.close();
 
           resolve();
@@ -103,7 +105,9 @@ function Account(props) {
             onChange={currentPasswordChanged}
             name="currentPassword"
           />
-          <button type="submit" name="buttonLogIn">Log In</button>
+          <button type="submit" name="buttonLogIn">
+            Log In
+          </button>
         </form>
       </dialog>
     </section>
@@ -111,7 +115,7 @@ function Account(props) {
 }
 
 Account.propTypes = {
-  "user": PropTypes.object.isRequired
+  user: PropTypes.object.isRequired,
 };
 
 export default Account;

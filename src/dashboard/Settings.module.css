@@ -3,36 +3,36 @@
 .grid {
   display: grid;
   grid-template:
-    'time duration' auto
-    'transition size' auto
-    'refresh refresh' auto
-    'advanced advanced' auto /
+    "time duration" auto
+    "transition size" auto
+    "refresh refresh" auto
+    "advanced advanced" auto /
     1fr 1fr;
   gap: v-padding-block;
 }
 
 .time {
-  composes: form from './index.module.css';
+  composes: form from "./index.module.css";
   grid-area: time;
 }
 
 .duration {
-  composes: form from './index.module.css';
+  composes: form from "./index.module.css";
   grid-area: duration;
 }
 
 .transition {
-  composes: form from './index.module.css';
+  composes: form from "./index.module.css";
   grid-area: transition;
 }
 
 .size {
-  composes: form from './index.module.css';
+  composes: form from "./index.module.css";
   grid-area: size;
 }
 
 .refresh {
-  composes: button from './index.module.css';
+  composes: button from "./index.module.css";
   grid-area: refresh;
   color: v-yellow;
   background: none;
@@ -48,18 +48,18 @@
 }
 
 .news {
-  composes: form from './index.module.css';
+  composes: form from "./index.module.css";
 }
 
 @media m-medium {
   .grid {
     grid-template:
-      'time' auto
-      'duration' auto
-      'transition' auto
-      'size' auto
-      'refresh' auto
-      'advanced' auto /
+      "time" auto
+      "duration" auto
+      "transition" auto
+      "size" auto
+      "refresh" auto
+      "advanced" auto /
       1fr;
   }
 }

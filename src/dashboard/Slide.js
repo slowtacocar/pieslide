@@ -12,10 +12,13 @@ function Slide(props) {
   }
 
   function duration(event) {
-    props.duration({
-      ...props.slide,
-      "duration": event.target.value
-    }, props.index);
+    props.duration(
+      {
+        ...props.slide,
+        duration: event.target.value,
+      },
+      props.index
+    );
   }
 
   return (
@@ -45,15 +48,15 @@ function Slide(props) {
 }
 
 Slide.propTypes = {
-  "slide": PropTypes.shape({
-    "name": PropTypes.string.isRequired,
-    "duration": PropTypes.any.isRequired,
-    "url": PropTypes.string.isRequired
+  slide: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    duration: PropTypes.any.isRequired,
+    url: PropTypes.string.isRequired,
   }).isRequired,
-  "index": PropTypes.number.isRequired,
-  "delete": PropTypes.func.isRequired,
-  "preview": PropTypes.func.isRequired,
-  "duration": PropTypes.func.isRequired
+  index: PropTypes.number.isRequired,
+  delete: PropTypes.func.isRequired,
+  preview: PropTypes.func.isRequired,
+  duration: PropTypes.func.isRequired,
 };
 
 export default Slide;
