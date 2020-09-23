@@ -22,24 +22,28 @@ function Slides(props) {
   React.useEffect(() => {
     function stop(event) {
       props.docRef.update({
-        "slides": Array.from(event.target.children).map((row) => {
+        slides: Array.from(event.target.children).map((row) => {
           const name = row.getAttribute("data-name");
 
-          return slides.find((slide) => slide.name == name);
-        })
+          return slides
+            .find((slide) => slide.name == name)
+            .map(({ name, duration }) => ({ name, duration }));
+        }),
       });
     }
 
     const $tableBody = jQuery(tableBody.current).sortable({ stop });
 
-    return () => $tableBody.sortable( "destroy" );
+    return () => $tableBody.sortable("destroy");
   }, [props.docRef, slides]);
 
   async function deleteSlide(slide, index) {
     slides.splice(index, 1);
 
     await props.storageRef.child(slide.name).delete();
-    props.docRef.update({ "slides": slides.map(({ name, duration }) => ({ name, duration })) });
+    props.docRef.update({
+      slides: slides.map(({ name, duration }) => ({ name, duration })),
+    });
   }
 
   function showPreview(slide) {
@@ -49,15 +53,17 @@ function Slides(props) {
   function duration(slide, index) {
     slides[index] = slide;
 
-    props.docRef.update({ "slides": slides.map(({ name, duration }) => ({ name, duration })) });
+    props.docRef.update({
+      slides: slides.map(({ name, duration }) => ({ name, duration })),
+    });
   }
 
   function success(name) {
     props.docRef.update({
-      "slides": firebase.firestore.FieldValue.arrayUnion({
-        "duration": props.duration,
-        name
-      })
+      slides: firebase.firestore.FieldValue.arrayUnion({
+        duration: props.duration,
+        name,
+      }),
     });
   }
 
@@ -65,7 +71,10 @@ function Slides(props) {
     <section id="slides" className="section">
       <header>
         <h1 className="header">Slides</h1>
-        <p className="headerSub">Use the input at the bottom of the screen to upload images for your slideshow, and drag the table rows to change the order of the slides.</p>
+        <p className="headerSub">
+          Use the input at the bottom of the screen to upload images for your
+          slideshow, and drag the table rows to change the order of the slides.
+        </p>
       </header>
       <div styleName="tableContainer">
         <table styleName="table">
@@ -79,7 +88,14 @@ function Slides(props) {
           </thead>
           <tbody ref={tableBody}>
             {slides.map((slide, index) => (
-              <Slide key={slide.name} slide={slide} index={index} delete={deleteSlide} preview={showPreview} duration={duration} />
+              <Slide
+                key={slide.name}
+                slide={slide}
+                index={index}
+                delete={deleteSlide}
+                preview={showPreview}
+                duration={duration}
+              />
             ))}
           </tbody>
         </table>
@@ -91,13 +107,15 @@ function Slides(props) {
 }
 
 Slides.propTypes = {
-  "slides": PropTypes.arrayOf(PropTypes.shape({
-    "name": PropTypes.string.isRequired,
-    "duration": PropTypes.any.isRequired
-  })).isRequired,
-  "duration": PropTypes.any.isRequired,
-  "docRef": PropTypes.object.isRequired,
-  "storageRef": PropTypes.object.isRequired
+  slides: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      duration: PropTypes.any.isRequired,
+    })
+  ).isRequired,
+  duration: PropTypes.any.isRequired,
+  docRef: PropTypes.object.isRequired,
+  storageRef: PropTypes.object.isRequired,
 };
 
 export default Slides;
