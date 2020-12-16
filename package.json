@@ -1,23 +1,11 @@
 {
   "name": "pieslide",
   "version": "1.0.0",
-  "description": "Digital signage for small businesses that's as easy as pie",
-  "main": "index.js",
   "scripts": {
     "deploy": "firebase deploy --token \"$FIREBASE_TOKEN\"",
     "start": "webpack-dev-server --open --config webpack.dev.js --progress",
-    "test": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/slowtacocar/PieSlide.git"
-  },
-  "author": "",
-  "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://github.com/slowtacocar/PieSlide/issues"
-  },
-  "homepage": "https://github.com/slowtacocar/PieSlide#readme",
   "browserslist": [
     "last 2 chrome version",
     "last 2 firefox version",
@@ -29,7 +17,6 @@
     "core-js": "^3.6.5",
     "dialog-polyfill": "^0.5.2",
     "firebase": "^7.17.1",
-    "functions": "file:functions",
     "jquery": "^3.0.0",
     "jquery-ui": "^1.12.1",
     "prop-types": "^15.7.2",
@@ -56,6 +43,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-loader": "^3.0.0",
     "postcss-preset-env": "^6.7.0",
+    "prettier": "^2.2.1",
     "stylelint": "^13.6.1",
     "stylelint-config-css-modules": "^2.2.0",
     "stylelint-config-rational-order": "^0.1.2",
