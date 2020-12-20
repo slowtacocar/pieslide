@@ -1,0 +1,9 @@
+.news {
+  composes: pill from './theme.module.css';
+  composes: font-size-3 from './theme.module.css';
+  position: fixed;
+  bottom: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+  transform: translate(100vw);
+}

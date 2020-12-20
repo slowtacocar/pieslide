@@ -1,0 +1,14 @@
+.modal {
+  composes: modal from './theme.module.css';
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 40rem;
+}
+
+.modalImg {
+  width: 100%;
+}
+
+.form {
+  composes: form from './theme.module.css';
+}

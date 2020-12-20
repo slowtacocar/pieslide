@@ -1,92 +1,132 @@
-import "./dashboard.scss";
-import "bootstrap/js/dist/collapse";
-import "bootstrap/js/dist/modal";
-import "bootstrap/js/dist/scrollspy";
+/** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
+
+import "./theme.module.css";
+import "dialog-polyfill/dist/dialog-polyfill.css";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import "jquery-ui/ui/data";
-import "jquery-ui/ui/scroll-parent";
-import "jquery-ui/ui/widget";
-import "jquery-ui/ui/widgets/mouse";
-import "jquery-ui/ui/widgets/sortable";
 import AccountForm from "./account-form.js";
 import LogoTable from "./logo-table.js";
 import SettingsForm from "./settings-form.js";
 import SlidesTable from "./slides-table.js";
-import Table from "./table.js";
-import config from "../config.js";
+import config from "../lib/config.js";
 import firebase from "firebase/app";
-import jQuery from "jquery";
+import jsx from "../lib/jsx.js";
+import styles from "./dashboard.module.css";
 
-class Dashboard {
-  constructor() {
+// TODO: Remove this once all users have updated their slideshow link
+if (new URLSearchParams(location.search).get("redir") === "slideshow.html") {
+  location.replace("slideshow.html");
+}
+
+class Dashboard extends jsx.Component {
+  constructor(props) {
+    super(props);
     firebase.initializeApp(config);
     this.auth = firebase.auth();
-    this.accountForm = new AccountForm(this.auth, {
-      "buttonAuth": "#buttonAuth",
-      "buttonSignOut": "#signout",
-      "inputAuth": "#inputAuth",
-      "inputEmail": "#inputEmail",
-      "inputPassword": "#inputPassword",
-      "modal": "#authModal"
-    });
     this.firestore = firebase.firestore();
     this.storageRef = firebase.storage().ref();
-    this.auth.onAuthStateChanged(this.changeUser);
-    Table.addPreviewListeners({
-      "modalBodyVideo": "#modalBodyVideo",
-      "modalImage": "#previewModalImage",
-      "modalVideo": "#previewModalVideo"
-    });
-    this.buttonError.click(this.hideError);
-    window.onerror = this.onError;
+    window.onerror = this.showAlertError;
   }
 
-  alertError = jQuery("#alertError");
+  render() {
+    const element =
+      <>
+        <nav class={styles.navbar}>
+          <span class={styles.navbarSpan}>PieSlide</span>
+          <a href="index.html" class={styles.navbarLinkActive}>
+            Dashboard
+          </a>
+          <a href="slideshow.html" target="_blank" class={styles.navbarLink}>
+            Slideshow
+          </a>
+          <button
+            type="button"
+            onclick={this.signOut}
+            class={styles.navbarButton}
+          >
+            Sign Out
+          </button>
+        </nav>
 
-  buttonError = jQuery("#buttonError");
+        <nav class={styles.sidebar}>
+          <a href="#slides" class={`${styles.active} ${styles.sidebarLink}`}>
+            Slides
+          </a>
+          <a href="#logo" class={styles.sidebarLink}>
+            Logo
+          </a>
+          <a href="#slideshowSettings" class={styles.sidebarLink}>
+            Slideshow Settings
+          </a>
+          <a href="#accountSettings" class={styles.sidebarLink}>
+            Account Settings
+          </a>
+        </nav>
 
-  logoTable = new LogoTable();
+        <div class={styles.mainContainer}>
+          <div class={styles.main}>
+            <SlidesTable ref="slidesTable" />
+            <LogoTable ref="logoTable" />
+            <SettingsForm ref="settingsForm" />
+            <AccountForm ref="accountForm" />
+          </div>
+        </div>
+        <div ref="error" role="alert" class={styles.error} hidden>
+          <p ref="errorSpan" class={styles.errorSpan}></p>
+          <button
+            type="button"
+            onclick={this.hideAlertError}
+            class={styles.errorButton}
+          >
+            &times;
+          </button>
+        </div>
+      </>;
 
-  parError = jQuery("#parError");
+    this.auth.onAuthStateChanged(this.changeUser);
 
-  settingsForm = new SettingsForm();
+    return element;
+  }
 
-  slidesTable = new SlidesTable();
-
-  changeUser = (user) => {
+  changeUser(user) {
     this.user = user;
 
     if (this.user) {
       const docRef = this.firestore.collection("user").doc(this.user.uid);
       const folderRef = this.storageRef.child(`user/${this.user.uid}`);
 
-      this.accountForm.changeUser(user);
-      this.logoTable.changeUser(
+      this.refs.accountForm.changeUser(user);
+      this.refs.logoTable.changeUser(
         docRef.collection("data").doc("logo"),
         folderRef.child("logo")
       );
-      this.settingsForm.changeUser(docRef);
-      this.slidesTable.changeUser(
+      this.refs.settingsForm.changeUser(docRef);
+      this.refs.slidesTable.changeUser(
         docRef.collection("data").doc("slides"),
         folderRef.child("slides"),
         docRef
       );
     } else {
-      window.location.replace("index.html");
+      window.location.replace("login.html");
     }
-  };
+  }
 
-  hideError = () => {
-    this.alertError.hide();
-  };
+  signOut() {
+    this.auth.signOut();
+  }
 
-  onError = (msg) => {
-    this.parError.text(msg);
-    this.alertError.show();
+  hideAlertError() {
+    this.refs.error.setAttribute("hidden", "");
+  }
+
+  showAlertError(msg) {
+    this.refs.errorSpan.textContent = msg;
+    this.refs.error.removeAttribute("hidden");
 
     return false;
-  };
+  }
 }
-jQuery(new Dashboard().render());
+
+jsx.render(document.body, jsx.createElement(Dashboard, null));

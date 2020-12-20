@@ -1,59 +1,59 @@
-import jQuery from "jquery";
+/** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
 
-const NEWS_DELAY = 1000;
-const NEWS_SPEED = 100;
-const TRANSITION_DELAY = 500;
+import jsx from "../lib/jsx.js";
+import styles from "./news.module.css";
+
+const NEWS_SPEED = 10000;
 const RSS_API_URL = "https://api.rss2json.com/v1/api.json?rss_url=";
+const NEWS_DELAY = 1000;
 
-class News {
-  constructor() {
-    this.isRunning = false;
-    this.cardNews = jQuery("#cardNews");
-    this.cardNews.on("transitionend", this.loop);
+class News extends jsx.Component {
+  render() {
+    return (
+      <p ref="news" class={styles.news}></p>
+    );
   }
 
-  loop = () => {
+  changeUser(docRef) {
+    docRef.onSnapshot(this.changeData);
+  }
+
+  async loop() {
+    const texts = await Promise.all(this.links.map(this.getSource));
+
     this.isRunning = true;
-    this.cardNews.css({
-      "transform": "translate(100vw)",
-      "transition": "none"
-    });
-    Promise.all(this.links.map(this.getSource)).then(this.setText);
-    window.setTimeout(this.setTransition, TRANSITION_DELAY);
-    window.setTimeout(this.setTransform, NEWS_DELAY);
-  };
+    this.refs.news.textContent = texts.join(" \u2022 ");
 
-  getSource = (link) => {
-    const params = { "url": RSS_API_URL + link };
+    const width =
+      parseInt(getComputedStyle(this.refs.news).width.replace("px", "")) +
+      window.innerWidth;
 
-    return jQuery.ajax(params).then(this.getItems);
-  };
+    this.animation.playbackRate = NEWS_SPEED / width;
+    this.animation.play();
+  }
 
-  getItems = (data) => data.items.map(this.getTitle).join(" \u25cf ");
+  async getSource(link) {
+    const response = await fetch(RSS_API_URL + link);
+    const data = await response.json();
 
-  getTitle = (item) => item.title;
+    return data.items.map(({ title }) => title).join(" \u2022 ");
+  }
 
-  setText = (texts) => {
-    jQuery("#news").text(texts.join(""));
-  };
-
-  setTransition = () => {
-    const width = this.cardNews.width() + jQuery(window).width();
-
-    this.cardNews.css("transition", `transform ${width / NEWS_SPEED}s linear`);
-  };
-
-  setTransform = () => {
-    this.cardNews.css("transform", "translate(-100%)");
-  };
-
-  setLinks = (links) => {
-    this.links = links;
+  changeData(doc) {
+    this.links = doc.get("news");
 
     if (!this.isRunning) {
-      this.loop();
+      this.animation = this.refs.news.animate([
+        { "transform": "translate(100vw)" },
+        { "transform": "translate(-100%)" }
+      ], {
+        "duration": 50000,
+        "endDelay": NEWS_DELAY
+      });
+      (this.animation.onfinish = this.loop)();
     }
-  };
+  }
 }
 
 export default News;

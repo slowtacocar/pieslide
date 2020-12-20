@@ -1,18 +1,57 @@
-import jQuery from "jquery";
+/** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
 
-const FAKEPATH = "C:\\fakepath\\";
+import Preview from "./preview.js";
+import dialogPolyfill from "dialog-polyfill";
+import jsx from "../lib/jsx.js";
+import styles from "./table.module.css";
 
-class Table {
-  constructor(elements) {
-    this.defaultData = elements.defaultData;
-    this.inputGroup = jQuery(elements.inputGroup);
-    this.inputGroupAddon = jQuery(elements.inputGroupAddon);
-    this.inputGroupLabel = jQuery(elements.inputGroupLabel);
-    this.progressModal = jQuery(elements.modal);
-    this.progressBar = jQuery(elements.progressBar);
-    this.inputGroup.change(this.updateFilename);
-    this.inputGroupAddon.click(this.upload);
-    this.progressModal.on("shown.bs.modal", this.update);
+class Table extends jsx.Component {
+  render() {
+    const element =
+      <>
+        <div class={styles.tableContainer}>
+          <table class={styles.table}>
+            <thead class={styles.head}>
+              <tr>
+                <th scope="col">File Name</th>
+                <th scope="col">Preview</th>
+                {this.props.duration ? <th scope="col">Duration</th> : ""}
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody ref="tableBody">
+            </tbody>
+          </table>
+        </div>
+        <form
+          class={this.props.sticky ? styles.uploadSticky : styles.upload}
+          onsubmit={this.openProgressModal}
+        >
+          <input
+            type="file"
+            accept="image/*"
+            onchange={this.updateFilename}
+            ref="inputGroup"
+            required
+          ></input>
+          <button
+            type="submit"
+          >Upload</button>
+        </form>
+        <dialog
+          ref="progressModal"
+          class={styles.modal}
+        >
+          <progress max="1" ref="progressBar" class={styles.progressBar}>
+          </progress>
+        </dialog>
+        <Preview ref="preview" video={this.props.video} name={this.props.name}/>
+      </>;
+
+    dialogPolyfill.registerDialog(this.refs.progressModal);
+
+    return element;
   }
 
   changeUser(docRef, folderRef) {
@@ -21,78 +60,38 @@ class Table {
     this.docRef.onSnapshot(this.changeData);
   }
 
-  updateFilename = () => {
-    const value = this.inputGroup.val();
-
-    this.inputGroupLabel.text(value.slice(FAKEPATH.length));
-  };
-
-  upload = () => {
-    [ this.file ] = this.inputGroup.prop("files");
-    this.progressBar.removeClass("bg-danger").width("0");
-    this.progressModal.modal();
-  };
-
-  update = () => {
+  openProgressModal(event) {
+    event.preventDefault();
+    this.refs.progressBar.value = 0;
+    this.refs.progressModal.showModal();
+    [ this.file ] = this.refs.inputGroup.files;
     this.folderRef.child(this.file.name).put(this.file)
       .on(
         "state_changed",
         this.updateProgress,
-        this.updateError,
-        this.updateSuccess
+        null,
+        this.uploadSuccess
       );
-  };
+  }
 
-  updateProgress = (snapshot) => {
-    const progress = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+  updateProgress(snapshot) {
+    const progress = snapshot.bytesTransferred / snapshot.totalBytes;
 
-    this.progressBar.width(`${progress}%`);
-  };
+    this.refs.progressBar.value = progress;
+  }
 
-  updateError = () => {
-    this.progressBar.addClass("bg-danger");
-  };
+  uploadSuccess() {
+    this.refs.progressModal.close();
+    this.docRef.update(this.toObject(this.file.name));
+  }
 
-  updateSuccess = () => {
-    this.progressModal.modal("hide");
-    this.docRef.update(this.docData(this.file.name));
-  };
-
-  changeData = (doc) => {
+  changeData(doc) {
     if (doc.exists) {
       this.updateTable(doc.data());
     } else {
-      this.docRef.set(this.defaultData);
+      this.docRef.set(this.props.defaultData);
     }
-  };
-
-  static addPreviewListeners = (elements) => {
-    this.modalBodyVideo = jQuery(elements.modalBodyVideo);
-    this.modalImage = jQuery(elements.modalImage);
-    this.modalImage.on("show.bs.modal", this.setPreviewImage);
-    this.modalVideo = jQuery(elements.modalVideo);
-    this.modalVideo.on("show.bs.modal", this.setPreviewVideo);
-    this.modalVideo.on("hide.bs.modal", this.stopPreviewVideo);
-  };
-
-  static setPreviewVideo = (event) => {
-    this.modalBodyVideo.append(jQuery("<video></video>", {
-      "autoplay": true,
-      "class": "embed-responsive",
-      "controls": true
-    }).append(jQuery("<source></source>", {
-      "src": jQuery(event.relatedTarget).data("link"),
-      "type": `video/${jQuery(event.relatedTarget).data("type")}`
-    })));
-  };
-
-  static setPreviewImage = (event) => {
-    jQuery("#previewImg").attr("src", jQuery(event.relatedTarget).data("link"));
-  };
-
-  static stopPreviewVideo = () => {
-    this.modalBodyVideo.empty();
-  };
+  }
 }
 
 export default Table;

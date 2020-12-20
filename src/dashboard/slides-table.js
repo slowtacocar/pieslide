@@ -1,7 +1,17 @@
+/** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
+
 import "firebase/firestore";
+import "jquery-ui/ui/data";
+import "jquery-ui/ui/scroll-parent";
+import "jquery-ui/ui/widget";
+import "jquery-ui/ui/widgets/mouse";
+import "jquery-ui/ui/widgets/sortable";
 import Table from "./table.js";
 import firebase from "firebase/app";
 import jQuery from "jquery";
+import jsx from "../lib/jsx.js";
+import styles from "./slides-table.module.css";
 
 const VIDEO_TYPES = [
   "ogm",
@@ -16,140 +26,151 @@ const VIDEO_TYPES = [
   "m4v",
   "avi"
 ];
-const BUTTON_DELETE = "buttonDelete";
 
 class SlidesTable extends Table {
-  constructor() {
+  constructor(props) {
     super({
+      ...props,
       "defaultData": { "slides": [] },
-      "inputGroup": "#inputGroupSlide",
-      "inputGroupAddon": "#inputGroupSlideAddon",
-      "inputGroupLabel": "#inputGroupSlideLabel",
-      "modal": "#slideProgressModal",
-      "progressBar": "#slideProgressBar"
+      "duration": true,
+      "name": "slide",
+      "sticky": true,
+      "video": true
     });
-    this.tableBody = jQuery("#tbodySlides");
-    this.alertSave = jQuery("#alertSave");
-    jQuery("#tbodySlides").sortable();
-    jQuery("#tbodySlides").on("sortstop", this.sort);
-    jQuery("#buttonSaveSlides").click(this.save);
-    jQuery("#buttonDiscard").click(this.stopSort);
   }
 
-  updateTable = (data) => {
-    this.tableBody.empty();
-    data.slides.forEach(this.addTableRow);
-    data.slides.forEach(this.getURLs);
-  };
+  render() {
+    const element =
+      <section id="slides" class="section">
+        <header>
+          <h1 class="header">Slides</h1>
+          <p class="headerSub">
+            Use the input at the bottom of the screen to upload images for your
+            slideshow, and drag the table rows to change the order of the
+            slides.
+          </p>
+        </header>
+        {super.render()}
+      </section>;
 
-  addTableRow = (file, index) => {
-    this.tableBody.append(jQuery("<tr></tr>", { "id": `tr${index}` }));
-  };
+    jQuery(this.refs.tableBody).sortable({
+      "stop": this.updateSort
+    });
 
-  getURLs = (file, index, slides) => {
+    return element;
+  }
+
+  async updateTable(data) {
+    this.slides = data.slides;
+
+    const rowElements =
+      await Promise.all(this.slides.map(this.createRowElement));
+
+    jsx.render(this.refs.tableBody, ...rowElements);
+  }
+
+  async createRowElement(file, index) {
     const ref = this.folderRef.child(file.name);
-
-    ref.getDownloadURL().then(this.addTableData.bind(this, {
-      file,
-      index,
-      slides
-    }));
-  };
-
-  addTableData = (slide, url) => {
-    const { file, index, slides } = slide;
+    const url = await ref.getDownloadURL();
     const type = file.name.split(".").slice(-1)[ 0 ].toLowerCase();
+    const row =
+      <tr>
+        <th class="title" scope="row">{file.name}</th>
+        <td>
+          <button
+            type="button"
+            data-link={url}
+            data-type={type}
+            class={styles.preview}
+            onclick={
+              VIDEO_TYPES.includes(type)
+                ? this.refs.preview.showVideo
+                : this.refs.preview.showImage
+            }
+          >View Preview</button>
+        </td>
+        <td>
+          {
+            VIDEO_TYPES.includes(type)
+              ? <input
+                class={styles.duration}
+                min="0"
+                type="number"
+                value={file.duration}
+                data-index={index}
+                hidden
+                onchange={this.updateDuration}
+              ></input>
+              : <input
+                class={styles.duration}
+                min="0"
+                type="number"
+                value={file.duration}
+                data-index={index}
+                onchange={this.updateDuration}
+              ></input>
+          }
+        </td>
+        <td>
+          <button
+            type="button"
+            data-index={index}
+            onclick={this.deleteItem}
+            class={styles.delete}
+          >Delete</button>
+        </td>
+      </tr>;
 
-    jQuery(`#tr${index}`).append(jQuery("<th></th>", {
-      "html": file.name,
-      "scope": "row"
-    }))
-      .append(jQuery("<td></td>").append(jQuery("<button></button>", {
-        "class": "btn btn-primary",
-        "data-link": url,
-        "data-toggle": "modal",
-        "data-type": type,
-        "html": "View Preview",
-        "id": `buttonPreview${index}`,
-        "type": "button"
-      })))
-      .append(jQuery("<td></td>").append(jQuery("<input>", {
-        "class": "form-control",
-        "id": `inputDuration${index}`,
-        "min": "0",
-        "type": "number",
-        "value": file.duration
-      })))
-      .append(jQuery("<td></td>").append(jQuery("<button></button>", {
-        "class": "btn btn-danger delete",
-        "html": "Delete",
-        "id": `buttonDelete${index}`,
-        "type": "button"
-      })));
+    return row;
+  }
 
-    if (VIDEO_TYPES.includes(type)) {
-      jQuery(`#inputDuration${index}`).hide();
-      jQuery(`#buttonPreview${index}`)
-        .attr("data-target", "#previewModalVideo");
-    } else {
-      jQuery(`#inputDuration${index}`).change(this.sort);
-      jQuery(`#buttonPreview${index}`)
-        .attr("data-target", "#previewModalImage");
-    }
+  async deleteItem(event) {
+    const index = event.target.getAttribute("data-index");
+    const [ slide ] = this.slides.splice(index, 1);
 
-    jQuery(`#buttonDelete${index}`).click({ slides }, this.deleteItem);
-  };
+    await this.folderRef.child(slide.name).delete();
+    this.docRef.update({ "slides": this.slides });
+  }
 
-  deleteItem = (event) => {
-    const indexId = jQuery(event.target).attr("id")
-      .slice(BUTTON_DELETE.length);
-    const slide = event.data.slides[ indexId ];
+  toObject(name) {
+    return {
+      "slides": firebase.firestore.FieldValue.arrayUnion({
+        "duration": this.defaultDuration,
+        name
+      })
+    };
+  }
 
-    this.folderRef.child(slide.name).delete()
-      .then(this.deleteEntry.bind(this, indexId, event.data.slides));
-  };
-
-  deleteEntry = (indexId, slides) => {
-    slides.splice(indexId, 1);
-    this.docRef.update({ slides });
-  };
-
-  docData = (name) => ({ "slides": firebase.firestore.FieldValue.arrayUnion({
-    "duration": this.defaultDuration, name
-  }) });
-
-  changeUser = (docRef, folderRef, settingsRef) => {
+  changeUser(docRef, folderRef, settingsRef) {
     super.changeUser(docRef, folderRef);
     settingsRef.onSnapshot(this.changeSettings);
-  };
+  }
 
-  changeSettings = (doc) => {
+  changeSettings(doc) {
     this.defaultDuration = doc.get("duration");
-  };
+  }
 
-  sort = () => {
-    jQuery(".delete").prop("disabled", true);
-    jQuery("[id^=inputGroupSlide]").prop("disabled", true);
-    this.alertSave.prop("hidden", false);
-  };
+  updateSort() {
+    const slides = Array.from(this.refs.tableBody.children)
+      .map(this.getObject);
 
-  stopSort = () => {
-    this.alertSave.prop("hidden", true);
-    jQuery(".delete").prop("disabled", false);
-    jQuery("[id^=inputGroupSlide]").prop("disabled", false);
-  };
+    this.docRef.update({ slides });
+  }
 
-  save = () => {
-    const rows = jQuery("#tbodySlides > tr");
-    const slides = rows.map(this.slideObject).get();
+  updateDuration(event) {
+    const index = event.target.getAttribute("data-index");
+    const slide = this.slides[ index ];
 
-    this.docRef.update({ slides }).then(this.stopSort);
-  };
+    slide.duration = event.target.value;
+    this.docRef.update({ "slides": this.slides });
+  }
 
-  slideObject = (index, row) => ({
-    "duration": jQuery("[id^=inputDuration]", row).val(),
-    "name": jQuery("th", row).text()
-  });
+  getObject(row) {
+    return {
+      "duration": row.querySelector(`.${styles.duration}`).value,
+      "name": row.querySelector(".title").textContent
+    };
+  }
 }
 
 export default SlidesTable;

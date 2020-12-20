@@ -1,21 +1,30 @@
-import jQuery from "jquery";
+/** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
 
-class Time {
-  constructor() {
+import jsx from "../lib/jsx.js";
+import styles from "./time.module.css";
+
+class Time extends jsx.Component {
+  render() {
+    const element =
+      <time class={styles.time} ref="time"></time>;
+
     window.setInterval(this.loop, 1000);
+
+    return element;
   }
 
-  loop = () => {
-    jQuery("#time").text(new Date().toLocaleTimeString());
-  };
+  loop() {
+    this.refs.time.textContent = new Date().toLocaleTimeString();
+  }
 
-  setVisibility = (visible) => {
-    if (visible) {
-      jQuery("#cardTime").show();
-    } else {
-      jQuery("#cardTime").hide();
-    }
-  };
+  changeUser(docRef) {
+    docRef.onSnapshot(this.changeData);
+  }
+
+  changeData(doc) {
+    this.refs.time.hidden = !doc.get("time");
+  }
 }
 
 export default Time;

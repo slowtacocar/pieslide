@@ -1,26 +1,38 @@
-import jQuery from "jquery";
+/** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
 
-class Logo {
-  constructor() {
-    this.logo = jQuery("#logo");
+import jsx from "../lib/jsx.js";
+import styles from "./logo.module.css";
+
+class Logo extends jsx.Component {
+  render() {
+    return (
+      <img ref="logo" class={styles.logo} crossorigin="anonymous"></img>
+    );
   }
 
-  setSize = (size) => {
-    this.logo.width(`${size}vw`).height(`${size}vh`);
-  };
+  changeUser(docRef, folderRef, settingsRef) {
+    docRef.onSnapshot(this.changeData);
+    this.folderRef = folderRef;
+    settingsRef.onSnapshot(this.changeSettings);
+  }
 
-  setImage = (name, ref) => {
+  async changeData(doc) {
+    const name = doc.get("name");
+
+    this.refs.logo.hidden = !name;
+
     if (name) {
-      ref.child(name).getDownloadURL()
-        .then(this.displayImage);
-    } else {
-      this.logo.css("background", "none");
+      this.refs.logo.src = await this.folderRef.child(name).getDownloadURL();
     }
-  };
+  }
 
-  displayImage = (url) => {
-    this.logo.css("background", `url(${url}) top left/contain no-repeat`);
-  };
+  changeSettings(doc) {
+    const size = doc.get("size");
+
+    this.refs.logo.style.width = `${size}vw`;
+    this.refs.logo.style.height = `${size}vh`;
+  }
 }
 
 export default Logo;

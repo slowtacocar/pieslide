@@ -1,68 +1,72 @@
+/** @jsx this.createElement */
+/** @jsxFrag jsx.Fragment */
+
 import Table from "./table.js";
-import jQuery from "jquery";
+import jsx from "../lib/jsx.js";
+import styles from "./logo-table.module.css";
 
 class LogoTable extends Table {
-  constructor() {
+  constructor(props) {
     super({
+      ...props,
       "defaultData": { "name": null },
-      "inputGroup": "#inputGroupLogo",
-      "inputGroupAddon": "#inputGroupLogoAddon",
-      "inputGroupLabel": "#inputGroupLogoLabel",
-      "modal": "#logoProgressModal",
-      "progressBar": "#logoProgressBar"
+      "name": "logo"
     });
   }
 
-  tableBody = jQuery("#tbodyLogo");
+  render() {
+    return (
+      <section id="logo" class="section">
+        <header>
+          <h1 class="header">Logo</h1>
+          <p class="headerSub">
+            Use the input to change the logo that appears in the corner
+            of your slideshow.
+          </p>
+        </header>
+        {super.render()}
+      </section>
+    );
+  }
 
-  changeUser = (docRef, folderRef) => {
-    super.changeUser(docRef, folderRef);
-  };
+  async updateTable(data) {
+    if (data.name) {
+      const url = await this.folderRef.child(data.name).getDownloadURL();
+      const element =
+        <tr>
+          <th scope="row">{data.name}</th>
+          <td>
+            <button
+              type="button"
+              data-link={url}
+              onclick={this.refs.preview.showImage}
+              class={styles.preview}
+            >View Preview</button>
+          </td>
+          <td>
+            <button
+              type="button"
+              onclick={this.deleteItem}
+              data-name={data.name}
+              class={styles.delete}
+            >Delete</button>
+          </td>
+        </tr>;
 
-  updateTable = (data) => {
-    this.name = data.name;
-
-    if (this.name) {
-      const ref = this.folderRef.child(this.name);
-
-      ref.getDownloadURL().then(this.addTableData);
+      jsx.render(this.refs.tableBody, element);
     } else {
-      this.tableBody.empty();
+      jsx.render(this.refs.tableBody);
     }
-  };
+  }
 
-  addTableData = (url) => {
-    this.tableBody.html(jQuery("<tr></tr>").append(jQuery("<th></th>", {
-      "html": this.name,
-      "scope": "row"
-    }))
-      .append(jQuery("<td></td>").append(jQuery("<button></button>", {
-        "class": "btn btn-primary",
-        "data-link": url,
-        "data-target": "#previewModalImage",
-        "data-toggle": "modal",
-        "html": "View Preview",
-        "type": "button"
-      })))
-      .append(jQuery("<td></td>").append(jQuery("<button></button>", {
-        "class": "btn btn-danger delete",
-        "html": "Delete",
-        "id": "buttonDeleteLogo",
-        "type": "button"
-      }))));
-    jQuery("#buttonDeleteLogo").click(this.deleteItem);
-  };
-
-  deleteItem = () => {
-    this.folderRef.child(this.name).delete()
-      .then(this.deleteEntry);
-  };
-
-  deleteEntry = () => {
+  async deleteItem(event) {
+    await this.folderRef.child(event.target.getAttribute("data-name")).delete();
     this.docRef.update({ "name": null });
-  };
+  }
 
-  docData = (name) => ({ name });
+  toObject(name) {
+    return { name };
+  }
 }
 
 export default LogoTable;
