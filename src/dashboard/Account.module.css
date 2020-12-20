@@ -1,0 +1,50 @@
+@value v-padding-block, v-red, m-medium, v-red-transparent from './index.module.css';
+
+.modal {
+  composes: modal from "./index.module.css";
+}
+
+.grid {
+  display: grid;
+  grid-template:
+    "email password" auto
+    "delete delete" auto /
+    1fr 1fr;
+  gap: v-padding-block;
+}
+
+.newEmail {
+  composes: form from "./index.module.css";
+  grid-area: email;
+}
+
+.newPassword {
+  composes: form from "./index.module.css";
+  grid-area: password;
+}
+
+.delete {
+  composes: button from "./index.module.css";
+  grid-area: delete;
+  color: v-red;
+  background: none;
+  border: 2px solid v-red;
+}
+
+.delete:hover {
+  background: v-red-transparent;
+}
+
+.currentPassword {
+  composes: form from "./index.module.css";
+}
+
+@media m-medium {
+  .grid {
+    grid-template:
+      "email" auto
+      "password" auto
+      "delete" auto /
+      1fr;
+  }
+}

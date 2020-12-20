@@ -10,7 +10,7 @@ https://dev-pieslide.web.app/ also exists for development testing on a live serv
 
 Clone the repository and run `npm install` to install dependencies.
 
-Run `npm start` to run a development server, or `npm test` to build for production.
+Run `npm start` to run a development server, or `npm run build` to build for production.
 
 The code is automatically built and deployed to Firebase on commits to master.
 

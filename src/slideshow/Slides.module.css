@@ -1,0 +1,13 @@
+.slide {
+  position: absolute;
+  right: 0;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 2rem - 1.17em * 1.2);
+  object-fit: contain;
+}
+
+.hidden {
+  composes: slide;
+  opacity: 0;
+}
