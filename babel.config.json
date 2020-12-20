@@ -8,5 +8,13 @@
       }
     ],
     "@babel/preset-react"
+  ],
+  "plugins": [
+    [
+      "babel-plugin-react-css-modules",
+      {
+        "generateScopedName": "[path][name]__[local]"
+      }
+    ]
   ]
 }

@@ -1,70 +1,55 @@
-/** @jsx this.createElement */
-/** @jsxFrag jsx.Fragment */
-
-import "./slideshow.module.css";
-import "./theme.module.css";
+import React from "react";
+import firebase from "../common/firebase";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import Logo from "./logo.js";
-import News from "./news.js";
-import Slides from "./slides.js";
-import Time from "./time.js";
-import config from "../lib/config.js";
-import firebase from "firebase/app";
-import jsx from "../lib/jsx.js";
+import "./Slideshow.module.css";
+import { useAuth, useData } from "../common/hooks";
+import Slides from "./Slides";
+import Logo from "./Logo";
+import Time from "./Time";
+import News from "./News";
 
-class Slideshow extends jsx.Component {
-  constructor(props) {
-    super(props);
-    firebase.initializeApp(config);
-    this.firestore = firebase.firestore();
-    this.storageRef = firebase.storage().ref();
+function Slideshow() {
+  async function reload() {
+    await docRef.update({ message: "" });
+    location.reload();
   }
 
-  render() {
-    const element =
-      <>
-        <Slides ref="slides" />
-        <Logo ref="logo" />
-        <News ref="news" />
-        <Time ref="time" />
-      </>;
+  const auth = React.useMemo(() => firebase.auth(), []);
+  const firestore = React.useMemo(() => firebase.firestore(), []);
+  const storage = React.useMemo(() => firebase.storage(), []);
+  const user = useAuth(auth);
+  const docRef = React.useMemo(
+    () => user && firestore.collection("user").doc(user.uid),
+    [firestore, user]
+  );
+  const storageRef = React.useMemo(
+    () => user && storage.ref().child("user").child(user.uid),
+    [storage, user]
+  );
+  const data = useData(docRef);
 
-    firebase.auth().onAuthStateChanged(this.changeUser);
-
-    return element;
+  if (data && data.message === "reload") {
+    reload();
   }
 
-  changeUser(user) {
-    if (user) {
-      const docRef = this.firestore.doc(`user/${user.uid}`);
-      const folderRef = this.storageRef.child(`user/${user.uid}`);
-
-      this.refs.time.changeUser(docRef);
-      this.refs.news.changeUser(docRef);
-      this.refs.slides.changeUser(
-        docRef.collection("data").doc("slides"),
-        folderRef.child("slides"),
-        docRef
-      );
-      this.refs.logo.changeUser(
-        docRef.collection("data").doc("logo"),
-        folderRef.child("logo"),
-        docRef
-      );
-      docRef.onSnapshot(this.changeData);
-    } else {
-      window.location.replace("login.html?signInSuccessUrl=slideshow.html");
-    }
-  }
-
-  async changeData(doc) {
-    if (doc.get("message") === "reload") {
-      await doc.ref.update({ "message": "" });
-      location.reload();
-    }
-  }
+  return data ? (
+    <>
+      {data.slides.length && (
+        <Slides
+          storageRef={storageRef}
+          slides={data.slides}
+          transition={data.transition}
+        />
+      )}
+      {data.logo && (
+        <Logo storageRef={storageRef} logo={data.logo} size={data.size} />
+      )}
+      {data.time && <Time />}
+      <News news={data.news} />
+    </>
+  ) : null;
 }
 
-jsx.render(document.body, jsx.createElement(Slideshow, null));
+export default Slideshow;

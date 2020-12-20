@@ -1,38 +1,28 @@
-/** @jsx this.createElement */
-/** @jsxFrag jsx.Fragment */
+import React from "react";
+import PropTypes from "prop-types";
+import "./Logo.module.css";
+import { useUrl } from "../common/hooks";
 
-import jsx from "../lib/jsx.js";
-import styles from "./logo.module.css";
+function Logo(props) {
+  const logo = useUrl({ name: props.logo }, props.storageRef);
 
-class Logo extends jsx.Component {
-  render() {
-    return (
-      <img ref="logo" class={styles.logo} crossorigin="anonymous"></img>
-    );
-  }
-
-  changeUser(docRef, folderRef, settingsRef) {
-    docRef.onSnapshot(this.changeData);
-    this.folderRef = folderRef;
-    settingsRef.onSnapshot(this.changeSettings);
-  }
-
-  async changeData(doc) {
-    const name = doc.get("name");
-
-    this.refs.logo.hidden = !name;
-
-    if (name) {
-      this.refs.logo.src = await this.folderRef.child(name).getDownloadURL();
-    }
-  }
-
-  changeSettings(doc) {
-    const size = doc.get("size");
-
-    this.refs.logo.style.width = `${size}vw`;
-    this.refs.logo.style.height = `${size}vh`;
-  }
+  return logo ? (
+    <img
+      style={{
+        width: `${props.size}vw`,
+        height: `${props.size}vh`,
+      }}
+      styleName="logo"
+      crossOrigin="anonymous"
+      src={logo.url}
+    />
+  ) : null;
 }
+
+Logo.propTypes = {
+  logo: PropTypes.string.isRequired,
+  storageRef: PropTypes.object.isRequired,
+  size: PropTypes.any.isRequired,
+};
 
 export default Logo;

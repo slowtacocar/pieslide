@@ -1,7 +1,0 @@
-.preview {
-  composes: tableButtonPreview from './theme.module.css';
-}
-
-.delete {
-  composes: tableButtonDelete from './theme.module.css';
-}
