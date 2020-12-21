@@ -5,13 +5,17 @@ import "./News.module.css";
 const RSS_API_URL = "https://api.rss2json.com/v1/api.json?rss_url=";
 
 function News(props) {
-  const duration = React.useCallback(() => {
-    const styles = getComputedStyle(news.current);
-    const newsWidth = parseInt(styles.width.replace("px", ""));
-    const fullWidth = newsWidth + innerWidth;
-
-    return 10000 / fullWidth;
-  }, []);
+  const drawFrame = React.useCallback(() => {
+    setPosition((position) => {
+      if (position < -news.current.offsetWidth) {
+        getNews();
+        return innerWidth;
+      } else {
+        return position - 2;
+      }
+    });
+    animation.current = requestAnimationFrame(drawFrame);
+  }, [getNews]);
 
   const getNews = React.useCallback(async () => {
     async function getLink(link) {
@@ -28,31 +32,24 @@ function News(props) {
   }, [props.news]);
 
   const [text, setText] = React.useState();
-  const news = React.useRef();
+  const [position, setPosition] = React.useState(innerWidth);
   const animation = React.useRef();
-
-  React.useEffect(() => {
-    animation.current && (animation.current.playbackRate = duration());
-  }, [duration, text]);
+  const news = React.useRef();
 
   React.useEffect(() => {
     getNews();
-    animation.current = news.current.animate(
-      [{ transform: "translate(100vw)" }, { transform: "translate(-100%)" }],
-      50000
-    );
-    animation.current.playbackRate = duration();
-    animation.current.onfinish = async (event) => {
-      await getNews();
-      event.target.play();
-    };
-    return () => {
-      animation.current.cancel();
-    };
-  }, [duration, getNews]);
+    animation.current = requestAnimationFrame(drawFrame);
+    return () => cancelAnimationFrame(animation.current);
+  }, [drawFrame, getNews]);
 
   return (
-    <p styleName="news" ref={news}>
+    <p
+      styleName="news"
+      style={{
+        transform: `translate(${position}px)`,
+      }}
+      ref={news}
+    >
       {text}
     </p>
   );
