@@ -1,9 +1,8 @@
 .news {
   composes: pill from "./index.module.css";
   composes: font-size-3 from "./index.module.css";
-  position: fixed;
+  position: absolute;
   bottom: 0;
   line-height: 1.2;
   white-space: nowrap;
-  transform: translate(100vw);
 }
