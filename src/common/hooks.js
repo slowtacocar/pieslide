@@ -19,16 +19,20 @@ export function useAuth(auth) {
 export function useData(docRef) {
   function reducer(state, action) {
     if (state.data) {
+      const data = {};
       for (const key in action.data) {
-        if (
-          JSON.stringify(action.data[key]) === JSON.stringify(state.data[key])
-        ) {
-          action.data[key] = state.data[key];
+        const actionString = JSON.stringify(action.data[key]);
+        const stateString = JSON.stringify(state.data[key]);
+        if (actionString === stateString) {
+          data[key] = state.data[key];
+        } else {
+          data[key] = action.data[key];
         }
       }
+      return { data };
+    } else {
+      return { data: action.data };
     }
-
-    return { data: action.data };
   }
 
   const [state, dispatch] = React.useReducer(reducer, {});
@@ -45,12 +49,24 @@ export function useData(docRef) {
         time: true,
         transition: 0.25,
         logo: null,
-        slides: [],
+        panes: [
+          {
+            rowStart: 1,
+            rowEnd: 2,
+            columnStart: 1,
+            columnEnd: 2,
+            slides: [],
+          },
+        ],
       });
     }
   }
 
-  React.useEffect(() => docRef && docRef.onSnapshot(snapshot), [docRef]);
+  React.useEffect(() => {
+    if (docRef) {
+      return docRef.onSnapshot(snapshot);
+    }
+  }, [docRef]);
 
   return state.data;
 }
@@ -99,7 +115,9 @@ export function useDialog(dialogPolyfill) {
   const modal = React.useRef();
 
   React.useEffect(() => {
-    modal.current && dialogPolyfill.registerDialog(modal.current);
+    if (modal.current) {
+      dialogPolyfill.registerDialog(modal.current);
+    }
   }, [dialogPolyfill]);
 
   return modal;

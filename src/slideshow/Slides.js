@@ -23,15 +23,16 @@ function Slides(props) {
   return (
     <>
       {slides.map((slide, index) => (
-        <img
-          styleName={shownIndex === index ? "slide" : "hidden"}
-          crossOrigin="anonymous"
-          src={slide.url}
-          key={slide.name}
-          style={{
-            transition: `opacity ${props.transition}s`,
-          }}
-        />
+        <div styleName="container" key={slide.name}>
+          <img
+            styleName={shownIndex === index ? "slide" : "hidden"}
+            crossOrigin="anonymous"
+            src={slide.url}
+            style={{
+              transition: `opacity ${props.transition}s`,
+            }}
+          />
+        </div>
       ))}
     </>
   );

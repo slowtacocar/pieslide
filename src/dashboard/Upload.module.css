@@ -1,4 +1,4 @@
-@value v-padding-inline, v-white, v-padding-block from './index.module.css';
+@value v-padding-inline, v-background-gray, v-padding-block from './index.module.css';
 
 .upload {
   composes: form from "./index.module.css";
@@ -10,7 +10,7 @@
   position: sticky;
   bottom: 0;
   padding-bottom: v-padding-inline;
-  background: v-white;
+  background: v-background-gray;
 }
 
 .modal {

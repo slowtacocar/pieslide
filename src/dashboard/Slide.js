@@ -3,29 +3,23 @@ import PropTypes from "prop-types";
 import "./Slide.module.css";
 
 function Slide(props) {
-  function deleteSlide() {
-    props.delete(props.slide, props.index);
+  function handleDelete() {
+    props.onDelete();
   }
 
-  function preview() {
-    props.preview(props.slide);
+  function showPreview() {
+    props.showPreview();
   }
 
-  function duration(event) {
-    props.duration(
-      {
-        ...props.slide,
-        duration: event.target.value,
-      },
-      props.index
-    );
+  function handleDurationChange(event) {
+    props.onDurationChange(event.target.value);
   }
 
   return (
     <tr data-name={props.slide.name}>
       <th scope="row">{props.slide.name}</th>
       <td>
-        <button type="button" styleName="preview" onClick={preview}>
+        <button type="button" styleName="preview" onClick={showPreview}>
           View Preview
         </button>
       </td>
@@ -35,11 +29,11 @@ function Slide(props) {
           min="0"
           type="number"
           value={props.slide.duration}
-          onChange={duration}
+          onChange={handleDurationChange}
         />
       </td>
       <td>
-        <button type="button" onClick={deleteSlide} styleName="delete">
+        <button type="button" onClick={handleDelete} styleName="delete">
           Delete
         </button>
       </td>
@@ -53,10 +47,9 @@ Slide.propTypes = {
     duration: PropTypes.any.isRequired,
     url: PropTypes.string.isRequired,
   }).isRequired,
-  index: PropTypes.number.isRequired,
-  delete: PropTypes.func.isRequired,
-  preview: PropTypes.func.isRequired,
-  duration: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  showPreview: PropTypes.func.isRequired,
+  onDurationChange: PropTypes.func.isRequired,
 };
 
 export default Slide;

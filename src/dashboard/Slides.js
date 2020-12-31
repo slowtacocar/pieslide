@@ -8,7 +8,6 @@ import "jquery-ui/ui/scroll-parent";
 import "jquery-ui/ui/widget";
 import "jquery-ui/ui/widgets/mouse";
 import "jquery-ui/ui/widgets/sortable";
-import firebase from "../common/firebase";
 import Slide from "./Slide";
 import Upload from "./Upload";
 import Preview from "./Preview";
@@ -17,65 +16,54 @@ function Slides(props) {
   const preview = React.useRef();
   const tableBody = React.useRef();
 
-  const slides = useUrls(props.slides, props.storageRef);
+  const slidesWithUrls = useUrls(props.slides, props.storageRef);
 
   React.useEffect(() => {
     function stop(event) {
-      props.docRef.update({
-        slides: Array.from(event.target.children).map((row) => {
+      props.onChange(
+        Array.from(event.target.children).map((row) => {
           const name = row.getAttribute("data-name");
 
-          return slides
-            .find((slide) => slide.name == name)
-            .map(({ name, duration }) => ({ name, duration }));
-        }),
-      });
+          return props.slides.find((slide) => slide.name == name);
+        })
+      );
     }
 
     const $tableBody = jQuery(tableBody.current).sortable({ stop });
 
     return () => $tableBody.sortable("destroy");
-  }, [props.docRef, slides]);
+  }, [props]);
 
-  async function deleteSlide(slide, index) {
+  async function handleDelete(index) {
+    const slides = [...props.slides];
     slides.splice(index, 1);
 
-    await props.storageRef.child(slide.name).delete();
-    props.docRef.update({
-      slides: slides.map(({ name, duration }) => ({ name, duration })),
-    });
+    props.onChange(slides);
   }
 
   function showPreview(slide) {
     preview.current.showModal(slide.url);
   }
 
-  function duration(slide, index) {
-    slides[index] = slide;
+  function handleDurationChange(value, index) {
+    const slides = [...props.slides];
+    slides[index].duration = value;
 
-    props.docRef.update({
-      slides: slides.map(({ name, duration }) => ({ name, duration })),
-    });
+    props.onChange(slides);
   }
 
-  function success(name) {
-    props.docRef.update({
-      slides: firebase.firestore.FieldValue.arrayUnion({
+  function handleUploadSuccess(name) {
+    props.onChange([
+      ...props.slides,
+      {
         duration: props.duration,
         name,
-      }),
-    });
+      },
+    ]);
   }
 
   return (
-    <section id="slides" className="section">
-      <header>
-        <h1 className="header">Slides</h1>
-        <p className="headerSub">
-          Use the input at the bottom of the screen to upload images for your
-          slideshow, and drag the table rows to change the order of the slides.
-        </p>
-      </header>
+    <>
       <div styleName="tableContainer">
         <table styleName="table">
           <thead>
@@ -87,22 +75,31 @@ function Slides(props) {
             </tr>
           </thead>
           <tbody ref={tableBody}>
-            {slides.map((slide, index) => (
+            {slidesWithUrls.map((slide, index) => (
               <Slide
                 key={slide.name}
                 slide={slide}
-                index={index}
-                delete={deleteSlide}
-                preview={showPreview}
-                duration={duration}
+                onDelete={() => {
+                  handleDelete(index);
+                }}
+                showPreview={() => {
+                  showPreview(slide);
+                }}
+                onDurationChange={(value) => {
+                  handleDurationChange(value, index);
+                }}
               />
             ))}
           </tbody>
         </table>
       </div>
-      <Upload storageRef={props.storageRef} success={success} sticky />
+      <Upload
+        storageRef={props.storageRef}
+        onSuccess={handleUploadSuccess}
+        sticky
+      />
       <Preview ref={preview} />
-    </section>
+    </>
   );
 }
 
@@ -113,8 +110,8 @@ Slides.propTypes = {
       duration: PropTypes.any.isRequired,
     })
   ).isRequired,
+  onChange: PropTypes.func.isRequired,
   duration: PropTypes.any.isRequired,
-  docRef: PropTypes.object.isRequired,
   storageRef: PropTypes.object.isRequired,
 };
 

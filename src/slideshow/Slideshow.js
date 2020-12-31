@@ -9,6 +9,7 @@ import Slides from "./Slides";
 import Logo from "./Logo";
 import Time from "./Time";
 import News from "./News";
+import Embed from "./Embed";
 
 function Slideshow() {
   async function reload() {
@@ -36,13 +37,32 @@ function Slideshow() {
 
   return data ? (
     <>
-      {data.slides.length && (
-        <Slides
-          storageRef={storageRef}
-          slides={data.slides}
-          transition={data.transition}
-        />
-      )}
+      <div styleName="grid">
+        {data.panes.map((pane, index) => (
+          <div
+            styleName="pane"
+            key={index}
+            style={{
+              gridColumnStart: pane.columnStart,
+              gridColumnEnd: pane.columnEnd,
+              gridRowStart: pane.rowStart,
+              gridRowEnd: pane.rowEnd,
+            }}
+          >
+            {pane.slides ? (
+              pane.slides.length && (
+                <Slides
+                  storageRef={storageRef}
+                  slides={pane.slides}
+                  transition={data.transition}
+                />
+              )
+            ) : (
+              <Embed embed={pane.embed} />
+            )}
+          </div>
+        ))}
+      </div>
       {data.logo && (
         <Logo storageRef={storageRef} logo={data.logo} size={data.size} />
       )}
