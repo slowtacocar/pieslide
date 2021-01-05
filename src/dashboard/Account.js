@@ -9,28 +9,29 @@ import "firebase/auth";
 function Account(props) {
   const modal = useDialog(dialogPolyfill);
   const currentPassword = React.useRef();
-  const [callback, setCallback] = React.useState();
+  const [
+    handleCurrentPasswordSubmit,
+    setHandleCurrentPasswordSubmit,
+  ] = React.useState();
 
-  function currentPasswordChanged() {
+  function handleCurrentPasswordChange() {
     currentPassword.current.setCustomValidity("");
   }
 
   function reauthenticate() {
     modal.current.showModal();
     return new Promise((resolve) => {
-      setCallback(() => async (event) => {
+      setHandleCurrentPasswordSubmit(() => async (event) => {
         event.preventDefault();
         event.persist();
 
-        const provider = firebase.auth.EmailAuthProvider;
+        const credential = firebase.auth.EmailAuthProvider.credential(
+          props.user.email,
+          event.target.currentPassword.value
+        );
 
         try {
-          await props.user.reauthenticateWithCredential(
-            provider.credential(
-              props.user.email,
-              event.target.currentPassword.value
-            )
-          );
+          await props.user.reauthenticateWithCredential(credential);
           modal.current.close();
 
           resolve();
@@ -96,13 +97,16 @@ function Account(props) {
       </div>
       <dialog ref={modal} styleName="modal">
         <h3>Enter current password:</h3>
-        <form styleName="currentPassword" onSubmit={callback}>
+        <form
+          styleName="currentPassword"
+          onSubmit={handleCurrentPasswordSubmit}
+        >
           <input
             type="password"
             placeholder="Current Password"
             ref={currentPassword}
             required
-            onChange={currentPasswordChanged}
+            onChange={handleCurrentPasswordChange}
             name="currentPassword"
           />
           <button type="submit" name="buttonLogIn">

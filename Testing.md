@@ -23,24 +23,26 @@ All Dashboard tests should be run with another dashboard window open to ensure t
 - Ensure that all navbar and sidebar links work
 - Make sure font color changes on hover
 - Make sure the sign out button works
-- Generate an error and make sure the error alert is shown
-- Make sure the close button on the error works
 
-#### Slides table
+#### Panes
 
-- Delete all images
-- Add some images and ensure the progress modal appears
-- View the preview on a couple of images and ensure the modal appears
-- Change the order of the images and ensure changes applied
-- Change the duration of the images and ensure changes applied
-- Delete some images
-- Randomly manipulate the table and ensure changes applied
+- Create two slideshows and two embed panes
+- Arrange them and ensure the preview updates
+- Delete a slideshow
+- Put a website (without protocol) in one embed pane
+- Put a YouTube url in the other
+- For each slideshow:
+  - Add some images and ensure the progress modal appears
+  - View the preview on a couple of images and ensure the modal appears
+  - Change the order of the images and ensure changes applied
+  - Change the duration of the images and ensure changes applied
+  - Delete some images
 
 #### Logo table
 
-- Delete all images
 - Add a logo and ensure the progress modal appears
 - View the preview on the logo and ensure the modal appears
+- Delete the logo
 
 #### Settings form
 

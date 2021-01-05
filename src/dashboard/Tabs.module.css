@@ -1,0 +1,24 @@
+@value v-padding-block, v-padding-inline, v-blue, v-background-gray, v-border-radius, v-blue-hover from './index.module.css';
+
+.container {
+  padding: v-padding-block;
+  background: v-background-gray;
+}
+
+.tab {
+  padding: v-padding-inline;
+  color: v-blue;
+  background: none;
+  border: none;
+  transition: color 0.15s;
+}
+
+.selectedTab {
+  composes: tab;
+  background: v-background-gray;
+  border-radius: v-border-radius v-border-radius 0 0;
+}
+
+.tab:hover {
+  color: v-blue-hover;
+}

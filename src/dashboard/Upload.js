@@ -10,7 +10,7 @@ function Upload(props) {
 
   const [progress, setProgress] = React.useState();
 
-  function openProgressModal(event) {
+  function handleSubmit(event) {
     event.preventDefault();
 
     modal.current.showModal();
@@ -18,7 +18,7 @@ function Upload(props) {
     const ref = props.storageRef.child(file.name);
     ref.put(file).on("state_changed", updateProgress, null, () => {
       modal.current.close();
-      props.success(file.name);
+      props.onSuccess(file.name);
     });
   }
 
@@ -30,7 +30,7 @@ function Upload(props) {
     <>
       <form
         styleName={props.sticky ? "uploadSticky" : "upload"}
-        onSubmit={openProgressModal}
+        onSubmit={handleSubmit}
       >
         <input type="file" accept="image/*" ref={inputGroup} required />
         <button type="submit">Upload</button>
@@ -44,7 +44,7 @@ function Upload(props) {
 
 Upload.propTypes = {
   storageRef: PropTypes.object.isRequired,
-  success: PropTypes.func.isRequired,
+  onSuccess: PropTypes.func.isRequired,
   sticky: PropTypes.bool,
 };
 

@@ -8,20 +8,20 @@ import Preview from "./Preview";
 function Logo(props) {
   const preview = React.useRef();
 
-  const logoName = React.useMemo(() => ({ name: props.logo }), [props.logo]);
+  const logoName = React.useMemo(() => ({ name: props.value }), [props.value]);
   const logo = useUrl(logoName, props.storageRef);
 
   async function deleteLogo() {
     await props.storageRef.child(logo.name).delete();
-    props.docRef.update({ logo: null });
+    props.onChange(null);
   }
 
   function showPreview() {
     preview.current.showModal(logo.url);
   }
 
-  function success(name) {
-    props.docRef.update({ logo: name });
+  function handleUploadSuccess(value) {
+    props.onChange(value);
   }
 
   return (
@@ -65,16 +65,16 @@ function Logo(props) {
           </tbody>
         </table>
       </div>
-      <Upload storageRef={props.storageRef} success={success} />
+      <Upload storageRef={props.storageRef} onSuccess={handleUploadSuccess} />
       <Preview ref={preview} />
     </section>
   );
 }
 
 Logo.propTypes = {
-  logo: PropTypes.string,
-  docRef: PropTypes.object.isRequired,
+  value: PropTypes.string,
   storageRef: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default Logo;
