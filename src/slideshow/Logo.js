@@ -1,12 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./Logo.module.css";
-import { useUrl } from "../common/hooks";
 
 function Logo(props) {
-  const logo = useUrl({ name: props.logo }, props.storageRef);
-
-  return logo ? (
+  return (
     <img
       style={{
         width: `${props.size}vw`,
@@ -14,14 +11,16 @@ function Logo(props) {
       }}
       styleName="logo"
       crossOrigin="anonymous"
-      src={logo.url}
+      src={props.logo.url}
     />
-  ) : null;
+  );
 }
 
 Logo.propTypes = {
-  logo: PropTypes.string.isRequired,
-  storageRef: PropTypes.object.isRequired,
+  logo: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+  }).isRequired,
   size: PropTypes.any.isRequired,
 };
 

@@ -1,28 +1,26 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./Slides.module.css";
-import { useUrls } from "../common/hooks";
 
 function Slides(props) {
-  const slides = useUrls(props.slides, props.storageRef);
   const [shownIndex, setShownIndex] = React.useState(0);
 
   React.useEffect(() => {
-    const slide = slides[shownIndex];
+    const slide = props.slides[shownIndex];
     const duration = slide ? slide.duration * 1000 : 0;
 
     const timeout = setTimeout(() => {
-      setShownIndex(slides[shownIndex + 1] ? shownIndex + 1 : 0);
+      setShownIndex(props.slides[shownIndex + 1] ? shownIndex + 1 : 0);
     }, duration);
 
     return () => {
       clearTimeout(timeout);
     };
-  }, [slides, shownIndex]);
+  }, [props.slides, shownIndex]);
 
   return (
     <>
-      {slides.map((slide, index) => (
+      {props.slides.map((slide, index) => (
         <div styleName="container" key={slide.name}>
           <img
             styleName={shownIndex === index ? "slide" : "hidden"}
@@ -43,10 +41,10 @@ Slides.propTypes = {
     PropTypes.shape({
       name: PropTypes.string.isRequired,
       duration: PropTypes.any.isRequired,
+      url: PropTypes.string.isRequired,
     })
   ).isRequired,
   transition: PropTypes.any.isRequired,
-  storageRef: PropTypes.object.isRequired,
 };
 
 export default Slides;

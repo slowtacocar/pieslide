@@ -51,7 +51,6 @@ function Panes(props) {
               }}
               slides={pane.slides}
               duration={props.duration}
-              storageRef={props.storageRef}
             />
           ) : (
             <Embed
@@ -87,12 +86,12 @@ Panes.propTypes = {
         PropTypes.shape({
           name: PropTypes.string.isRequired,
           duration: PropTypes.any.isRequired,
+          url: PropTypes.string.isRequired,
         })
       ),
     })
   ),
   duration: PropTypes.any.isRequired,
-  storageRef: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 

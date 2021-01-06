@@ -1,26 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./Logo.module.css";
-import { useUrl } from "../common/hooks";
 import Upload from "./Upload";
 import Preview from "./Preview";
 
 function Logo(props) {
   const preview = React.useRef();
 
-  const logoName = React.useMemo(() => ({ name: props.value }), [props.value]);
-  const logo = useUrl(logoName, props.storageRef);
-
   async function deleteLogo() {
-    await props.storageRef.child(logo.name).delete();
     props.onChange(null);
   }
 
   function showPreview() {
-    preview.current.showModal(logo.url);
+    preview.current.showModal(props.value.url);
   }
 
-  function handleUploadSuccess(value) {
+  function handleUpload(value) {
     props.onChange(value);
   }
 
@@ -43,9 +38,9 @@ function Logo(props) {
             </tr>
           </thead>
           <tbody>
-            {logo && (
+            {props.value && (
               <tr>
-                <th scope="row">{logo.name}</th>
+                <th scope="row">{props.value.name}</th>
                 <td>
                   <button
                     type="button"
@@ -65,15 +60,17 @@ function Logo(props) {
           </tbody>
         </table>
       </div>
-      <Upload storageRef={props.storageRef} onSuccess={handleUploadSuccess} />
+      <Upload onUpload={handleUpload} />
       <Preview ref={preview} />
     </section>
   );
 }
 
 Logo.propTypes = {
-  value: PropTypes.string,
-  storageRef: PropTypes.object.isRequired,
+  value: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+  }),
   onChange: PropTypes.func.isRequired,
 };
 

@@ -13,15 +13,10 @@ import Settings from "./Settings";
 function Dashboard() {
   const auth = React.useMemo(() => firebase.auth(), []);
   const firestore = React.useMemo(() => firebase.firestore(), []);
-  const storage = React.useMemo(() => firebase.storage(), []);
   const user = useAuth(auth);
   const docRef = React.useMemo(
     () => user && firestore.collection("user").doc(user.uid),
     [firestore, user]
-  );
-  const storageRef = React.useMemo(
-    () => user && storage.ref().child("user").child(user.uid),
-    [storage, user]
   );
   const data = useData(docRef);
 
@@ -96,14 +91,9 @@ function Dashboard() {
           <Panes
             panes={data.panes}
             duration={data.duration}
-            storageRef={storageRef}
             onChange={handlePanesChange}
           />
-          <Logo
-            value={data.logo}
-            storageRef={storageRef}
-            onChange={handleLogoChange}
-          />
+          <Logo value={data.logo} onChange={handleLogoChange} />
           <Settings
             duration={data.duration}
             news={data.news}

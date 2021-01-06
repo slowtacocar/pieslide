@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./Slides.module.css";
-import { useUrls } from "../common/hooks";
 import jQuery from "jquery";
 import "jquery-ui/ui/data";
 import "jquery-ui/ui/scroll-parent";
@@ -15,8 +14,6 @@ import Preview from "./Preview";
 function Slides(props) {
   const preview = React.useRef();
   const tableBody = React.useRef();
-
-  const slidesWithUrls = useUrls(props.slides, props.storageRef);
 
   React.useEffect(() => {
     function stop(event) {
@@ -52,12 +49,12 @@ function Slides(props) {
     props.onChange(slides);
   }
 
-  function handleUploadSuccess(name) {
+  function handleUpload(value) {
     props.onChange([
       ...props.slides,
       {
+        ...value,
         duration: props.duration,
-        name,
       },
     ]);
   }
@@ -75,7 +72,7 @@ function Slides(props) {
             </tr>
           </thead>
           <tbody ref={tableBody}>
-            {slidesWithUrls.map((slide, index) => (
+            {props.slides.map((slide, index) => (
               <Slide
                 key={slide.name}
                 slide={slide}
@@ -93,11 +90,7 @@ function Slides(props) {
           </tbody>
         </table>
       </div>
-      <Upload
-        storageRef={props.storageRef}
-        onSuccess={handleUploadSuccess}
-        sticky
-      />
+      <Upload onUpload={handleUpload} sticky />
       <Preview ref={preview} />
     </>
   );
@@ -108,11 +101,11 @@ Slides.propTypes = {
     PropTypes.shape({
       name: PropTypes.string.isRequired,
       duration: PropTypes.any.isRequired,
+      url: PropTypes.string.isRequired,
     })
   ).isRequired,
   onChange: PropTypes.func.isRequired,
   duration: PropTypes.any.isRequired,
-  storageRef: PropTypes.object.isRequired,
 };
 
 export default Slides;

@@ -19,15 +19,10 @@ function Slideshow() {
 
   const auth = React.useMemo(() => firebase.auth(), []);
   const firestore = React.useMemo(() => firebase.firestore(), []);
-  const storage = React.useMemo(() => firebase.storage(), []);
   const user = useAuth(auth);
   const docRef = React.useMemo(
     () => user && firestore.collection("user").doc(user.uid),
     [firestore, user]
-  );
-  const storageRef = React.useMemo(
-    () => user && storage.ref().child("user").child(user.uid),
-    [storage, user]
   );
   const data = useData(docRef);
 
@@ -51,11 +46,7 @@ function Slideshow() {
           >
             {pane.slides ? (
               pane.slides.length && (
-                <Slides
-                  storageRef={storageRef}
-                  slides={pane.slides}
-                  transition={data.transition}
-                />
+                <Slides slides={pane.slides} transition={data.transition} />
               )
             ) : (
               <Embed embed={pane.embed} />
@@ -63,9 +54,7 @@ function Slideshow() {
           </div>
         ))}
       </div>
-      {data.logo && (
-        <Logo storageRef={storageRef} logo={data.logo} size={data.size} />
-      )}
+      {data.logo && <Logo logo={data.logo} size={data.size} />}
       {data.time && <Time />}
       <News news={data.news} />
     </>

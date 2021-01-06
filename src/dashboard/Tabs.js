@@ -31,7 +31,7 @@ Tabs.propTypes = {
   children: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
+      id: PropTypes.any.isRequired,
       node: PropTypes.node.isRequired,
     })
   ),

@@ -12,14 +12,3 @@
   padding-bottom: v-padding-inline;
   background: v-background-gray;
 }
-
-.modal {
-  composes: modal from "./index.module.css";
-  box-sizing: border-box;
-  width: 100%;
-  max-width: 40rem;
-}
-
-.progressBar {
-  width: 100%;
-}
