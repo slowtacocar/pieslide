@@ -4,7 +4,7 @@ import "./Settings.module.css";
 
 function Settings(props) {
   function changeDuration(event) {
-    props.onDurationChange(event.target.value);
+    props.onDurationChange(Number(event.target.value));
   }
 
   function changeNews(event) {
@@ -12,7 +12,7 @@ function Settings(props) {
   }
 
   function changeSize(event) {
-    props.onSizeChange(event.target.value);
+    props.onSizeChange(Number(event.target.value));
   }
 
   function changeTime(event) {
@@ -20,7 +20,7 @@ function Settings(props) {
   }
 
   function changeTransition(event) {
-    props.onTransitionChange(event.target.value);
+    props.onTransitionChange(Number(event.target.value));
   }
 
   function reload() {
@@ -105,11 +105,11 @@ function Settings(props) {
 }
 
 Settings.propTypes = {
-  duration: PropTypes.any.isRequired,
+  duration: PropTypes.number.isRequired,
   news: PropTypes.arrayOf(PropTypes.string).isRequired,
-  size: PropTypes.any.isRequired,
+  size: PropTypes.number.isRequired,
   time: PropTypes.bool.isRequired,
-  transition: PropTypes.any.isRequired,
+  transition: PropTypes.number.isRequired,
   onDurationChange: PropTypes.func.isRequired,
   onNewsChange: PropTypes.func.isRequired,
   onSizeChange: PropTypes.func.isRequired,

@@ -1,44 +1,29 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./Upload.module.css";
-import dialogPolyfill from "dialog-polyfill";
-import { useDialog } from "../common/hooks";
 
 function Upload(props) {
-  const modal = useDialog(dialogPolyfill);
   const inputGroup = React.useRef();
-
-  const [progress, setProgress] = React.useState();
 
   function handleSubmit(event) {
     event.preventDefault();
 
-    modal.current.showModal();
     const [file] = inputGroup.current.files;
-    const ref = props.storageRef.child(file.name);
-    ref.put(file).on("state_changed", updateProgress, null, () => {
-      modal.current.close();
-      props.onSuccess(file.name);
+    const timestamp = Date.now();
+    const ref = props.storageRef.child(timestamp.toString());
+    ref.put(file).on("state_changed", null, null, () => {
+      props.onSuccess({ name: file.name, timestamp });
     });
   }
 
-  function updateProgress(snapshot) {
-    setProgress(snapshot.bytesTransferred / snapshot.totalBytes);
-  }
-
   return (
-    <>
-      <form
-        styleName={props.sticky ? "uploadSticky" : "upload"}
-        onSubmit={handleSubmit}
-      >
-        <input type="file" accept="image/*" ref={inputGroup} required />
-        <button type="submit">Upload</button>
-      </form>
-      <dialog styleName="modal" ref={modal}>
-        <progress max="1" styleName="progressBar" value={progress} />
-      </dialog>
-    </>
+    <form
+      styleName={props.sticky ? "uploadSticky" : "upload"}
+      onSubmit={handleSubmit}
+    >
+      <input type="file" accept="image/*" ref={inputGroup} required />
+      <button type="submit">Upload</button>
+    </form>
   );
 }
 

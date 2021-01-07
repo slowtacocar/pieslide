@@ -10,28 +10,28 @@ function PaneRow(props) {
   function handleColumnStartChange(event) {
     props.onChange({
       ...props.pane,
-      columnStart: event.target.value,
+      columnStart: Number(event.target.value),
     });
   }
 
   function handleColumnEndChange(event) {
     props.onChange({
       ...props.pane,
-      columnEnd: event.target.value,
+      columnEnd: Number(event.target.value),
     });
   }
 
   function handleRowStartChange(event) {
     props.onChange({
       ...props.pane,
-      rowStart: event.target.value,
+      rowStart: Number(event.target.value),
     });
   }
 
   function handleRowEndChange(event) {
     props.onChange({
       ...props.pane,
-      rowEnd: event.target.value,
+      rowEnd: Number(event.target.value),
     });
   }
 
@@ -51,7 +51,7 @@ function PaneRow(props) {
       <td>
         <input
           styleName="number"
-          min={parseInt(props.pane.columnStart) + 1}
+          min={props.pane.columnStart + 1}
           type="number"
           value={props.pane.columnEnd}
           onChange={handleColumnEndChange}
@@ -69,7 +69,7 @@ function PaneRow(props) {
       <td>
         <input
           styleName="number"
-          min={parseInt(props.pane.rowStart) + 1}
+          min={props.pane.rowStart + 1}
           type="number"
           value={props.pane.rowEnd}
           onChange={handleRowEndChange}
@@ -86,17 +86,19 @@ function PaneRow(props) {
 
 PaneRow.propTypes = {
   pane: PropTypes.shape({
-    rowStart: PropTypes.any.isRequired,
-    rowEnd: PropTypes.any.isRequired,
-    columnStart: PropTypes.any.isRequired,
-    columnEnd: PropTypes.any.isRequired,
+    rowStart: PropTypes.number.isRequired,
+    rowEnd: PropTypes.number.isRequired,
+    columnStart: PropTypes.number.isRequired,
+    columnEnd: PropTypes.number.isRequired,
     embed: PropTypes.string,
     slides: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,
-        duration: PropTypes.any.isRequired,
+        duration: PropTypes.number.isRequired,
+        timestamp: PropTypes.number.isRequired,
       })
     ),
+    timestamp: PropTypes.number.isRequired,
   }).isRequired,
   index: PropTypes.number.isRequired,
   onDelete: PropTypes.func.isRequired,

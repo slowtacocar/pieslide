@@ -32,7 +32,7 @@ All Dashboard tests should be run with another dashboard window open to ensure t
 - Put a website (without protocol) in one embed pane
 - Put a YouTube url in the other
 - For each slideshow:
-  - Add some images and ensure the progress modal appears
+  - Add some images
   - View the preview on a couple of images and ensure the modal appears
   - Change the order of the images and ensure changes applied
   - Change the duration of the images and ensure changes applied
@@ -40,7 +40,7 @@ All Dashboard tests should be run with another dashboard window open to ensure t
 
 #### Logo table
 
-- Add a logo and ensure the progress modal appears
+- Add a logo
 - View the preview on the logo and ensure the modal appears
 - Delete the logo
 
@@ -95,11 +95,19 @@ These tests are run at every breakpoint on every browser
 - Ensure that scrolling the main container does not move the sidebar or navbar
 - Generate an error and make sure the error alert is formatted correctly
 
+#### Panes
+
+- Delete all panes
+- Ensure that all styles appear correct
+- Add some panes
+- Ensure that all styles appear correct
+- Ensure the embed pane is styled correctly
+
 #### Slides table
 
 - Delete all images
 - Ensure that all styles appear correct
-- Add some images and ensure the progress modal appears and is styled correctly
+- Add some images
 - Ensure that all styles appear correct
 - View the preview on a couple of images and ensure the modal appears correct
 - Ensure the table scrolls if needed
@@ -108,7 +116,7 @@ These tests are run at every breakpoint on every browser
 
 - Delete all images
 - Ensure that all styles appear correct
-- Add a logo and ensure the progress modal appears and is styled correctly
+- Add a logo
 - Ensure that all styles appear correct
 - View the preview on the logo and ensure the modal appears correct
 - Ensure the table scrolls if needed
