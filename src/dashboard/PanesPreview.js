@@ -64,15 +64,15 @@ function PanesPreview(props) {
 PanesPreview.propTypes = {
   panes: PropTypes.arrayOf(
     PropTypes.shape({
-      rowStart: PropTypes.any.isRequired,
-      rowEnd: PropTypes.any.isRequired,
-      columnStart: PropTypes.any.isRequired,
-      columnEnd: PropTypes.any.isRequired,
+      rowStart: PropTypes.number.isRequired,
+      rowEnd: PropTypes.number.isRequired,
+      columnStart: PropTypes.number.isRequired,
+      columnEnd: PropTypes.number.isRequired,
       embed: PropTypes.string,
       slides: PropTypes.arrayOf(
         PropTypes.shape({
           name: PropTypes.string.isRequired,
-          duration: PropTypes.any.isRequired,
+          duration: PropTypes.number.isRequired,
           url: PropTypes.number.isRequired,
           timestamp: PropTypes.number.isRequired,
         })

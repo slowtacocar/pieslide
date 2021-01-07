@@ -1,4 +1,4 @@
-@value v-white, v-blue, v-blue-hover, v-border-gray, v-padding-inline, v-padding-block, v-background-light-gray from 'index.module.css';
+@value m-medium, v-white, v-blue, v-blue-hover, v-border-gray, v-padding-inline, v-padding-block, v-background-light-gray from 'index.module.css';
 
 .button {
   composes: button from "./index.module.css";
@@ -16,7 +16,7 @@
 .modal {
   composes: modal from "./index.module.css";
   box-sizing: border-box;
-  max-width: 100%;
+  width: 100%;
 }
 
 .editGrid {
@@ -30,6 +30,7 @@
 }
 
 .tableContainer {
+  width: 100%;
   overflow-x: auto;
 }
 
@@ -78,4 +79,12 @@
 
 .closeButton {
   width: 100%;
+}
+
+@media m-medium {
+  .editGrid {
+    grid-template:
+      "edit" auto
+      "preview" auto / auto;
+  }
 }

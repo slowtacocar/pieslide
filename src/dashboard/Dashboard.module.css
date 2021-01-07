@@ -138,6 +138,12 @@ body {
   color: v-blue-hover;
 }
 
+.loading {
+  margin-top: 0;
+  color: v-text-gray;
+  text-align: center;
+}
+
 @media m-medium {
   .container {
     grid-template:

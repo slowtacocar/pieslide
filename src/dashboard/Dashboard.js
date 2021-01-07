@@ -88,7 +88,7 @@ function Dashboard() {
 
       <div styleName="mainContainer">
         <div styleName="main">
-          {data && (
+          {data ? (
             <>
               <Panes
                 panes={data.panes}
@@ -109,9 +109,11 @@ function Dashboard() {
                 onTransitionChange={handleTransitionChange}
                 onMessageChange={handleMessageChange}
               />
+              <Account user={user} />
             </>
+          ) : (
+            <h1 styleName="loading">Loading...</h1>
           )}
-          <Account user={user} />
         </div>
       </div>
     </div>

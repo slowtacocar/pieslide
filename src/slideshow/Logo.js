@@ -22,7 +22,7 @@ Logo.propTypes = {
     url: PropTypes.string.isRequired,
     timestamp: PropTypes.number.isRequired,
   }).isRequired,
-  size: PropTypes.any.isRequired,
+  size: PropTypes.number.isRequired,
 };
 
 export default Logo;

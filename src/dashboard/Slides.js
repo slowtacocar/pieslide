@@ -100,13 +100,13 @@ Slides.propTypes = {
   slides: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-      duration: PropTypes.any.isRequired,
+      duration: PropTypes.number.isRequired,
       url: PropTypes.string.isRequired,
       timestamp: PropTypes.number.isRequired,
     })
   ).isRequired,
   onChange: PropTypes.func.isRequired,
-  duration: PropTypes.any.isRequired,
+  duration: PropTypes.number.isRequired,
 };
 
 export default Slides;

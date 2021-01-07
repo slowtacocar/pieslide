@@ -86,15 +86,15 @@ function PaneRow(props) {
 
 PaneRow.propTypes = {
   pane: PropTypes.shape({
-    rowStart: PropTypes.any.isRequired,
-    rowEnd: PropTypes.any.isRequired,
-    columnStart: PropTypes.any.isRequired,
-    columnEnd: PropTypes.any.isRequired,
+    rowStart: PropTypes.number.isRequired,
+    rowEnd: PropTypes.number.isRequired,
+    columnStart: PropTypes.number.isRequired,
+    columnEnd: PropTypes.number.isRequired,
     embed: PropTypes.string,
     slides: PropTypes.arrayOf(
       PropTypes.shape({
         name: PropTypes.string.isRequired,
-        duration: PropTypes.any.isRequired,
+        duration: PropTypes.number.isRequired,
         url: PropTypes.string.isRequired,
         timestamp: PropTypes.number.isRequired,
       })

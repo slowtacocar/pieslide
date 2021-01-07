@@ -105,11 +105,11 @@ function Settings(props) {
 }
 
 Settings.propTypes = {
-  duration: PropTypes.any.isRequired,
+  duration: PropTypes.number.isRequired,
   news: PropTypes.arrayOf(PropTypes.string).isRequired,
-  size: PropTypes.any.isRequired,
+  size: PropTypes.number.isRequired,
   time: PropTypes.bool.isRequired,
-  transition: PropTypes.any.isRequired,
+  transition: PropTypes.number.isRequired,
   onDurationChange: PropTypes.func.isRequired,
   onNewsChange: PropTypes.func.isRequired,
   onSizeChange: PropTypes.func.isRequired,

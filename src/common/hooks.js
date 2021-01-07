@@ -56,6 +56,7 @@ export function useData(docRef) {
             columnStart: 1,
             columnEnd: 2,
             slides: [],
+            timestamp: Date.now(),
           },
         ],
       });
