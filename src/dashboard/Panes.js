@@ -43,7 +43,7 @@ function Panes(props) {
       <Tabs>
         {props.panes.map((pane, index) => ({
           name: `Pane ${index}`,
-          id: index,
+          id: pane.timestamp,
           node: pane.slides ? (
             <Slides
               onChange={(slides) => {

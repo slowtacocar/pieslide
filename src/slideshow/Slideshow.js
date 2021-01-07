@@ -33,10 +33,10 @@ function Slideshow() {
   return data ? (
     <>
       <div styleName="grid">
-        {data.panes.map((pane, index) => (
+        {data.panes.map((pane) => (
           <div
             styleName="pane"
-            key={index}
+            key={pane.timestamp}
             style={{
               gridColumnStart: pane.columnStart,
               gridColumnEnd: pane.columnEnd,

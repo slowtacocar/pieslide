@@ -21,7 +21,7 @@ function Slides(props) {
   return (
     <>
       {props.slides.map((slide, index) => (
-        <div styleName="container" key={slide.name}>
+        <div styleName="container" key={slide.timestamp}>
           <img
             styleName={shownIndex === index ? "slide" : "hidden"}
             crossOrigin="anonymous"

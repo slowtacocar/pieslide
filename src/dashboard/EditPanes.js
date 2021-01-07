@@ -37,6 +37,7 @@ const EditPanes = React.forwardRef(function EditPanes(props, ref) {
         columnStart: 1,
         columnEnd: 2,
         embed: "",
+        timestamp: Date.now(),
       },
     ]);
   }
@@ -50,6 +51,7 @@ const EditPanes = React.forwardRef(function EditPanes(props, ref) {
         columnStart: 1,
         columnEnd: 2,
         slides: [],
+        timestamp: Date.now(),
       },
     ]);
   }
@@ -82,7 +84,7 @@ const EditPanes = React.forwardRef(function EditPanes(props, ref) {
                   <PaneRow
                     pane={pane}
                     index={index}
-                    key={index}
+                    key={pane.timestamp}
                     onChange={(value) => {
                       handlePaneChange(value, index);
                     }}

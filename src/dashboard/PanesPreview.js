@@ -44,7 +44,7 @@ function PanesPreview(props) {
         {props.panes.map((pane, index) => (
           <div
             styleName="pane"
-            key={index}
+            key={pane.timestamp}
             style={{
               gridColumnStart: pane.columnStart,
               gridColumnEnd: pane.columnEnd,

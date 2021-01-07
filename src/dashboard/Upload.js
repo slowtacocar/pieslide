@@ -21,6 +21,7 @@ function Upload(props) {
     props.onUpload({
       name: file.name,
       url: await getBase64(file),
+      timestamp: Date.now(),
     });
   }
 

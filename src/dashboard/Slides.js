@@ -74,7 +74,7 @@ function Slides(props) {
           <tbody ref={tableBody}>
             {props.slides.map((slide, index) => (
               <Slide
-                key={slide.name}
+                key={slide.timestamp}
                 slide={slide}
                 onDelete={() => {
                   handleDelete(index);
