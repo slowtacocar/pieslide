@@ -20,6 +20,7 @@ Logo.propTypes = {
   logo: PropTypes.shape({
     name: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
+    timestamp: PropTypes.number.isRequired,
   }).isRequired,
   size: PropTypes.any.isRequired,
 };

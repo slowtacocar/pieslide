@@ -102,6 +102,7 @@ Slides.propTypes = {
       name: PropTypes.string.isRequired,
       duration: PropTypes.any.isRequired,
       url: PropTypes.string.isRequired,
+      timestamp: PropTypes.number.isRequired,
     })
   ).isRequired,
   onChange: PropTypes.func.isRequired,

@@ -70,6 +70,7 @@ Logo.propTypes = {
   value: PropTypes.shape({
     name: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
+    timestamp: PropTypes.number.isRequired,
   }),
   onChange: PropTypes.func.isRequired,
 };

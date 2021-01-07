@@ -95,8 +95,11 @@ PaneRow.propTypes = {
       PropTypes.shape({
         name: PropTypes.string.isRequired,
         duration: PropTypes.any.isRequired,
+        url: PropTypes.string.isRequired,
+        timestamp: PropTypes.number.isRequired,
       })
     ),
+    timestamp: PropTypes.number.isRequired,
   }).isRequired,
   index: PropTypes.number.isRequired,
   onDelete: PropTypes.func.isRequired,

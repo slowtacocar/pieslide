@@ -56,7 +56,7 @@ function Dashboard() {
     docRef.update({ panes: value });
   }
 
-  return data ? (
+  return (
     <div styleName="container">
       <nav styleName="navbar">
         <span styleName="navbarSpan">PieSlide</span>
@@ -88,30 +88,34 @@ function Dashboard() {
 
       <div styleName="mainContainer">
         <div styleName="main">
-          <Panes
-            panes={data.panes}
-            duration={data.duration}
-            onChange={handlePanesChange}
-          />
-          <Logo value={data.logo} onChange={handleLogoChange} />
-          <Settings
-            duration={data.duration}
-            news={data.news}
-            size={data.size}
-            time={data.time}
-            transition={data.transition}
-            onDurationChange={handleDurationChange}
-            onNewsChange={handleNewsChange}
-            onSizeChange={handleSizeChange}
-            onTimeChange={handleTimeChange}
-            onTransitionChange={handleTransitionChange}
-            onMessageChange={handleMessageChange}
-          />
+          {data && (
+            <>
+              <Panes
+                panes={data.panes}
+                duration={data.duration}
+                onChange={handlePanesChange}
+              />
+              <Logo value={data.logo} onChange={handleLogoChange} />
+              <Settings
+                duration={data.duration}
+                news={data.news}
+                size={data.size}
+                time={data.time}
+                transition={data.transition}
+                onDurationChange={handleDurationChange}
+                onNewsChange={handleNewsChange}
+                onSizeChange={handleSizeChange}
+                onTimeChange={handleTimeChange}
+                onTransitionChange={handleTransitionChange}
+                onMessageChange={handleMessageChange}
+              />
+            </>
+          )}
           <Account user={user} />
         </div>
       </div>
     </div>
-  ) : null;
+  );
 }
 
 export default Dashboard;

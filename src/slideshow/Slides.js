@@ -7,7 +7,7 @@ function Slides(props) {
 
   React.useEffect(() => {
     const slide = props.slides[shownIndex];
-    const duration = slide ? slide.duration * 1000 : 0;
+    const duration = slide.duration * 1000;
 
     const timeout = setTimeout(() => {
       setShownIndex(props.slides[shownIndex + 1] ? shownIndex + 1 : 0);
@@ -42,6 +42,7 @@ Slides.propTypes = {
       name: PropTypes.string.isRequired,
       duration: PropTypes.any.isRequired,
       url: PropTypes.string.isRequired,
+      timestamp: PropTypes.number.isRequired,
     })
   ).isRequired,
   transition: PropTypes.any.isRequired,

@@ -73,8 +73,11 @@ PanesPreview.propTypes = {
         PropTypes.shape({
           name: PropTypes.string.isRequired,
           duration: PropTypes.any.isRequired,
+          url: PropTypes.number.isRequired,
+          timestamp: PropTypes.number.isRequired,
         })
       ),
+      timestamp: PropTypes.number.isRequired,
     })
   ),
 };
