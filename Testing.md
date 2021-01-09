@@ -21,7 +21,6 @@ All Dashboard tests should be run with another dashboard window open to ensure t
 #### Main
 
 - Ensure that all navbar and sidebar links work
-- Make sure font color changes on hover
 - Make sure the sign out button works
 
 #### Panes
@@ -47,9 +46,9 @@ All Dashboard tests should be run with another dashboard window open to ensure t
 #### Settings form
 
 - Change each setting and ensure changes applied
-- Input odd values (no value, negative numbers, etc.) and ensure that no errors occur
+- Input odd values (no value, negative numbers, etc.) and ensure that no errors occur (for slideshow testing)
 - Ensure the details element is styled correctly and works (if supported)
-- Press refresh slideshow and ensure the slideshow refreshes
+- Press refresh slideshow and ensure the slideshow refreshes (for slideshow testing)
 
 #### Account form
 
@@ -93,30 +92,22 @@ These tests are run at every breakpoint on every browser
 
 - Ensure all styles appear correct
 - Ensure that scrolling the main container does not move the sidebar or navbar
-- Generate an error and make sure the error alert is formatted correctly
 
 #### Panes
 
-- Delete all panes
+- Open edit panes
 - Ensure that all styles appear correct
-- Add some panes
+- View each pane tab
 - Ensure that all styles appear correct
-- Ensure the embed pane is styled correctly
 
 #### Slides table
 
-- Delete all images
-- Ensure that all styles appear correct
-- Add some images
 - Ensure that all styles appear correct
 - View the preview on a couple of images and ensure the modal appears correct
 - Ensure the table scrolls if needed
 
 #### Logo table
 
-- Delete all images
-- Ensure that all styles appear correct
-- Add a logo
 - Ensure that all styles appear correct
 - View the preview on the logo and ensure the modal appears correct
 - Ensure the table scrolls if needed
