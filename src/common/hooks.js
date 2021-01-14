@@ -56,6 +56,7 @@ export function useData(docRef) {
             columnStart: 1,
             columnEnd: 2,
             slides: [],
+            timestamp: Date.now(),
           },
         ],
       });
@@ -76,7 +77,9 @@ export function useUrls(data, storageRef) {
 
   React.useEffect(() => {
     async function getDownloadUrl(datum) {
-      const url = await storageRef.child(datum.name).getDownloadURL();
+      const url = await storageRef
+        .child(datum.timestamp.toString())
+        .getDownloadURL();
 
       return { url, ...datum };
     }
@@ -96,12 +99,14 @@ export function useUrl(data, storageRef) {
 
   React.useEffect(() => {
     async function getDownloadUrl() {
-      const url = await storageRef.child(data.name).getDownloadURL();
+      const url = await storageRef
+        .child(data.timestamp.toString())
+        .getDownloadURL();
 
       setDataWithUrl({ url, ...data });
     }
 
-    if (data.name) {
+    if (data) {
       getDownloadUrl();
     } else {
       setDataWithUrl(null);

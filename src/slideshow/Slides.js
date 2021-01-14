@@ -23,7 +23,7 @@ function Slides(props) {
   return (
     <>
       {slides.map((slide, index) => (
-        <div styleName="container" key={slide.name}>
+        <div styleName="container" key={slide.timestamp}>
           <img
             styleName={shownIndex === index ? "slide" : "hidden"}
             crossOrigin="anonymous"
@@ -42,10 +42,11 @@ Slides.propTypes = {
   slides: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-      duration: PropTypes.any.isRequired,
+      duration: PropTypes.number.isRequired,
+      timestamp: PropTypes.number.isRequired,
     })
   ).isRequired,
-  transition: PropTypes.any.isRequired,
+  transition: PropTypes.number.isRequired,
   storageRef: PropTypes.object.isRequired,
 };
 

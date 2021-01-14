@@ -16,7 +16,7 @@ function Slides(props) {
   const preview = React.useRef();
   const tableBody = React.useRef();
 
-  const slidesWithUrls = useUrls(props.slides, props.storageRef);
+  const slides = useUrls(props.slides, props.storageRef);
 
   React.useEffect(() => {
     function stop(event) {
@@ -39,6 +39,10 @@ function Slides(props) {
     slides.splice(index, 1);
 
     props.onChange(slides);
+
+    await props.storageRef
+      .child(props.slides[index].timestamp.toString())
+      .delete();
   }
 
   function showPreview(slide) {
@@ -52,12 +56,12 @@ function Slides(props) {
     props.onChange(slides);
   }
 
-  function handleUploadSuccess(name) {
+  function handleUploadSuccess(value) {
     props.onChange([
       ...props.slides,
       {
+        ...value,
         duration: props.duration,
-        name,
       },
     ]);
   }
@@ -75,9 +79,9 @@ function Slides(props) {
             </tr>
           </thead>
           <tbody ref={tableBody}>
-            {slidesWithUrls.map((slide, index) => (
+            {slides.map((slide, index) => (
               <Slide
-                key={slide.name}
+                key={slide.timestamp}
                 slide={slide}
                 onDelete={() => {
                   handleDelete(index);
@@ -107,11 +111,12 @@ Slides.propTypes = {
   slides: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-      duration: PropTypes.any.isRequired,
+      duration: PropTypes.number.isRequired,
+      timestamp: PropTypes.number.isRequired,
     })
   ).isRequired,
   onChange: PropTypes.func.isRequired,
-  duration: PropTypes.any.isRequired,
+  duration: PropTypes.number.isRequired,
   storageRef: PropTypes.object.isRequired,
 };
 

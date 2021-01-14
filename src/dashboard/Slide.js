@@ -12,7 +12,7 @@ function Slide(props) {
   }
 
   function handleDurationChange(event) {
-    props.onDurationChange(event.target.value);
+    props.onDurationChange(Number(event.target.value));
   }
 
   return (
@@ -44,8 +44,9 @@ function Slide(props) {
 Slide.propTypes = {
   slide: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    duration: PropTypes.any.isRequired,
+    duration: PropTypes.number.isRequired,
     url: PropTypes.string.isRequired,
+    timestamp: PropTypes.number.isRequired,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,
   showPreview: PropTypes.func.isRequired,

@@ -37,6 +37,7 @@ const EditPanes = React.forwardRef(function EditPanes(props, ref) {
         columnStart: 1,
         columnEnd: 2,
         embed: "",
+        timestamp: Date.now(),
       },
     ]);
   }
@@ -50,6 +51,7 @@ const EditPanes = React.forwardRef(function EditPanes(props, ref) {
         columnStart: 1,
         columnEnd: 2,
         slides: [],
+        timestamp: Date.now(),
       },
     ]);
   }
@@ -82,7 +84,7 @@ const EditPanes = React.forwardRef(function EditPanes(props, ref) {
                   <PaneRow
                     pane={pane}
                     index={index}
-                    key={index}
+                    key={pane.timestamp}
                     onChange={(value) => {
                       handlePaneChange(value, index);
                     }}
@@ -117,17 +119,19 @@ const EditPanes = React.forwardRef(function EditPanes(props, ref) {
 EditPanes.propTypes = {
   panes: PropTypes.arrayOf(
     PropTypes.shape({
-      rowStart: PropTypes.any.isRequired,
-      rowEnd: PropTypes.any.isRequired,
-      columnStart: PropTypes.any.isRequired,
-      columnEnd: PropTypes.any.isRequired,
+      rowStart: PropTypes.number.isRequired,
+      rowEnd: PropTypes.number.isRequired,
+      columnStart: PropTypes.number.isRequired,
+      columnEnd: PropTypes.number.isRequired,
       embed: PropTypes.string,
       slides: PropTypes.arrayOf(
         PropTypes.shape({
           name: PropTypes.string.isRequired,
-          duration: PropTypes.any.isRequired,
+          duration: PropTypes.number.isRequired,
+          timestamp: PropTypes.number.isRequired,
         })
       ),
+      timestamp: PropTypes.number.isRequired,
     })
   ),
   onChange: PropTypes.func.isRequired,
