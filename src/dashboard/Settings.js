@@ -3,38 +3,28 @@ import PropTypes from "prop-types";
 import "./Settings.module.css";
 
 function Settings(props) {
-  function durationChanged(event) {
-    props.docRef.update({
-      duration: event.target.value,
-    });
+  function changeDuration(event) {
+    props.onDurationChange(Number(event.target.value));
   }
 
-  function newsChanged(event) {
-    props.docRef.update({
-      news: event.target.value.split(","),
-    });
+  function changeNews(event) {
+    props.onNewsChange(event.target.value.split(","));
   }
 
-  function sizeChanged(event) {
-    props.docRef.update({
-      size: event.target.value,
-    });
+  function changeSize(event) {
+    props.onSizeChange(Number(event.target.value));
   }
 
-  function timeChanged(event) {
-    props.docRef.update({
-      time: event.target.value === "show",
-    });
+  function changeTime(event) {
+    props.onTimeChange(event.target.value === "show");
   }
 
-  function transitionChanged(event) {
-    props.docRef.update({
-      transition: event.target.value,
-    });
+  function changeTransition(event) {
+    props.onTransitionChange(Number(event.target.value));
   }
 
   function reload() {
-    props.docRef.update({ message: "reload" });
+    props.onMessageChange("reload");
   }
 
   return (
@@ -50,7 +40,7 @@ function Settings(props) {
           <label htmlFor="inputGroupTime">Time Visibility</label>
           <select
             id="inputGroupTime"
-            onChange={timeChanged}
+            onChange={changeTime}
             value={props.time ? "show" : "hide"}
           >
             <option value="show">Show</option>
@@ -62,7 +52,7 @@ function Settings(props) {
           <input
             type="number"
             id="inputGroupDuration"
-            onChange={durationChanged}
+            onChange={changeDuration}
             min="0"
             step="any"
             value={props.duration}
@@ -73,7 +63,7 @@ function Settings(props) {
           <input
             type="number"
             id="inputGroupTransition"
-            onChange={transitionChanged}
+            onChange={changeTransition}
             min="0"
             step="any"
             value={props.transition}
@@ -84,7 +74,7 @@ function Settings(props) {
           <input
             type="number"
             id="inputGroupSize"
-            onChange={sizeChanged}
+            onChange={changeSize}
             min="0"
             max="100"
             step="any"
@@ -103,7 +93,7 @@ function Settings(props) {
               <input
                 type="text"
                 id="inputGroupNews"
-                onChange={newsChanged}
+                onChange={changeNews}
                 value={props.news.join(",")}
               />
             </div>
@@ -115,12 +105,17 @@ function Settings(props) {
 }
 
 Settings.propTypes = {
-  duration: PropTypes.any.isRequired,
+  duration: PropTypes.number.isRequired,
   news: PropTypes.arrayOf(PropTypes.string).isRequired,
-  size: PropTypes.any.isRequired,
+  size: PropTypes.number.isRequired,
   time: PropTypes.bool.isRequired,
-  transition: PropTypes.any.isRequired,
-  docRef: PropTypes.object.isRequired,
+  transition: PropTypes.number.isRequired,
+  onDurationChange: PropTypes.func.isRequired,
+  onNewsChange: PropTypes.func.isRequired,
+  onSizeChange: PropTypes.func.isRequired,
+  onTimeChange: PropTypes.func.isRequired,
+  onTransitionChange: PropTypes.func.isRequired,
+  onMessageChange: PropTypes.func.isRequired,
 };
 
 export default Settings;

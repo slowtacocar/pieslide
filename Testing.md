@@ -21,33 +21,34 @@ All Dashboard tests should be run with another dashboard window open to ensure t
 #### Main
 
 - Ensure that all navbar and sidebar links work
-- Make sure font color changes on hover
 - Make sure the sign out button works
-- Generate an error and make sure the error alert is shown
-- Make sure the close button on the error works
 
-#### Slides table
+#### Panes
 
-- Delete all images
-- Add some images and ensure the progress modal appears
-- View the preview on a couple of images and ensure the modal appears
-- Change the order of the images and ensure changes applied
-- Change the duration of the images and ensure changes applied
-- Delete some images
-- Randomly manipulate the table and ensure changes applied
+- Create two slideshows and two embed panes
+- Arrange them and ensure the preview updates
+- Delete a slideshow
+- Put a website (without protocol) in one embed pane
+- Put a YouTube url in the other
+- For each slideshow:
+  - Add some images
+  - View the preview on a couple of images and ensure the modal appears
+  - Change the order of the images and ensure changes applied
+  - Change the duration of the images and ensure changes applied
+  - Delete some images
 
 #### Logo table
 
-- Delete all images
-- Add a logo and ensure the progress modal appears
+- Add a logo
 - View the preview on the logo and ensure the modal appears
+- Delete the logo
 
 #### Settings form
 
 - Change each setting and ensure changes applied
-- Input odd values (no value, negative numbers, etc.) and ensure that no errors occur
+- Input odd values (no value, negative numbers, etc.) and ensure that no errors occur (for slideshow testing)
 - Ensure the details element is styled correctly and works (if supported)
-- Press refresh slideshow and ensure the slideshow refreshes
+- Press refresh slideshow and ensure the slideshow refreshes (for slideshow testing)
 
 #### Account form
 
@@ -91,22 +92,22 @@ These tests are run at every breakpoint on every browser
 
 - Ensure all styles appear correct
 - Ensure that scrolling the main container does not move the sidebar or navbar
-- Generate an error and make sure the error alert is formatted correctly
+
+#### Panes
+
+- Open edit panes
+- Ensure that all styles appear correct
+- View each pane tab
+- Ensure that all styles appear correct
 
 #### Slides table
 
-- Delete all images
-- Ensure that all styles appear correct
-- Add some images and ensure the progress modal appears and is styled correctly
 - Ensure that all styles appear correct
 - View the preview on a couple of images and ensure the modal appears correct
 - Ensure the table scrolls if needed
 
 #### Logo table
 
-- Delete all images
-- Ensure that all styles appear correct
-- Add a logo and ensure the progress modal appears and is styled correctly
 - Ensure that all styles appear correct
 - View the preview on the logo and ensure the modal appears correct
 - Ensure the table scrolls if needed

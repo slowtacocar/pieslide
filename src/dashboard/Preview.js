@@ -3,7 +3,7 @@ import "./Preview.module.css";
 import dialogPolyfill from "dialog-polyfill";
 import { useDialog } from "../common/hooks";
 
-function Preview(props, ref) {
+const Preview = React.forwardRef(function Preview(props, ref) {
   const modal = useDialog(dialogPolyfill);
 
   const [src, setSrc] = React.useState();
@@ -23,6 +23,6 @@ function Preview(props, ref) {
       </form>
     </dialog>
   );
-}
+});
 
-export default React.forwardRef(Preview);
+export default Preview;

@@ -5,7 +5,7 @@ import "firebase/firestore";
 import "firebase/storage";
 import "./Dashboard.module.css";
 import { useAuth, useData } from "../common/hooks";
-import Slides from "./Slides";
+import Panes from "./Panes";
 import Logo from "./Logo";
 import Account from "./Account";
 import Settings from "./Settings";
@@ -29,7 +29,39 @@ function Dashboard() {
     auth.signOut();
   }
 
-  return data ? (
+  function handleDurationChange(value) {
+    docRef.update({ duration: value });
+  }
+
+  function handleNewsChange(value) {
+    docRef.update({ news: value });
+  }
+
+  function handleSizeChange(value) {
+    docRef.update({ size: value });
+  }
+
+  function handleTimeChange(value) {
+    docRef.update({ time: value });
+  }
+
+  function handleTransitionChange(value) {
+    docRef.update({ transition: value });
+  }
+
+  function handleMessageChange(value) {
+    docRef.update({ message: value });
+  }
+
+  function handleLogoChange(value) {
+    docRef.update({ logo: value });
+  }
+
+  function handlePanesChange(value) {
+    docRef.update({ panes: value });
+  }
+
+  return (
     <div styleName="container">
       <nav styleName="navbar">
         <span styleName="navbarSpan">PieSlide</span>
@@ -45,8 +77,8 @@ function Dashboard() {
       </nav>
 
       <nav styleName="sidebar">
-        <a href="#slides" styleName="sidebarLinkActive">
-          Slides
+        <a href="#panes" styleName="sidebarLinkActive">
+          Panes
         </a>
         <a href="#logo" styleName="sidebarLink">
           Logo
@@ -61,26 +93,41 @@ function Dashboard() {
 
       <div styleName="mainContainer">
         <div styleName="main">
-          <Slides
-            slides={data.slides}
-            duration={data.duration}
-            docRef={docRef}
-            storageRef={storageRef}
-          />
-          <Logo logo={data.logo} docRef={docRef} storageRef={storageRef} />
-          <Settings
-            duration={data.duration}
-            news={data.news}
-            size={data.size}
-            time={data.time}
-            transition={data.transition}
-            docRef={docRef}
-          />
-          <Account user={user} />
+          {data ? (
+            <>
+              <Panes
+                panes={data.panes}
+                duration={data.duration}
+                storageRef={storageRef}
+                onChange={handlePanesChange}
+              />
+              <Logo
+                value={data.logo}
+                storageRef={storageRef}
+                onChange={handleLogoChange}
+              />
+              <Settings
+                duration={data.duration}
+                news={data.news}
+                size={data.size}
+                time={data.time}
+                transition={data.transition}
+                onDurationChange={handleDurationChange}
+                onNewsChange={handleNewsChange}
+                onSizeChange={handleSizeChange}
+                onTimeChange={handleTimeChange}
+                onTransitionChange={handleTransitionChange}
+                onMessageChange={handleMessageChange}
+              />
+              <Account user={user} />
+            </>
+          ) : (
+            <h1 styleName="loading">Loading...</h1>
+          )}
         </div>
       </div>
     </div>
-  ) : null;
+  );
 }
 
 export default Dashboard;

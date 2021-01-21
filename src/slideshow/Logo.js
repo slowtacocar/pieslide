@@ -4,7 +4,7 @@ import "./Logo.module.css";
 import { useUrl } from "../common/hooks";
 
 function Logo(props) {
-  const logo = useUrl({ name: props.logo }, props.storageRef);
+  const logo = useUrl(props.logo, props.storageRef);
 
   return logo ? (
     <img
@@ -20,9 +20,12 @@ function Logo(props) {
 }
 
 Logo.propTypes = {
-  logo: PropTypes.string.isRequired,
+  logo: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    timestamp: PropTypes.number.isRequired,
+  }).isRequired,
   storageRef: PropTypes.object.isRequired,
-  size: PropTypes.any.isRequired,
+  size: PropTypes.number.isRequired,
 };
 
 export default Logo;

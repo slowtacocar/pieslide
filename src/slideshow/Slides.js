@@ -23,15 +23,16 @@ function Slides(props) {
   return (
     <>
       {slides.map((slide, index) => (
-        <img
-          styleName={shownIndex === index ? "slide" : "hidden"}
-          crossOrigin="anonymous"
-          src={slide.url}
-          key={slide.name}
-          style={{
-            transition: `opacity ${props.transition}s`,
-          }}
-        />
+        <div styleName="container" key={slide.timestamp}>
+          <img
+            styleName={shownIndex === index ? "slide" : "hidden"}
+            crossOrigin="anonymous"
+            src={slide.url}
+            style={{
+              transition: `opacity ${props.transition}s`,
+            }}
+          />
+        </div>
       ))}
     </>
   );
@@ -41,10 +42,11 @@ Slides.propTypes = {
   slides: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-      duration: PropTypes.any.isRequired,
+      duration: PropTypes.number.isRequired,
+      timestamp: PropTypes.number.isRequired,
     })
   ).isRequired,
-  transition: PropTypes.any.isRequired,
+  transition: PropTypes.number.isRequired,
   storageRef: PropTypes.object.isRequired,
 };
 
