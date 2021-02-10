@@ -1,0 +1,43 @@
+{
+  "name": "@pieslide/dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@pieslide/common": "file:../common",
+    "bootstrap": "^4.6.0",
+    "firebase": "^8.2.6",
+    "node-sass": "^5.0.0",
+    "react": "^17.0.1",
+    "react-bootstrap": "^1.4.3",
+    "react-dom": "^17.0.1",
+    "react-firebaseui": "^4.1.0",
+    "react-scripts": "4.0.2",
+    "react-sortablejs": "^6.0.0",
+    "sortablejs": "^1.13.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      "last 2 chrome version",
+      "last 2 firefox version",
+      "last 2 edge version",
+      "ie 11",
+      "last 2 safari version"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

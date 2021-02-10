@@ -1,0 +1,66 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/root";
+@import "~bootstrap/scss/reboot";
+@import "~bootstrap/scss/type";
+@import "~bootstrap/scss/images";
+@import "~bootstrap/scss/grid";
+@import "~bootstrap/scss/tables";
+@import "~bootstrap/scss/forms";
+@import "~bootstrap/scss/buttons";
+@import "~bootstrap/scss/transitions";
+@import "~bootstrap/scss/dropdown";
+@import "~bootstrap/scss/input-group";
+@import "~bootstrap/scss/nav";
+@import "~bootstrap/scss/navbar";
+@import "~bootstrap/scss/close";
+@import "~bootstrap/scss/modal";
+@import "~bootstrap/scss/spinners";
+@import "~bootstrap/scss/utilities";
+@import "~bootstrap/scss/print";
+
+.mb-form {
+  margin-bottom: 10px;
+}
+
+.sticky-bottom {
+  position: sticky;
+  bottom: 0;
+}
+
+.input-group {
+  > .input-group-file {
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+    margin-bottom: 0;
+    margin-left: -$input-border-width;
+  }
+
+  > .input-group-file:focus {
+    z-index: 3;
+  }
+
+  > .input-group-file:not(:first-child) {
+    @include border-left-radius(0);
+  }
+
+  &:not(.has-validation) .input-group-file:not(:last-child) {
+    @include border-right-radius(0);
+  }
+
+  &.has-validation .input-group-file:nth-last-child(n + 3) {
+    @include border-right-radius(0);
+  }
+}
+
+.input-group-file {
+  height: $input-height;
+  padding: 3px 6px;
+  background-color: $input-bg;
+  background-clip: padding-box;
+  border: $input-border-width solid $input-border-color;
+  @include border-radius($input-border-radius, 0);
+}

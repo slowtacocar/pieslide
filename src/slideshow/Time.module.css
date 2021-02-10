@@ -1,7 +1,0 @@
-.time {
-  composes: pill from "./index.module.css";
-  composes: font-size-1 from "./index.module.css";
-  position: fixed;
-  top: 0;
-  right: 0;
-}
