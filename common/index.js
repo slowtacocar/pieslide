@@ -27,7 +27,7 @@ export const uiConfig = {
 };
 
 export function useAuth(auth) {
-  const [user, setUser] = React.useState();
+  const [user, setUser] = React.useState(0);
 
   function authStateChanged(user) {
     setUser(user);

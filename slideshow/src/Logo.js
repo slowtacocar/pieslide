@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./Logo.css";
 import { useUrl } from "@pieslide/common";
 
 function Logo(props) {

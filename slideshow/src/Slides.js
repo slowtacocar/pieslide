@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./Slides.css";
 import { useUrls } from "@pieslide/common";
 
 function Slides(props) {

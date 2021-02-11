@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./PanesPreview.scss";
 
 function PanesPreview(props) {
   const maxRow = Math.max(...props.panes.map((pane) => pane.rowEnd));

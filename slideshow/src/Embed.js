@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./Embed.css";
 
 function Embed(props) {
   let src = props.embed;

@@ -3,7 +3,6 @@ import { firebase, useAuth, useData, uiConfig } from "@pieslide/common";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import "./Slideshow.css";
 import Slides from "./Slides";
 import Logo from "./Logo";
 import Time from "./Time";
@@ -35,8 +34,8 @@ function Slideshow() {
     reload();
   }
 
-  return user ? (
-    data ? (
+  return user || user === 0 ? (
+    data && user !== 0 ? (
       <>
         <div className="grid">
           {data.panes.map((pane) => (

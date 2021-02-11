@@ -3,7 +3,6 @@ import { uiConfig, firebase, useAuth, useData } from "@pieslide/common";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
-import "./Dashboard.scss";
 import Panes from "./Panes";
 import Logo from "./Logo";
 import Account from "./Account";
@@ -65,7 +64,7 @@ function Dashboard() {
     docRef.update({ panes: value });
   }
 
-  return user ? (
+  return user || user === 0 ? (
     <div className="dashboard-grid">
       <div className="dashboard-navbar">
         <Navbar bg="dark" expand="sm" variant="dark">
@@ -109,7 +108,7 @@ function Dashboard() {
 
       <div className="dashboard-main overflow-auto position-relative">
         <div className="p-3">
-          {data ? (
+          {data && user !== 0 ? (
             <>
               <Panes
                 panes={data.panes}

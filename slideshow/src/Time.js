@@ -1,5 +1,4 @@
 import React from "react";
-import "./Time.css";
 
 function Time() {
   function reducer() {

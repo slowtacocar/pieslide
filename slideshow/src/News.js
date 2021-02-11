@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./News.css";
 
 const RSS_API_URL = "https://api.rss2json.com/v1/api.json?rss_url=";
 
