@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "pieslide"
+  },
+  "targets": {
+    "pieslide": {
+      "hosting": {
+        "slideshow": [
+          "slideshow-pieslide"
+        ]
+      }
+    }
   }
 }
