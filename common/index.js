@@ -91,7 +91,12 @@ export function useData(docRef) {
     }
   }, [docRef]);
 
-  return state.data;
+  function setData(data) {
+    dispatch({ data: { ...state.data, ...data } });
+    docRef.update(data);
+  }
+  console.log(state);
+  return [state.data, setData];
 }
 
 export function useUrls(data, storageRef) {

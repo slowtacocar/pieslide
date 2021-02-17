@@ -26,42 +26,42 @@ function Dashboard() {
     () => user && storage.ref().child("user").child(user.uid),
     [storage, user]
   );
-  const data = useData(docRef);
+  const [data, setData] = useData(docRef);
 
   function signOut() {
     auth.signOut();
   }
 
   function handleDurationChange(value) {
-    docRef.update({ duration: value });
+    setData({ duration: value });
   }
 
   function handleNewsChange(value) {
-    docRef.update({ news: value });
+    setData({ news: value });
   }
 
   function handleSizeChange(value) {
-    docRef.update({ size: value });
+    setData({ size: value });
   }
 
   function handleTimeChange(value) {
-    docRef.update({ time: value });
+    setData({ time: value });
   }
 
   function handleTransitionChange(value) {
-    docRef.update({ transition: value });
+    setData({ transition: value });
   }
 
   function handleMessageChange(value) {
-    docRef.update({ message: value });
+    setData({ message: value });
   }
 
   function handleLogoChange(value) {
-    docRef.update({ logo: value });
+    setData({ logo: value });
   }
 
   function handlePanesChange(value) {
-    docRef.update({ panes: value });
+    setData({ panes: value });
   }
 
   return user || user === 0 ? (
