@@ -29,7 +29,11 @@ function Slides(props) {
 
   function setSlides(newSlides) {
     if (!newSlides.some((slide) => slide.chosen != null)) {
-      props.onChange(newSlides);
+      const nextSlides = [...newSlides];
+      for (let i = 0; i < nextSlides.length; i++) {
+        delete nextSlides.url;
+      }
+      props.onChange(nextSlides);
     }
   }
 
@@ -66,7 +70,7 @@ function Slides(props) {
             <th scope="col">Delete</th>
           </tr>
         </thead>
-        <ReactSortable tag="tbody" list={props.slides} setList={setSlides}>
+        <ReactSortable tag="tbody" list={slides} setList={setSlides}>
           {slides.map((slide, index) => (
             <Slide
               key={slide.timestamp}
