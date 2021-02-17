@@ -95,7 +95,7 @@ export function useData(docRef) {
     dispatch({ data: { ...state.data, ...data } });
     docRef.update(data);
   }
-  console.log(state);
+
   return [state.data, setData];
 }
 
