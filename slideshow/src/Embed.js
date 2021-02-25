@@ -3,14 +3,12 @@ import PropTypes from "prop-types";
 
 function Embed(props) {
   let src = props.embed;
-  let lower = src.toLowerCase();
+  let lower = props.embed.toLowerCase();
 
-  if (lower.includes("youtube.com") && src.includes("?v=")) {
-    const id = src.split("?v=")[1].split("&")[0];
-    src = `https://www.youtube.com/embed/${id}?autoplay=1&controls=0&loop=1&playlist=${id}`;
-  }
-
-  if (!lower.startsWith("https://") && !lower.startsWith("http://")) {
+  const match = src.match(/youtube\.com\/watch\?(?:v=|.*&v=)(.*?(?=&)|.*)/i);
+  if (match) {
+    src = `https://www.youtube.com/embed/${match[1]}?autoplay=1&controls=0&loop=1&playlist=${match[1]}`;
+  } else if (!lower.startsWith("https://") && !lower.startsWith("http://")) {
     src = `https://${src}`;
   }
 

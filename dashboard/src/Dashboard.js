@@ -1,70 +1,48 @@
 import React from "react";
-import { uiConfig, firebase, useAuth, useData } from "@pieslide/common";
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
 import Panes from "./Panes";
 import Logo from "./Logo";
 import Account from "./Account";
 import Settings from "./Settings";
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import Spinner from "react-bootstrap/Spinner";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
+import PropTypes from "prop-types";
 
-function Dashboard() {
-  const auth = React.useMemo(() => firebase.auth(), []);
-  const firestore = React.useMemo(() => firebase.firestore(), []);
-  const storage = React.useMemo(() => firebase.storage(), []);
-  const user = useAuth(auth);
-  const docRef = React.useMemo(
-    () => user && firestore.collection("user").doc(user.uid),
-    [firestore, user]
-  );
-  const storageRef = React.useMemo(
-    () => user && storage.ref().child("user").child(user.uid),
-    [storage, user]
-  );
-  const [data, setData] = useData(docRef);
-
-  function signOut() {
-    auth.signOut();
-  }
-
+function Dashboard(props) {
   function handleDurationChange(value) {
-    setData({ duration: value });
+    props.onChange({ duration: value });
   }
 
   function handleNewsChange(value) {
-    setData({ news: value });
+    props.onChange({ news: value });
   }
 
   function handleSizeChange(value) {
-    setData({ size: value });
+    props.onChange({ size: value });
   }
 
   function handleTimeChange(value) {
-    setData({ time: value });
+    props.onChange({ time: value });
   }
 
   function handleTransitionChange(value) {
-    setData({ transition: value });
+    props.onChange({ transition: value });
   }
 
   function handleMessageChange(value) {
-    setData({ message: value });
+    props.onChange({ message: value });
   }
 
   function handleLogoChange(value) {
-    setData({ logo: value });
+    props.onChange({ logo: value });
   }
 
   function handlePanesChange(value) {
-    setData({ panes: value });
+    props.onChange({ panes: value });
   }
 
-  return user || user === 0 ? (
+  return (
     <div className="dashboard-grid">
       <div className="dashboard-navbar">
         <Navbar bg="dark" expand="sm" variant="dark">
@@ -82,7 +60,7 @@ function Dashboard() {
                 Slideshow
               </Nav.Link>
             </Nav>
-            <Button variant="outline-light" onClick={signOut}>
+            <Button variant="outline-light" onClick={props.signOut}>
               Sign Out
             </Button>
           </Navbar.Collapse>
@@ -108,25 +86,25 @@ function Dashboard() {
 
       <div className="dashboard-main overflow-auto position-relative">
         <div className="p-3">
-          {data && user !== 0 ? (
+          {props.value ? (
             <>
               <Panes
-                panes={data.panes}
-                duration={data.duration}
-                storageRef={storageRef}
+                panes={props.value.panes}
+                duration={props.value.duration}
+                storageRef={props.storageRef}
                 onChange={handlePanesChange}
               />
               <Logo
-                value={data.logo}
-                storageRef={storageRef}
+                value={props.value.logo}
+                storageRef={props.storageRef}
                 onChange={handleLogoChange}
               />
               <Settings
-                duration={data.duration}
-                news={data.news}
-                size={data.size}
-                time={data.time}
-                transition={data.transition}
+                duration={props.value.duration}
+                news={props.value.news}
+                size={props.value.size}
+                time={props.value.time}
+                transition={props.value.transition}
                 onDurationChange={handleDurationChange}
                 onNewsChange={handleNewsChange}
                 onSizeChange={handleSizeChange}
@@ -134,7 +112,7 @@ function Dashboard() {
                 onTransitionChange={handleTransitionChange}
                 onMessageChange={handleMessageChange}
               />
-              <Account user={user} />
+              <Account user={props.user} />
             </>
           ) : (
             <div className="text-center">
@@ -146,9 +124,42 @@ function Dashboard() {
         </div>
       </div>
     </div>
-  ) : (
-    <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
   );
 }
+
+Dashboard.propTypes = {
+  value: PropTypes.shape({
+    panes: PropTypes.arrayOf(
+      PropTypes.shape({
+        rowStart: PropTypes.number.isRequired,
+        rowEnd: PropTypes.number.isRequired,
+        columnStart: PropTypes.number.isRequired,
+        columnEnd: PropTypes.number.isRequired,
+        embed: PropTypes.string,
+        slides: PropTypes.arrayOf(
+          PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            duration: PropTypes.number.isRequired,
+            timestamp: PropTypes.number.isRequired,
+          })
+        ),
+        timestamp: PropTypes.number.isRequired,
+      })
+    ).isRequired,
+    duration: PropTypes.number.isRequired,
+    news: PropTypes.arrayOf(PropTypes.string).isRequired,
+    size: PropTypes.number.isRequired,
+    time: PropTypes.bool.isRequired,
+    transition: PropTypes.number.isRequired,
+    logo: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      timestamp: PropTypes.number.isRequired,
+    }),
+  }),
+  onChange: PropTypes.func.isRequired,
+  signOut: PropTypes.func.isRequired,
+  storageRef: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+};
 
 export default Dashboard;

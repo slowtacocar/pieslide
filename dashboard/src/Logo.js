@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useUrl } from "@pieslide/common";
 import Upload from "./Upload";
 import Preview from "./Preview";
 import Table from "react-bootstrap/Table";
@@ -8,7 +7,23 @@ import Button from "react-bootstrap/Button";
 
 function Logo(props) {
   const [modalShown, setModalShown] = React.useState(false);
-  const logo = useUrl(props.value, props.storageRef);
+  const [url, setUrl] = React.useState();
+
+  React.useEffect(() => {
+    async function getDownloadUrl() {
+      setUrl(
+        await props.storageRef
+          .child(props.value.timestamp.toString())
+          .getDownloadURL()
+      );
+    }
+
+    if (props.value) {
+      getDownloadUrl();
+    } else {
+      setUrl(null);
+    }
+  }, [props.value, props.storageRef]);
 
   function handleModalClose() {
     setModalShown(false);
@@ -16,7 +31,7 @@ function Logo(props) {
 
   async function deleteLogo() {
     props.onChange(null);
-    await props.storageRef.child(logo.timestamp.toString()).delete();
+    await props.storageRef.child(props.value.timestamp.toString()).delete();
   }
 
   function showPreview() {
@@ -45,9 +60,9 @@ function Logo(props) {
           </tr>
         </thead>
         <tbody>
-          {logo && (
+          {props.value && (
             <tr>
-              <th scope="row">{logo.name}</th>
+              <th scope="row">{props.value.name}</th>
               <td>
                 <Button onClick={showPreview}>View Preview</Button>
               </td>
@@ -61,11 +76,7 @@ function Logo(props) {
         </tbody>
       </Table>
       <Upload storageRef={props.storageRef} onSuccess={handleUploadSuccess} />
-      <Preview
-        src={logo && logo.url}
-        onClose={handleModalClose}
-        shown={modalShown}
-      />
+      <Preview src={url} onClose={handleModalClose} shown={modalShown} />
     </section>
   );
 }

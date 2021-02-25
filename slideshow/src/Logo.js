@@ -1,11 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useUrl } from "@pieslide/common";
 
 function Logo(props) {
-  const logo = useUrl(props.logo, props.storageRef);
+  const [url, setUrl] = React.useState();
 
-  return logo ? (
+  React.useEffect(() => {
+    async function getDownloadUrl() {
+      setUrl(
+        await props.storageRef
+          .child(props.logo.timestamp.toString())
+          .getDownloadURL()
+      );
+    }
+
+    getDownloadUrl();
+  }, [props.logo, props.storageRef]);
+
+  return (
     <img
       style={{
         width: `${props.size}vw`,
@@ -13,10 +24,10 @@ function Logo(props) {
       }}
       className="logo"
       crossOrigin="anonymous"
-      src={logo.url}
+      src={url}
       alt="Logo"
     />
-  ) : null;
+  );
 }
 
 Logo.propTypes = {

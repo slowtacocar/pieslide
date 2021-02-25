@@ -16,7 +16,7 @@ function Embed(props) {
         </InputGroup.Text>
       </InputGroup.Prepend>
       <FormControl
-        aria-describedby="inputGroupEmbed"
+        aria-labelledby="inputGroupEmbed"
         onChange={handleChange}
         min="0"
         step="any"

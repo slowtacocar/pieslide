@@ -52,7 +52,7 @@ function PanesPreview(props) {
                 gridRowEnd: pane.rowEnd,
               }}
             >
-              {`Pane ${index}`}
+              {`Pane ${index + 1}`}
             </div>
           ))}
           {gridLines}
@@ -79,7 +79,7 @@ PanesPreview.propTypes = {
       ),
       timestamp: PropTypes.number.isRequired,
     })
-  ),
+  ).isRequired,
 };
 
 export default PanesPreview;

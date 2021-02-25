@@ -43,7 +43,6 @@ Slide.propTypes = {
   slide: PropTypes.shape({
     name: PropTypes.string.isRequired,
     duration: PropTypes.number.isRequired,
-    url: PropTypes.string.isRequired,
     timestamp: PropTypes.number.isRequired,
   }).isRequired,
   onDelete: PropTypes.func.isRequired,

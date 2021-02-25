@@ -135,7 +135,7 @@ EditPanes.propTypes = {
       ),
       timestamp: PropTypes.number.isRequired,
     })
-  ),
+  ).isRequired,
   onChange: PropTypes.func.isRequired,
   shown: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,

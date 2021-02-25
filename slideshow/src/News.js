@@ -8,14 +8,21 @@ function News(props) {
     async function getLink(link) {
       const response = await fetch(RSS_API_URL + link);
       const json = await response.json();
-      const headlines = json.items.map(({ title }) => title);
-
-      return headlines.join(" \u2022 ");
+      if (json.items) {
+        const headlines = json.items.map(({ title }) => title);
+        return headlines.join(" \u2022 ");
+      } else {
+        return `Couldn't get news from ${link}. Check your internet connection and make sure you spelled the URL correctly.`;
+      }
     }
 
-    const texts = await Promise.all(props.news.map(getLink));
+    if (props.news.length > 0) {
+      const texts = await Promise.all(props.news.map(getLink));
 
-    setText(texts.join(" \u2022 "));
+      setText(texts.join(" \u2022 "));
+    } else {
+      setText("No news sources have been configured.");
+    }
   }, [props.news]);
 
   const drawFrame = React.useCallback(() => {
@@ -30,7 +37,7 @@ function News(props) {
     animation.current = requestAnimationFrame(drawFrame);
   }, [getNews]);
 
-  const [text, setText] = React.useState();
+  const [text, setText] = React.useState("Loading news...");
   const [position, setPosition] = React.useState(window.innerWidth);
   const animation = React.useRef();
   const news = React.useRef();

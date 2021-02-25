@@ -38,7 +38,7 @@ function PaneRow(props) {
 
   return (
     <tr>
-      <th scope="row">{`Pane ${props.index}`}</th>
+      <th scope="row">{`Pane ${props.index + 1}`}</th>
       <td>{props.pane.slides ? "Slideshow" : "Website Embed"}</td>
       <td>
         <FormControl

@@ -51,7 +51,7 @@ function Panes(props) {
             <Tab
               eventKey={pane.timestamp}
               key={pane.timestamp}
-              title={`Pane ${index}`}
+              title={`Pane ${index + 1}`}
             >
               {pane.slides ? (
                 <Slides
@@ -104,7 +104,7 @@ Panes.propTypes = {
       ),
       timestamp: PropTypes.number.isRequired,
     })
-  ),
+  ).isRequired,
   duration: PropTypes.number.isRequired,
   storageRef: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,

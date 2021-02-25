@@ -10,7 +10,7 @@ function Upload(props) {
   function handleSubmit(event) {
     event.preventDefault();
 
-    const [file] = inputGroup.current.files;
+    const file = inputGroup.current.files[0];
     const timestamp = Date.now();
     const ref = props.storageRef.child(timestamp.toString());
     ref.put(file).on("state_changed", null, null, () => {
@@ -19,10 +19,11 @@ function Upload(props) {
   }
 
   return (
-    <Form className={props.sticky ? "sticky-top" : ""} onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <InputGroup>
         <Form.File
           className="input-group-file"
+          aria-label="Upload Image"
           accept="image/*"
           ref={inputGroup}
           required
@@ -40,7 +41,6 @@ function Upload(props) {
 Upload.propTypes = {
   storageRef: PropTypes.object.isRequired,
   onSuccess: PropTypes.func.isRequired,
-  sticky: PropTypes.bool,
 };
 
 export default Upload;

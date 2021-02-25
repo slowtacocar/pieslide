@@ -48,7 +48,7 @@ function Settings(props) {
             </InputGroup.Prepend>
             <Form.Control
               as="select"
-              aria-describedby="inputGroupTime"
+              aria-labelledby="inputGroupTime"
               onChange={changeTime}
               value={props.time ? "show" : "hide"}
             >
@@ -66,7 +66,7 @@ function Settings(props) {
             </InputGroup.Prepend>
             <Form.Control
               type="number"
-              aria-describedby="inputGroupDuration"
+              aria-labelledby="inputGroupDuration"
               onChange={changeDuration}
               min="0"
               step="any"
@@ -85,7 +85,7 @@ function Settings(props) {
             </InputGroup.Prepend>
             <Form.Control
               type="number"
-              aria-describedby="inputGroupTransition"
+              aria-labelledby="inputGroupTransition"
               onChange={changeTransition}
               min="0"
               step="any"
@@ -100,7 +100,8 @@ function Settings(props) {
             </InputGroup.Prepend>
             <Form.Control
               type="number"
-              aria-describedby="inputGroupSize"
+              aria-labelledby="inputGroupSize"
+              aria-describedby="sizePercent"
               onChange={changeSize}
               min="0"
               max="100"
@@ -108,7 +109,7 @@ function Settings(props) {
               value={props.size}
             />
             <InputGroup.Append>
-              <InputGroup.Text>%</InputGroup.Text>
+              <InputGroup.Text id="sizePercent">%</InputGroup.Text>
             </InputGroup.Append>
           </InputGroup>
         </Col>
@@ -128,7 +129,7 @@ function Settings(props) {
             <InputGroup.Text id="inputGroupNews">News Sources</InputGroup.Text>
           </InputGroup.Prepend>
           <Form.Control
-            aria-describedby="inputGroupNews"
+            aria-labelledby="inputGroupNews"
             onChange={changeNews}
             value={props.news.join(",")}
           />

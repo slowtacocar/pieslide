@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useUrls } from "@pieslide/common";
 import Slide from "./Slide";
 import Upload from "./Upload";
 import Preview from "./Preview";
@@ -10,7 +9,25 @@ import Table from "react-bootstrap/Table";
 function Slides(props) {
   const [modalShown, setModalShown] = React.useState(false);
   const [src, setSrc] = React.useState();
-  const slides = useUrls(props.slides, props.storageRef);
+  const [urls, setUrls] = React.useState();
+
+  React.useEffect(() => {
+    async function getDownloadUrl(data) {
+      const url = await props.storageRef
+        .child(data.timestamp.toString())
+        .getDownloadURL();
+
+      return [data.timestamp, url];
+    }
+
+    async function getDownloadUrls() {
+      setUrls(
+        Object.fromEntries(await Promise.all(props.slides.map(getDownloadUrl)))
+      );
+    }
+
+    getDownloadUrls();
+  }, [props.slides, props.storageRef]);
 
   function handleModalClose() {
     setModalShown(false);
@@ -29,16 +46,12 @@ function Slides(props) {
 
   function setSlides(newSlides) {
     if (!newSlides.some((slide) => slide.chosen != null)) {
-      const nextSlides = [...newSlides];
-      for (let i = 0; i < nextSlides.length; i++) {
-        delete nextSlides.url;
-      }
-      props.onChange(nextSlides);
+      props.onChange(newSlides);
     }
   }
 
-  function showPreview(slide) {
-    setSrc(slide.url);
+  function showPreview(timestamp) {
+    setSrc(urls[timestamp]);
     setModalShown(true);
   }
 
@@ -70,8 +83,8 @@ function Slides(props) {
             <th scope="col">Delete</th>
           </tr>
         </thead>
-        <ReactSortable tag="tbody" list={slides} setList={setSlides}>
-          {slides.map((slide, index) => (
+        <ReactSortable tag="tbody" list={props.slides} setList={setSlides}>
+          {props.slides.map((slide, index) => (
             <Slide
               key={slide.timestamp}
               slide={slide}
@@ -79,7 +92,7 @@ function Slides(props) {
                 handleDelete(index);
               }}
               showPreview={() => {
-                showPreview(slide);
+                showPreview(slide.timestamp);
               }}
               onDurationChange={(value) => {
                 handleDurationChange(value, index);
@@ -88,11 +101,7 @@ function Slides(props) {
           ))}
         </ReactSortable>
       </Table>
-      <Upload
-        storageRef={props.storageRef}
-        onSuccess={handleUploadSuccess}
-        sticky
-      />
+      <Upload storageRef={props.storageRef} onSuccess={handleUploadSuccess} />
       <Preview shown={modalShown} onClose={handleModalClose} src={src} />
     </>
   );

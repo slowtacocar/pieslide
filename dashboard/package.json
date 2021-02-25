@@ -3,17 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@pieslide/common": "file:../common",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/user-event": "^12.7.2",
     "bootstrap": "^4.6.0",
-    "firebase": "^8.2.6",
+    "firebase": "^7.24.0",
+    "lodash": "^4.17.21",
     "node-sass": "^5.0.0",
-    "react": "^17.0.1",
-    "react-bootstrap": "^1.4.3",
-    "react-dom": "^17.0.1",
+    "react": "^16.14.0",
+    "react-bootstrap": "^1.5.0",
+    "react-dom": "^16.14.0",
     "react-firebaseui": "^4.1.0",
-    "react-scripts": "4.0.2",
+    "react-scripts": "^4.0.3",
     "react-sortablejs": "^6.0.0",
-    "sortablejs": "^1.13.0"
+    "sortablejs": "^1.13.0",
+    "web-vitals": "^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -23,14 +27,15 @@
   },
   "eslintConfig": {
     "extends": [
-      "react-app"
+      "react-app",
+      "react-app/jest"
     ]
   },
   "browserslist": {
     "production": [
-      "last 2 chrome version",
-      "last 2 firefox version",
-      "last 2 safari version"
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
     ],
     "development": [
       "last 1 chrome version",
