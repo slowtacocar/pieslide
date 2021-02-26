@@ -2,13 +2,11 @@
 
 Digital signage for small businesses that's as easy as pie
 
-Visit https://pieslide.web.app/ for the dashboard, or https://pieslide.web.app/slideshow.html for the slideshow.
-
-https://dev-pieslide.web.app/ also exists for development testing on a live server.
+Visit https://pieslide.web.app/ for the dashboard, or https://slideshow-pieslide.web.app/ for the slideshow.
 
 ## Building Instructions
 
-Clone the repository and run `npm install` to install dependencies.
+Clone the repository and run `npm install` in the slideshow and dashboard directories to install dependencies.
 
 Run `npm start` to run a development server, or `npm run build` to build for production.
 
