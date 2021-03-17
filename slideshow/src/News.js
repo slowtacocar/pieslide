@@ -6,7 +6,11 @@ const RSS_API_URL = "https://api.rss2json.com/v1/api.json?rss_url=";
 function News(props) {
   const getNews = React.useCallback(async () => {
     async function getLink(link) {
-      const response = await fetch(RSS_API_URL + link);
+      const response = await fetch(RSS_API_URL + link, {
+        headers: {
+          "Cache-Control": "no-cache",
+        },
+      });
       const json = await response.json();
       if (json.items) {
         const headlines = json.items.map(({ title }) => title);
