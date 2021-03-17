@@ -4,6 +4,13 @@
       "target": "dashboard",
       "public": "dashboard/build",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "redirects": [
+        {
+          "source": "/slideshow.html",
+          "destination": "https://slideshow-pieslide.web.app",
+          "type": 301
+        }
+      ],
       "rewrites": [
         {
           "source": "**",
