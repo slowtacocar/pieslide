@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/dashboard/dashboard.iml" filepath="$PROJECT_DIR$/dashboard/dashboard.iml" />
+      <module fileurl="file://$PROJECT_DIR$/slideshow/slideshow.iml" filepath="$PROJECT_DIR$/slideshow/slideshow.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pieslide.iml" filepath="$PROJECT_DIR$/pieslide.iml" />
+    </modules>
+  </component>
+</project>

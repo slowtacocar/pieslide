@@ -12,6 +12,4 @@ Run `npm start` to run a development server, or `npm run build` to build for pro
 
 The code is automatically built and deployed to Firebase on commits to master.
 
-See [Testing.md](Testing.md) for information on how to test functionality and styling on multiple browsers before releasing to production.
-
 **This is paid, closed-source software. Do not redistribute.**
