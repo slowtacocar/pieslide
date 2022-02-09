@@ -1,45 +1,99 @@
-import React from "react";
-import Panes from "./Panes";
-import Logo from "./Logo";
-import Account from "./Account";
-import Settings from "./Settings";
+import React, { useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 import Button from "react-bootstrap/Button";
 import PropTypes from "prop-types";
+import FormControl from "react-bootstrap/FormControl";
+import Screen from "./Screen";
+import firebase from "firebase";
+import isEqual from "lodash/isEqual";
 
 function Dashboard(props) {
-  function handleDurationChange(value) {
-    props.onChange({ duration: value });
+  const [screen, setScreen] = useState();
+
+  const storageRef = React.useMemo(
+    () =>
+      props.user &&
+      firebase.storage().ref().child("user").child(props.user.uid),
+    [props.user]
+  );
+
+  const [data, setData] = React.useReducer((state, action) => {
+    updateWithRefEqual(state, action);
+    return action;
+  });
+
+  React.useEffect(() => {
+    if (screen) {
+      return firebase
+        .firestore()
+        .collection("user")
+        .doc(props.user.uid)
+        .collection("screens")
+        .doc(screen)
+        .onSnapshot((doc) => {
+          const data = doc.data();
+          const updated = {
+            duration: 5,
+            message: "",
+            news: ["https://news.google.com/news/rss"],
+            size: 30,
+            time: true,
+            transition: 0.25,
+            logo: null,
+            panes: [
+              {
+                rowStart: 1,
+                rowEnd: 2,
+                columnStart: 1,
+                columnEnd: 2,
+                slides: [],
+                timestamp: Date.now(),
+              },
+            ],
+            ...data,
+          };
+          if (isEqual(data, updated)) {
+            setData(data);
+          } else {
+            doc.ref.set(updated);
+          }
+        });
+    }
+  }, [props.user, screen]);
+
+  React.useEffect(() => {
+    setScreen(props.screens[0]);
+  }, [props.screens]);
+
+  function updateWithRefEqual(oldData, newData) {
+    if (oldData) {
+      for (const key in newData) {
+        if (typeof newData[key] === "object") {
+          if (isEqual(oldData[key], newData[key])) {
+            newData[key] = oldData[key];
+          } else {
+            updateWithRefEqual(oldData[key], newData[key]);
+          }
+        }
+      }
+    }
   }
 
-  function handleNewsChange(value) {
-    props.onChange({ news: value });
+  function updateData(mergeData) {
+    setData({ ...data, ...mergeData });
+    firebase
+      .firestore()
+      .collection("user")
+      .doc(props.user.uid)
+      .collection("screens")
+      .doc(screen)
+      .update(mergeData);
   }
 
-  function handleSizeChange(value) {
-    props.onChange({ size: value });
-  }
-
-  function handleTimeChange(value) {
-    props.onChange({ time: value });
-  }
-
-  function handleTransitionChange(value) {
-    props.onChange({ transition: value });
-  }
-
-  function handleMessageChange(value) {
-    props.onChange({ message: value });
-  }
-
-  function handleLogoChange(value) {
-    props.onChange({ logo: value });
-  }
-
-  function handlePanesChange(value) {
-    props.onChange({ panes: value });
+  function handleScreenChange(event) {
+    setScreen(event.target.value);
   }
 
   return (
@@ -60,6 +114,18 @@ function Dashboard(props) {
                 Slideshow
               </Nav.Link>
             </Nav>
+            {props.screens.length > 1 && (
+              <FormControl
+                as="select"
+                value={screen}
+                onChange={handleScreenChange}
+                className="w-auto mr-3"
+              >
+                {props.screens.map((option) => (
+                  <option key={option}>{option}</option>
+                ))}
+              </FormControl>
+            )}
             <Button variant="outline-light" onClick={props.signOut}>
               Sign Out
             </Button>
@@ -86,40 +152,25 @@ function Dashboard(props) {
 
       <div className="dashboard-main overflow-auto position-relative">
         <div className="p-3">
-          {props.value ? (
-            <>
-              <Panes
-                panes={props.value.panes}
-                duration={props.value.duration}
-                storageRef={props.storageRef}
-                onChange={handlePanesChange}
+          {screen ? (
+            data ? (
+              <Screen
+                onChange={updateData}
+                storageRef={storageRef}
+                user={props.user}
+                value={data}
               />
-              <Logo
-                value={props.value.logo}
-                storageRef={props.storageRef}
-                onChange={handleLogoChange}
-              />
-              <Settings
-                duration={props.value.duration}
-                news={props.value.news}
-                size={props.value.size}
-                time={props.value.time}
-                transition={props.value.transition}
-                onDurationChange={handleDurationChange}
-                onNewsChange={handleNewsChange}
-                onSizeChange={handleSizeChange}
-                onTimeChange={handleTimeChange}
-                onTransitionChange={handleTransitionChange}
-                onMessageChange={handleMessageChange}
-              />
-              <Account user={props.user} />
-            </>
+            ) : (
+              <div className="text-center">
+                <Spinner animation="border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              </div>
+            )
           ) : (
-            <div className="text-center">
-              <Spinner animation="border" role="status">
-                <span className="sr-only">Loading...</span>
-              </Spinner>
-            </div>
+            <p className="text-center text-muted">
+              You have no screens registered.
+            </p>
           )}
         </div>
       </div>
@@ -128,38 +179,9 @@ function Dashboard(props) {
 }
 
 Dashboard.propTypes = {
-  value: PropTypes.shape({
-    panes: PropTypes.arrayOf(
-      PropTypes.shape({
-        rowStart: PropTypes.number.isRequired,
-        rowEnd: PropTypes.number.isRequired,
-        columnStart: PropTypes.number.isRequired,
-        columnEnd: PropTypes.number.isRequired,
-        embed: PropTypes.string,
-        slides: PropTypes.arrayOf(
-          PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            duration: PropTypes.number.isRequired,
-            timestamp: PropTypes.number.isRequired,
-          })
-        ),
-        timestamp: PropTypes.number.isRequired,
-      })
-    ).isRequired,
-    duration: PropTypes.number.isRequired,
-    news: PropTypes.arrayOf(PropTypes.string).isRequired,
-    size: PropTypes.number.isRequired,
-    time: PropTypes.bool.isRequired,
-    transition: PropTypes.number.isRequired,
-    logo: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      timestamp: PropTypes.number.isRequired,
-    }),
-  }),
-  onChange: PropTypes.func.isRequired,
   signOut: PropTypes.func.isRequired,
-  storageRef: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
+  screens: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default Dashboard;

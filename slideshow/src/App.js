@@ -40,6 +40,8 @@ function App() {
         .firestore()
         .collection("user")
         .doc(user.uid)
+        .collection("screens")
+        .doc(new URLSearchParams(window.location.search).get("screen"))
         .onSnapshot((doc) => {
           if (doc.exists) {
             const dat = doc.data();
@@ -48,26 +50,6 @@ function App() {
             } else {
               setData(dat);
             }
-          } else {
-            doc.ref.set({
-              duration: 5,
-              message: "",
-              news: ["https://news.google.com/news/rss"],
-              size: 30,
-              time: true,
-              transition: 0.25,
-              logo: null,
-              panes: [
-                {
-                  rowStart: 1,
-                  rowEnd: 2,
-                  columnStart: 1,
-                  columnEnd: 2,
-                  slides: [],
-                  timestamp: Date.now(),
-                },
-              ],
-            });
           }
         });
     }

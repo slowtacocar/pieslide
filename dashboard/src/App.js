@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import Spinner from "react-bootstrap/Spinner";
 import Dashboard from "./Dashboard";
-import isEqual from "lodash/isEqual";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
@@ -21,48 +20,7 @@ firebase.initializeApp({
 
 function App() {
   const [user, setUser] = React.useState();
-  const storageRef = React.useMemo(
-    () => user && firebase.storage().ref().child("user").child(user.uid),
-    [user]
-  );
-  const [data, setData] = React.useReducer((state, action) => {
-    updateWithRefEqual(state, action);
-    return action;
-  });
-
-  React.useEffect(() => {
-    if (user) {
-      return firebase
-        .firestore()
-        .collection("user")
-        .doc(user.uid)
-        .onSnapshot((doc) => {
-          if (doc.exists) {
-            setData(doc.data());
-          } else {
-            doc.ref.set({
-              duration: 5,
-              message: "",
-              news: ["https://news.google.com/news/rss"],
-              size: 30,
-              time: true,
-              transition: 0.25,
-              logo: null,
-              panes: [
-                {
-                  rowStart: 1,
-                  rowEnd: 2,
-                  columnStart: 1,
-                  columnEnd: 2,
-                  slides: [],
-                  timestamp: Date.now(),
-                },
-              ],
-            });
-          }
-        });
-    }
-  }, [user]);
+  const [screens, setScreens] = useState();
 
   React.useEffect(
     () =>
@@ -72,24 +30,18 @@ function App() {
     []
   );
 
-  function updateWithRefEqual(oldData, newData) {
-    if (oldData) {
-      for (const key in newData) {
-        if (typeof newData[key] === "object") {
-          if (isEqual(oldData[key], newData[key])) {
-            newData[key] = oldData[key];
-          } else {
-            updateWithRefEqual(oldData[key], newData[key]);
-          }
-        }
-      }
+  React.useEffect(() => {
+    if (user) {
+      return firebase
+        .firestore()
+        .collection("user")
+        .doc(user.uid)
+        .collection("screens")
+        .onSnapshot((snapshot) => {
+          setScreens(snapshot.docs.map((doc) => doc.id));
+        });
     }
-  }
-
-  function updateData(mergeData) {
-    setData({ ...data, ...mergeData });
-    firebase.firestore().collection("user").doc(user.uid).update(mergeData);
-  }
+  }, [user]);
 
   function signOut() {
     firebase.auth().signOut();
@@ -109,14 +61,8 @@ function App() {
       }}
       firebaseAuth={firebase.auth()}
     />
-  ) : user ? (
-    <Dashboard
-      value={data}
-      onChange={updateData}
-      signOut={signOut}
-      storageRef={storageRef}
-      user={user}
-    />
+  ) : user && screens ? (
+    <Dashboard signOut={signOut} user={user} screens={screens} />
   ) : (
     <div className="text-center p-3">
       <Spinner animation="border" role="status">
