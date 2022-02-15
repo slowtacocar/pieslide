@@ -36,9 +36,8 @@ function App() {
         .firestore()
         .collection("user")
         .doc(user.uid)
-        .collection("screens")
-        .onSnapshot((snapshot) => {
-          setScreens(snapshot.docs.map((doc) => doc.id));
+        .onSnapshot((data) => {
+          setScreens(new Map(Object.entries(data.get("screens"))) ?? null);
         });
     }
   }, [user]);
@@ -63,6 +62,8 @@ function App() {
     />
   ) : user && screens ? (
     <Dashboard signOut={signOut} user={user} screens={screens} />
+  ) : screens === null ? (
+    <p className="text-center text-muted">You have no screens registered.</p>
   ) : (
     <div className="text-center p-3">
       <Spinner animation="border" role="status">

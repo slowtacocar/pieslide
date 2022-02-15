@@ -10,7 +10,7 @@ import firebase from "firebase";
 import isEqual from "lodash/isEqual";
 
 function Dashboard(props) {
-  const [screen, setScreen] = useState();
+  const [screen, setScreen] = useState(props.screens.keys().next().value);
 
   const storageRef = React.useMemo(
     () =>
@@ -18,54 +18,55 @@ function Dashboard(props) {
       firebase.storage().ref().child("user").child(props.user.uid),
     [props.user]
   );
+  const docRef = React.useMemo(
+    () =>
+      screen &&
+      firebase
+        .firestore()
+        .collection("user")
+        .doc(props.user.uid)
+        .collection("screens")
+        .doc(screen),
+    [screen, props.user.uid]
+  );
 
   const [data, setData] = React.useReducer((state, action) => {
     updateWithRefEqual(state, action);
     return action;
   });
 
-  React.useEffect(() => {
-    if (screen) {
-      return firebase
-        .firestore()
-        .collection("user")
-        .doc(props.user.uid)
-        .collection("screens")
-        .doc(screen)
-        .onSnapshot((doc) => {
-          const data = doc.data();
-          const updated = {
-            duration: 5,
-            message: "",
-            news: ["https://news.google.com/news/rss"],
-            size: 30,
-            time: true,
-            transition: 0.25,
-            logo: null,
-            panes: [
-              {
-                rowStart: 1,
-                rowEnd: 2,
-                columnStart: 1,
-                columnEnd: 2,
-                slides: [],
-                timestamp: Date.now(),
-              },
-            ],
-            ...data,
-          };
-          if (isEqual(data, updated)) {
-            setData(data);
-          } else {
-            doc.ref.set(updated);
-          }
-        });
-    }
-  }, [props.user, screen]);
-
-  React.useEffect(() => {
-    setScreen(props.screens[0]);
-  }, [props.screens]);
+  React.useEffect(
+    () =>
+      docRef?.onSnapshot((doc) => {
+        const data = doc.data();
+        const updated = {
+          duration: 5,
+          message: "",
+          news: ["https://news.google.com/news/rss"],
+          size: 30,
+          time: true,
+          transition: 0.25,
+          logo: null,
+          panes: [
+            {
+              rowStart: 1,
+              rowEnd: 2,
+              columnStart: 1,
+              columnEnd: 2,
+              slides: [],
+              timestamp: Date.now(),
+            },
+          ],
+          ...data,
+        };
+        if (isEqual(data, updated)) {
+          setData(data);
+        } else {
+          doc.ref.set(updated);
+        }
+      }),
+    [docRef]
+  );
 
   function updateWithRefEqual(oldData, newData) {
     if (oldData) {
@@ -83,13 +84,7 @@ function Dashboard(props) {
 
   function updateData(mergeData) {
     setData({ ...data, ...mergeData });
-    firebase
-      .firestore()
-      .collection("user")
-      .doc(props.user.uid)
-      .collection("screens")
-      .doc(screen)
-      .update(mergeData);
+    docRef.update(mergeData);
   }
 
   function handleScreenChange(event) {
@@ -108,21 +103,23 @@ function Dashboard(props) {
                 Dashboard
               </Nav.Link>
               <Nav.Link
-                href="https://slideshow-pieslide.web.app/"
+                href={`https://slideshow-pieslide.web.app?screen=${screen}`}
                 target="_blank"
               >
                 Slideshow
               </Nav.Link>
             </Nav>
-            {props.screens.length > 1 && (
+            {props.screens.size > 1 && (
               <FormControl
                 as="select"
                 value={screen}
                 onChange={handleScreenChange}
                 className="w-auto mr-3"
               >
-                {props.screens.map((option) => (
-                  <option key={option}>{option}</option>
+                {Array.from(props.screens, ([id, name]) => (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
                 ))}
               </FormControl>
             )}
@@ -169,7 +166,7 @@ function Dashboard(props) {
             )
           ) : (
             <p className="text-center text-muted">
-              You have no screens registered.
+              Select a screen from the dropdown
             </p>
           )}
         </div>
@@ -181,7 +178,7 @@ function Dashboard(props) {
 Dashboard.propTypes = {
   signOut: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  screens: PropTypes.arrayOf(PropTypes.string).isRequired,
+  screens: PropTypes.instanceOf(Map).isRequired,
 };
 
 export default Dashboard;
