@@ -11,5 +11,3 @@ Clone the repository and run `npm install` in the slideshow and dashboard direct
 Run `npm start` to run a development server, or `npm run build` to build for production.
 
 The code is automatically built and deployed to Firebase on commits to master.
-
-**This is paid, closed-source software. Do not redistribute.**

@@ -37,7 +37,11 @@ function App() {
         .collection("user")
         .doc(user.uid)
         .onSnapshot((data) => {
-          setScreens(new Map(Object.entries(data.get("screens"))) ?? null);
+          if (data.get("screens")) {
+            setScreens(new Map(Object.entries(data.get("screens"))));
+          } else {
+            setScreens(new Map([["0", "First Screen"]]));
+          }
         });
     }
   }, [user]);
